@@ -1,6 +1,6 @@
 # Antigravity Scribe
 
-> **Capture thinking, tool calls & artifacts to your Obsidian vault**
+> **Capture agents thinking, tool calls & artifacts to your Obsidian vault**
 
 Antigravity Scribe is a VS Code extension for [Google Antigravity IDE](https://antigravity.google) that captures the full content of an agent session — chat turns, thinking blocks, tool calls, task lists, implementation plans, and screenshots — and writes a single structured Markdown note directly into your Obsidian vault.
 
