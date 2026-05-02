@@ -1,5 +1,5 @@
 import * as http from "http";
-import * as WebSocket from "ws";
+import WebSocket = require("ws");
 
 export interface CDPTarget {
   id: string;
@@ -42,12 +42,13 @@ export class CDPClient {
 
   async connect(wsUrl: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.ws = new WebSocket(wsUrl, { maxPayload: 10 * 1024 * 1024 });
+      const ws = new WebSocket(wsUrl, { maxPayload: 10 * 1024 * 1024 });
+      this.ws = ws;
 
-      this.ws.on("open", resolve);
-      this.ws.on("error", reject);
+      ws.on("open", resolve);
+      ws.on("error", reject);
 
-      this.ws.on("message", (raw: WebSocket.RawData) => {
+      ws.on("message", (raw: WebSocket.RawData) => {
         try {
           const msg = JSON.parse(raw.toString());
           if (msg.id !== undefined) {

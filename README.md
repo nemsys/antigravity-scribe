@@ -52,7 +52,7 @@ Both sources are combined into a single Obsidian-native Markdown note with YAML 
 
 ### Option A — Install from `.vsix` (recommended)
 
-1. Download `antigravity-scribe-0.1.0.vsix` from the [releases page](#).
+1. Download `antigravity-scribe-0.1.0.vsix` from the [releases page](https://github.com/nemsys/antigravity-scribe/releases).
 
 2. Open Antigravity (or VS Code).
 

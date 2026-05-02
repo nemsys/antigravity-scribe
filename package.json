@@ -4,10 +4,27 @@
   "description": "Capture thinking, tool calls & artifacts to your Obsidian vault",
   "version": "0.1.0",
   "publisher": "sciscend",
-  "engines": { "vscode": "^1.85.0" },
-  "categories": ["Other"],
-  "keywords": ["antigravity", "obsidian", "agent", "capture", "ai", "session"],
-  "activationEvents": ["onStartupFinished"],
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nemsys/antigravity-scribe.git"
+  },
+  "keywords": [
+    "antigravity",
+    "obsidian",
+    "agent",
+    "capture",
+    "ai",
+    "session"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
   "main": "./out/extension.js",
   "contributes": {
     "commands": [
@@ -69,7 +86,7 @@
     "@types/node": "^20.0.0",
     "@types/vscode": "^1.85.0",
     "@types/ws": "^8.5.10",
-    "@vscode/vsce": "^2.24.0",
+    "@vscode/vsce": "^3.9.1",
     "typescript": "^5.3.0"
   },
   "dependencies": {

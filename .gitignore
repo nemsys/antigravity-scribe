@@ -5,6 +5,7 @@ node_modules/
 dist/
 build/
 lib/
+out/
 
 # TypeScript
 *.tsbuildinfo
@@ -32,3 +33,7 @@ package-lock.json
 
 # Misc
 *.log
+
+# Custom
+*.vsix
+.agscribe.json
