@@ -1,0 +1,34 @@
+# Node
+node_modules/
+
+# Build outputs
+dist/
+build/
+lib/
+
+# TypeScript
+*.tsbuildinfo
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# VS Code
+.vscode/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# npm package lock
+package-lock.json
+
+# Misc
+*.log

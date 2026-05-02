@@ -1,0 +1,78 @@
+{
+  "name": "antigravity-scribe",
+  "displayName": "Antigravity Scribe",
+  "description": "Capture thinking, tool calls & artifacts to your Obsidian vault",
+  "version": "0.1.0",
+  "publisher": "sciscend",
+  "engines": { "vscode": "^1.85.0" },
+  "categories": ["Other"],
+  "keywords": ["antigravity", "obsidian", "agent", "capture", "ai", "session"],
+  "activationEvents": ["onStartupFinished"],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "agscribe.capture",
+        "title": "Antigravity Scribe: Capture Session"
+      },
+      {
+        "command": "agscribe.captureNamed",
+        "title": "Antigravity Scribe: Capture Session (named task)"
+      },
+      {
+        "command": "agscribe.openVault",
+        "title": "Antigravity Scribe: Open Sessions in Vault"
+      },
+      {
+        "command": "agscribe.diagnose",
+        "title": "Antigravity Scribe: Diagnose Connection"
+      }
+    ],
+    "configuration": {
+      "title": "Antigravity Scribe",
+      "properties": {
+        "agscribe.port": {
+          "type": "number",
+          "default": 9222,
+          "description": "CDP remote debugging port Antigravity is listening on"
+        },
+        "agscribe.brainPath": {
+          "type": "string",
+          "default": "~/.gemini/antigravity/brain",
+          "description": "Path to Antigravity brain directory. Supports ~ expansion. For custom profiles, set the full path (e.g. ~/Antigravity_Profiles/phoneiep/app_config/.gemini/antigravity/brain)"
+        },
+        "agscribe.vaultPath": {
+          "type": "string",
+          "default": "",
+          "description": "Absolute path to your Obsidian vault root (required)"
+        },
+        "agscribe.vaultFolder": {
+          "type": "string",
+          "default": "AgentSessions",
+          "description": "Folder inside the vault where session notes are written"
+        },
+        "agscribe.openAfterCapture": {
+          "type": "boolean",
+          "default": true,
+          "description": "Open the session note in editor after capture"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "package": "vsce package"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "@types/vscode": "^1.85.0",
+    "@types/ws": "^8.5.10",
+    "@vscode/vsce": "^2.24.0",
+    "typescript": "^5.3.0"
+  },
+  "dependencies": {
+    "ws": "^8.16.0"
+  }
+}
