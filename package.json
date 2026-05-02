@@ -4,6 +4,7 @@
   "description": "Capture thinking, tool calls & artifacts to your Obsidian vault",
   "version": "0.1.0",
   "publisher": "sciscend",
+  "icon": "icon.png",
   "engines": {
     "vscode": "^1.85.0"
   },
