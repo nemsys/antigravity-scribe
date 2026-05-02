@@ -414,15 +414,9 @@ This can happen if you start a new conversation immediately before capturing the
 # 1. Unzip or clone the source
 cd antigravity-scribe
 
-# 2. Install dependencies
-npm install
-
-# 3. Compile TypeScript
-npm run compile
-
-# 4. Package into .vsix
-npm run package
-# Output: antigravity-scribe-0.1.0.vsix
+# Install dependencies, compile, and package in one step:
+npm install && npm run compile && npm run package
+# → antigravity-scribe-0.1.0.vsix
 
 # 5. Install
 code --install-extension antigravity-scribe-0.1.0.vsix
