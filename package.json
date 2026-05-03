@@ -4,7 +4,6 @@
   "description": "Capture thinking, tool calls & artifacts to your Obsidian vault",
   "version": "0.1.0",
   "publisher": "sciscend",
-  "icon": "icon.png",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -26,7 +25,7 @@
   "activationEvents": [
     "onStartupFinished"
   ],
-  "main": "./dist/extension.js",
+  "main": "./out/extension.js",
   "contributes": {
     "commands": [
       {
@@ -57,7 +56,7 @@
         "agscribe.brainPath": {
           "type": "string",
           "default": "~/.gemini/antigravity/brain",
-          "description": "Path to Antigravity brain directory. Supports ~ expansion. For custom profiles, set the full path (e.g. ~/Antigravity_Profiles/profile_name/app_config/.gemini/antigravity/brain)"
+          "description": "Path to Antigravity brain directory. Supports ~ expansion. For custom profiles, set the full path (e.g. ~/Antigravity_Profiles/phoneiep/app_config/.gemini/antigravity/brain)"
         },
         "agscribe.vaultPath": {
           "type": "string",
@@ -80,19 +79,20 @@
   "scripts": {
     "vscode:prepublish": "npm run bundle",
     "compile": "tsc -p ./",
-    "bundle": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --minify",
+    "bundle": "esbuild src/extension.ts --bundle --outfile=out/extension.js --external:vscode --format=cjs --platform=node --minify",
     "watch": "npm run bundle -- --watch",
     "package": "npm run bundle && vsce package"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
+    "@types/turndown": "^5.0.5",
     "@types/vscode": "^1.85.0",
     "@types/ws": "^8.5.10",
     "@vscode/vsce": "^2.24.0",
-    "esbuild": "^0.28.0",
     "typescript": "^5.3.0"
   },
   "dependencies": {
+    "turndown": "^7.2.0",
     "ws": "^8.16.0"
   }
 }
