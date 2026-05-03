@@ -37,3 +37,4 @@ package-lock.json
 # Custom
 *.vsix
 .agscribe.json
+.debug
