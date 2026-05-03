@@ -39,7 +39,7 @@ export function activate(ctx: vscode.ExtensionContext) {
   ctx.subscriptions.push(
     vscode.commands.registerCommand("agscribe.openVault", async () => {
       const cfg = vscode.workspace.getConfiguration("agscribe");
-      const vaultPath   = cfg.get<string>("vaultPath", "");
+      const vaultPath = cfg.get<string>("vaultPath", "");
       const vaultFolder = cfg.get<string>("vaultFolder", "AgentSessions");
 
       if (!vaultPath) {
@@ -61,12 +61,7 @@ export function activate(ctx: vscode.ExtensionContext) {
   // Diagnostics
   ctx.subscriptions.push(
     vscode.commands.registerCommand("agscribe.diagnose", async () => {
-      const report = await runDiagnose();
-      const doc = await vscode.workspace.openTextDocument({
-        content: report,
-        language: "plaintext",
-      });
-      await vscode.window.showTextDocument(doc);
+      await runDiagnose(outputChannel);
     })
   );
 }
