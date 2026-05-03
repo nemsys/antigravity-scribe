@@ -3,9 +3,14 @@ import * as vscode from "vscode";
 import { runSnap, runDiagnose } from "./snapRunner";
 
 let statusBar: vscode.StatusBarItem;
+let outputChannel: vscode.OutputChannel;
 let lastTask = "session";
 
 export function activate(ctx: vscode.ExtensionContext) {
+  // ── Output channel (created once, reused) ──────────────────────────────────
+  outputChannel = vscode.window.createOutputChannel("Antigravity Scribe");
+  ctx.subscriptions.push(outputChannel);
+
   // ── Status bar ─────────────────────────────────────────────────────────────
   statusBar = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 100);
   setIdle();
@@ -14,14 +19,12 @@ export function activate(ctx: vscode.ExtensionContext) {
 
   // ── Commands ───────────────────────────────────────────────────────────────
 
-  // Quick capture — reuses last task label
   ctx.subscriptions.push(
     vscode.commands.registerCommand("agscribe.capture", () =>
       captureWithTask(lastTask)
     )
   );
 
-  // Named capture — prompts first
   ctx.subscriptions.push(
     vscode.commands.registerCommand("agscribe.captureNamed", async () => {
       const task = await vscode.window.showInputBox({
@@ -35,7 +38,6 @@ export function activate(ctx: vscode.ExtensionContext) {
     })
   );
 
-  // Open vault folder in explorer
   ctx.subscriptions.push(
     vscode.commands.registerCommand("agscribe.openVault", async () => {
       const cfg = vscode.workspace.getConfiguration("agscribe");
@@ -43,22 +45,16 @@ export function activate(ctx: vscode.ExtensionContext) {
       const vaultFolder = cfg.get<string>("vaultFolder", "AgentSessions");
 
       if (!vaultPath) {
-        vscode.window.showErrorMessage(
-          "Antigravity Scribe: agscribe.vaultPath is not set."
-        );
+        vscode.window.showErrorMessage("Antigravity Scribe: agscribe.vaultPath is not set.");
         return;
       }
 
       const { expandHome } = await import("./brain");
       const fullPath = require("path").join(expandHome(vaultPath), vaultFolder);
-      await vscode.commands.executeCommand(
-        "revealInExplorer",
-        vscode.Uri.file(fullPath)
-      );
+      await vscode.commands.executeCommand("revealInExplorer", vscode.Uri.file(fullPath));
     })
   );
 
-  // Diagnostics
   ctx.subscriptions.push(
     vscode.commands.registerCommand("agscribe.diagnose", async () => {
       await runDiagnose(outputChannel);
@@ -68,6 +64,7 @@ export function activate(ctx: vscode.ExtensionContext) {
 
 export function deactivate() {
   statusBar?.dispose();
+  outputChannel?.dispose();
 }
 
 // ---------------------------------------------------------------------------
