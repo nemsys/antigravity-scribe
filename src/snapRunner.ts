@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { findTarget, CDPClient } from "./cdp";
-import { EXTRACT_JS, Turn } from "./extractor";
+import { EXTRACT_JS, EXTRACT_TITLE_JS, Turn } from "./extractor";
 import { findActiveBrainDir, readArtifacts, BrainResult } from "./brain";
 import { renderNote, sessionFilename } from "./renderer";
 import { prepareVault, copyImages, writeNote } from "./vault";
@@ -13,6 +13,7 @@ export interface SnapResult {
 }
 
 export async function runSnap(task: string): Promise<SnapResult> {
+  const resolvedTask = task || "session";
   const cfg = vscode.workspace.getConfiguration("agscribe");
   const port = cfg.get<number>("port", 9222);
   const brainPath = cfg.get<string>("brainPath", "~/.gemini/antigravity/brain");
@@ -36,8 +37,10 @@ export async function runSnap(task: string): Promise<SnapResult> {
   await cdp.send("Runtime.enable");
 
   let raw: string | null;
+  let conversationTitle: string | null;
   try {
     raw = await cdp.evalJS(EXTRACT_JS);
+    conversationTitle = await cdp.evalJS(EXTRACT_TITLE_JS);
   } finally {
     cdp.close();
   }
@@ -53,6 +56,12 @@ export async function runSnap(task: string): Promise<SnapResult> {
       "Chat panel not found — is a conversation open in Antigravity?"
     );
   }
+
+  // ── 1b. Resolve effective task label ─────────────────────────────────────
+  // If task is the default "session" and we got a conversation title, use that
+  const effectiveTask = (task === "session" && conversationTitle)
+    ? conversationTitle.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 50)
+    : task;
 
   // ── 2. Brain: find active dir and read artifacts ───────────────────────────
   let brainResult: BrainResult | null = null;
@@ -78,13 +87,13 @@ export async function runSnap(task: string): Promise<SnapResult> {
   // ── 4. Render and write note ───────────────────────────────────────────────
   const now = new Date();
   const note = renderNote(turns, {
-    task,
+    task: effectiveTask,
     workspacePath: wsFolder,
     brainResult,
     copiedImages,
   });
 
-  const filename = sessionFilename(task, now);
+  const filename = sessionFilename(effectiveTask, now);
   const outPath = writeNote(sessionDir, filename, note);
 
   return {

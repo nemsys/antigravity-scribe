@@ -6,11 +6,11 @@ export interface Turn {
 }
 
 export const ROLE_ICONS: Record<string, string> = {
-  user:      "\u{1F464}",
-  thought:   "\u{1F9E0}",
+  user: "\u{1F464}",
+  thought: "\u{1F9E0}",
   tool_call: "\u{1F527}",
-  agent:     "\u{1F916}",
-  unknown:   "\u2753",
+  agent: "\u{1F916}",
+  unknown: "\u2753",
 };
 
 // ---------------------------------------------------------------------------
@@ -169,3 +169,17 @@ export const EXTRACT_JS = String.raw`
     return JSON.stringify(items.map((item, idx) => ({ role: item.role, text: item.text, timestamp: item.timestamp, seq: idx })));
 })();
 `;
+
+/**
+ * Extract the conversation title from the Antigravity chat panel header.
+ * Targets the title div inside .antigravity-agent-side-panel.
+ */
+export const EXTRACT_TITLE_JS = `(function() {
+  const panel = document.querySelector('.antigravity-agent-side-panel');
+  if (!panel) return null;
+  const titleEl = panel.querySelector('.flex.min-w-0.items-center.overflow-hidden.text-ellipsis.whitespace-nowrap');
+  if (!titleEl) return null;
+  const t = (titleEl.innerText || titleEl.textContent || "").trim();
+  if (t && t.length > 2 && t.length < 120) return t;
+  return null;
+})();`;
