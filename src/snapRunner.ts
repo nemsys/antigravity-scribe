@@ -10,6 +10,7 @@ export interface SnapResult {
   turnCount: number;
   artifactCount: number;
   imageCount: number;
+  skipped?: boolean;
 }
 
 export async function runSnap(task: string): Promise<SnapResult> {
@@ -58,9 +59,10 @@ export async function runSnap(task: string): Promise<SnapResult> {
   }
 
   if (turns.length === 0) {
-    throw new Error(
-      "No turns captured — the conversation appears to be empty. Start a conversation before capturing."
+    vscode.window.showWarningMessage(
+      "Antigravity Scribe: Conversation is empty — start a conversation before capturing."
     );
+    return { outPath: "", turnCount: 0, artifactCount: 0, imageCount: 0, skipped: true };
   }
 
   // ── 1b. Resolve effective task label ─────────────────────────────────────

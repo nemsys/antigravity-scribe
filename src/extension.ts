@@ -76,7 +76,9 @@ async function captureWithTask(task: string) {
   setBusy();
 
   try {
-    const { outPath, turnCount, artifactCount, imageCount } = await runSnap(task);
+    const result = await runSnap(task);
+    if (result.skipped) return;
+    const { outPath, turnCount, artifactCount, imageCount } = result;
 
     const parts = [
       `${turnCount} turn(s)`,
