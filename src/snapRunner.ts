@@ -14,9 +14,9 @@ export interface SnapResult {
 
 export async function runSnap(task: string): Promise<SnapResult> {
   const cfg = vscode.workspace.getConfiguration("agscribe");
-  const port        = cfg.get<number>("port", 9222);
-  const brainPath   = cfg.get<string>("brainPath", "~/.gemini/antigravity/brain");
-  const vaultPath   = cfg.get<string>("vaultPath", "");
+  const port = cfg.get<number>("port", 9222);
+  const brainPath = cfg.get<string>("brainPath", "~/.gemini/antigravity/brain");
+  const vaultPath = cfg.get<string>("vaultPath", "");
   const vaultFolder = cfg.get<string>("vaultFolder", "AgentSessions");
 
   const wsFolder =
@@ -98,31 +98,49 @@ export async function runSnap(task: string): Promise<SnapResult> {
 // ---------------------------------------------------------------------------
 // Diagnostic: report config state without capturing
 // ---------------------------------------------------------------------------
-export async function runDiagnose(): Promise<string> {
+export async function runDiagnose(): Promise<void> {
   const cfg = vscode.workspace.getConfiguration("agscribe");
-  const port        = cfg.get<number>("port", 9222);
-  const brainPath   = cfg.get<string>("brainPath", "~/.gemini/antigravity/brain");
-  const vaultPath   = cfg.get<string>("vaultPath", "");
+  const port = cfg.get<number>("port", 9222);
+  const brainPath = cfg.get<string>("brainPath", "~/.gemini/antigravity/brain");
+  const vaultPath = cfg.get<string>("vaultPath", "");
 
-  const lines: string[] = ["=== Antigravity Scribe Diagnostics ===", ""];
+  const out = vscode.window.createOutputChannel("Antigravity Scribe", { log: false });
+  out.clear();
+  out.show(true);
+
+  const ok = (msg: string) => out.appendLine(`✅ ${msg}`);
+  const err = (msg: string) => out.appendLine(`❌ ${msg}`);
+  const info = (msg: string) => out.appendLine(`   ${msg}`);
+
+  out.appendLine("=== Antigravity Scribe Diagnostics ===");
+  out.appendLine("");
 
   // CDP
   const target = await findTarget(port);
-  lines.push(`CDP port ${port}: ${target ? `✓  ${target.title?.slice(0, 60)}` : "✗  No target found"}`);
+  if (target) {
+    ok(`CDP port ${port}: ${target.title?.slice(0, 60)}`);
+  } else {
+    err(`CDP port ${port}: No target found`);
+    info(`Launch Antigravity with --remote-debugging-port=${port}`);
+  }
 
   // Brain
   try {
-    const { expandHome } = await import("./brain");
-    const { findActiveBrainDir } = await import("./brain");
+    const { expandHome, findActiveBrainDir } = await import("./brain");
     const uuid = findActiveBrainDir(brainPath);
-    lines.push(`Brain path: ✓  ${expandHome(brainPath)}`);
-    lines.push(`Active brain UUID: ${uuid ?? "(none found)"}`);
+    ok(`Brain path: ${expandHome(brainPath)}`);
+    info(`Active brain UUID: ${uuid ?? "(none found)"}`);
   } catch (e: any) {
-    lines.push(`Brain path: ✗  ${e.message}`);
+    err(`Brain path: ${e.message}`);
   }
 
   // Vault
-  lines.push(`Vault path: ${vaultPath ? `✓  ${vaultPath}` : "✗  Not configured (set agscribe.vaultPath)"}`);
+  if (vaultPath) {
+    ok(`Vault path: ${vaultPath}`);
+  } else {
+    err(`Vault path: Not configured`);
+    info(`Open Settings → search 'Antigravity Scribe' → set Vault Path`);
+  }
 
-  return lines.join("\n");
+  out.appendLine("");
 }
