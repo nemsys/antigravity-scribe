@@ -57,6 +57,12 @@ export async function runSnap(task: string): Promise<SnapResult> {
     );
   }
 
+  if (turns.length === 0) {
+    throw new Error(
+      "No turns captured — the conversation appears to be empty. Start a conversation before capturing."
+    );
+  }
+
   // ── 1b. Resolve effective task label ─────────────────────────────────────
   // If task is the default "session" and we got a conversation title, use that
   const effectiveTask = (task === "session" && conversationTitle)
