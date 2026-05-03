@@ -57,7 +57,7 @@
         "agscribe.brainPath": {
           "type": "string",
           "default": "~/.gemini/antigravity/brain",
-          "description": "Path to Antigravity brain directory. Supports ~ expansion. For custom profiles, set the full path (e.g. ~/Antigravity_Profiles/phoneiep/app_config/.gemini/antigravity/brain)"
+          "description": "Path to Antigravity brain directory. Supports ~ expansion. For custom profiles, set the full path (e.g. ~/Antigravity_Profiles/profile_name/app_config/.gemini/antigravity/brain)"
         },
         "agscribe.vaultPath": {
           "type": "string",
