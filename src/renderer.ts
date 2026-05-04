@@ -131,9 +131,7 @@ export function renderNote(turns: Turn[], opts: RenderOptions): string {
     const role = turn.role ?? "unknown";
     const icon = ROLE_ICONS[role] ?? "\u2753";
     const label = role.toUpperCase().replace("_", " ");
-    const ts = turn.timestamp ? `  \`${turn.timestamp}\`` : "";
-
-    lines.push(`### ${icon} ${label}${ts}`);
+    lines.push(`### ${icon} ${label}`);
     lines.push("");
 
     // Use HTML→Markdown for agent/thought turns when available

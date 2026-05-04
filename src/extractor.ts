@@ -2,7 +2,6 @@ export interface Turn {
   role: string;
   text: string;
   html: string | null;   // raw innerHTML for agent/thought turns (used for MD conversion)
-  timestamp: string | null;
   seq: number;
 }
 
@@ -57,11 +56,10 @@ export const EXTRACT_JS = String.raw`
     return JSON.stringify([{"role":"_no_chat","text":"Chat panel not found","html":null}]);
   }
 
-  // Clean innerText — remove UI chrome, icons, revert button
   function cleanText(el) {
     const clone = el.cloneNode(true);
     clone.querySelectorAll(
-      "style, script, link, button, .copy-button, [data-testid='revert-button'], .google-symbols"
+      "style, script, link, button, .copy-button, [data-testid='revert-button'], .google-symbols, svg"
     ).forEach(t => t.remove());
     let txt = (clone.innerText || clone.textContent || "").trim();
     txt = txt.replace(/^(bash|python|terminal|copy|content_copy|alternate_email|check)\s+/i, "");
@@ -73,11 +71,9 @@ export const EXTRACT_JS = String.raw`
     return txt.trim();
   }
 
-  // Get innerHTML for rich content (agent/thought) — strips style/script tags
   function getHTML(el) {
     const clone = el.cloneNode(true);
     clone.querySelectorAll("style, script, link").forEach(t => t.remove());
-    // Remove node="[object Object]" attrs that Antigravity adds
     clone.querySelectorAll("[node]").forEach(t => t.removeAttribute("node"));
     return clone.innerHTML.trim();
   }
@@ -92,53 +88,33 @@ export const EXTRACT_JS = String.raw`
     return txt.trim();
   }
 
-  // Find the real timestamp — the hidden "10:53 PM" span in the turn footer
-  // NOT the revert button which also has opacity classes
-  function findTimestamp(el) {
-    // Walk up to find the turn container
-    let container = el.closest('[data-testid*="step"], .isolate, .flex-row, .flex-col, [class*="Turn"]');
-    if (!container) container = el.parentElement;
-
-    // Search outward from the element for the time span
-    // The real timestamp is: span.text-xs.whitespace-nowrap inside .pt-3 footer
-    let search = container;
-    for (let i = 0; i < 10; i++) {
-      if (!search || search === document.body) break;
-      const timeSpan = search.querySelector('span.text-xs.whitespace-nowrap');
-      if (timeSpan) {
-        const t = (timeSpan.innerText || "").trim();
-        // Validate it looks like a time: "10:53 PM", "23:45", etc.
-        if (/^\d{1,2}:\d{2}(\s*(AM|PM))?$/i.test(t)) return t;
-      }
-      // Also check data-timestamp attribute
-      if (search.hasAttribute('data-timestamp')) return search.getAttribute('data-timestamp');
-      search = search.parentElement;
-    }
-
-    // Fallback: look for ISO timestamp in nearby elements
-    const timeEl = container && container.querySelector('time');
-    if (timeEl) {
-      const t = (timeEl.getAttribute('datetime') || timeEl.innerText || "").trim();
-      if (t && t.length < 40) return t;
-    }
-
-    return null;
-  }
-
   const items = [];
   const seenFp = new Set();
 
   function addItem(role, text, html, el, skipNoise) {
-    text = text.replace(/alternate_email\s*content_copy/g, "").trim();
+    text = (text || "").replace(/alternate_email\s*content_copy/g, "").trim();
     text = text.replace(/chevron_right/g, "").trim();
+    if (!text) return;
     const fp = role + ":" + text.slice(0, 300);
     if (seenFp.has(fp)) return;
     seenFp.add(fp);
-    items.push({ el, role, text, html, timestamp: findTimestamp(el) });
+    items.push({ el, role, text, html: html || null });
   }
 
-  const NOISE_EXACT = new Set(["Plan", "Send", "mic", "Review Changes", "Accept all", "Reject all", "See all", "Attach", "alternate_email", "content_copy", "python", "text", "Markdown", "Go Live", "Antigravity - Settings", "chevron_right", "Drag a view here to display.", "add", "more_vert", "check", "undo"]);
-  const NOISE_RE = [/^Ask anything[,.].*@ to mention/is, /^AI may make mistakes/i, /^Gemini \d/i, /^Claude /i, /^(Worked|Thought) for \d/i, /^\d+ Files? With Changes\s*$/, /^[+-]\d+\s*$/, /^\+\d+ -\d+$/, /^Press desired key/i, /^[A-Z][a-zA-Z ]+\n\d+[hm]\s*$/, /^F-\d+\s+LF\s+/, /^AG:\s*\d+-\d+%/, /^\w[\w.-]*\.(py|js|ts|md|json|yaml|sh|txt|css)\s*$/, /^\w[\w.-]*\.(py|js|ts|md|json|yaml|sh|txt|css)\s+\+\d+/, /^border-/, /^margin-/, /^padding-/, /^\{[\s\S]*:\s*[\s\S]*\}/, /^alternate_email\s*content_copy/];
+  const NOISE_EXACT = new Set(["Plan", "Send", "mic", "Review Changes", "Accept all", "Reject all",
+    "See all", "Attach", "alternate_email", "content_copy", "python", "text", "Markdown",
+    "Go Live", "Antigravity - Settings", "chevron_right", "Drag a view here to display.",
+    "add", "more_vert", "check", "undo"]);
+  const NOISE_RE = [
+    /^Ask anything[,.].*@ to mention/is, /^AI may make mistakes/i, /^Gemini \d/i, /^Claude /i,
+    /^\d+ Files? With Changes\s*$/, /^[+-]\d+\s*$/, /^\+\d+ -\d+$/,
+    /^Press desired key/i, /^[A-Z][a-zA-Z ]+\n\d+[hm]\s*$/, /^F-\d+\s+LF\s+/,
+    /^AG:\s*\d+-\d+%/,
+    /^\w[\w.-]*\.(py|js|ts|md|json|yaml|sh|txt|css)\s*$/,
+    /^\w[\w.-]*\.(py|js|ts|md|json|yaml|sh|txt|css)\s+\+\d+/,
+    /^border-/, /^margin-/, /^padding-/,
+    /^\{[\s\S]*:\s*[\s\S]*\}/, /^alternate_email\s*content_copy/
+  ];
   function isNoise(text, minLen) {
     if (!text || text.length < (minLen || 2)) return true;
     if (NOISE_EXACT.has(text)) return true;
@@ -146,64 +122,88 @@ export const EXTRACT_JS = String.raw`
     if (/\{[^}]*(?:border|margin|padding|color|font|display)\s*:/i.test(text)) return true;
     return false;
   }
-  const originalAddItem = addItem;
-  addItem = function(role, text, html, el, skipNoise) {
-    if (!skipNoise && isNoise(text, role === "user" ? 1 : 4)) return;
-    originalAddItem(role, text, html, el, skipNoise);
-  };
 
-  // User turns
+  // ── User turns ─────────────────────────────────────────────────────────────
   for (const step of chatRoot.querySelectorAll('[data-testid="user-input-step"]')) {
     const inner = step.querySelector(".whitespace-pre-wrap");
-    if (inner) addItem("user", cleanText(inner), null, step);
+    if (!inner) continue;
+    const text = cleanText(inner);
+    if (!isNoise(text, 1)) addItem("user", text, null, step);
   }
 
-  // Agent/thought turns — capture both text and innerHTML
-  for (const el of chatRoot.querySelectorAll("div.leading-relaxed.select-text")) {
-    const text = cleanText(el);
-    if (!text) continue;
-    const html = getHTML(el);
-    const isThought = el.classList.contains("opacity-70") || el.className.includes("opacity-70");
-    addItem(isThought ? "thought" : "agent", text, html, el);
-  }
-
-  // Collapsed thoughts
-  const THOUGHT_RE = /^Thought for \d/i;
+  // ── "Worked for Xs" turn summaries + nested tool calls + thoughts ──────────
   for (const btn of chatRoot.querySelectorAll("button")) {
-    const btnText = (btn.innerText || "").trim().replace(/\n/g, " ");
-    if (!THOUGHT_RE.test(btnText)) continue;
-    const isolate = btn.closest(".isolate");
-    if (!isolate) continue;
-    const hiddenDiv = isolate.querySelector(".overflow-hidden");
-    if (!hiddenDiv) continue;
-    const cs = hiddenDiv.className || "";
-    if (cs.includes("max-h-0") || cs.includes("opacity-0")) {
-      const text = deepText(hiddenDiv);
-      if (text && text.length > 4) addItem("thought", text, null, hiddenDiv);
-    }
-  }
+    const spans = btn.querySelectorAll("span.opacity-70");
+    if (!spans.length) continue;
+    const label = (spans[0].innerText || "").trim();
+    if (!/^(Worked|Thinking) for \d/i.test(label)) continue;
 
-  // Tool calls
-  for (const btn of chatRoot.querySelectorAll("button")) {
-    const t = (btn.innerText || "").trim().replace(/\n/g, " ");
-    if (/^(Explored|Ran|Viewed|Analyzed|Created|Edited|Searched|Generated|Navigat)/i.test(t)) {
-      let detail = t;
-      let next = btn.nextElementSibling || btn.parentElement.nextElementSibling;
-      const code = (next && next.querySelector('pre, code, .font-mono')) || btn.parentElement.querySelector('pre, code, .font-mono');
-      if (code) {
-        const fullText = cleanText(code);
-        if (fullText && fullText.length > 5) detail = t + ":\n" + fullText;
+    // Capture "Worked for Xs" as a tool_call summary
+    addItem("tool_call", label, null, btn, true);
+
+    // Capture nested tool action buttons inside the expanded section
+    const expandedSection = btn.nextElementSibling;
+    if (!expandedSection) continue;
+
+    // Nested tool calls (Explored, Ran, Viewed, etc.)
+    for (const inner of expandedSection.querySelectorAll("button")) {
+      const t = (inner.innerText || "").trim().replace(/\n/g, " ").replace(/\s+/g, " ");
+      if (/^(Explored|Ran|Viewed|Analyzed|Created|Edited|Searched|Generated|Navigat)/i.test(t)) {
+        // Get detail from code block if available
+        let detail = t.replace(/chevron_right/g, "").trim();
+        const code = inner.nextElementSibling && inner.nextElementSibling.querySelector("pre, code, .font-mono");
+        if (code) {
+          const codeText = cleanText(code);
+          if (codeText && codeText.length > 5) detail = t + ":\n" + codeText;
+        }
+        addItem("tool_call", detail, null, inner, true);
       }
-      addItem("tool_call", detail, null, btn, true);
+    }
+
+    // Expanded thoughts inside .isolate divs
+    for (const isolate of expandedSection.querySelectorAll(".isolate")) {
+      const thoughtBtn = isolate.querySelector("button");
+      if (!thoughtBtn) continue;
+      const btnText = (thoughtBtn.innerText || "").trim().replace(/\n/g, " ");
+      if (!/^Thought for \d/i.test(btnText)) continue;
+
+      // Both expanded (opacity-100) and collapsed (opacity-0/max-h-0) thoughts
+      const thoughtContent = isolate.querySelector(".overflow-hidden");
+      if (!thoughtContent) continue;
+
+      // Get the leading-relaxed div inside
+      const contentDiv = thoughtContent.querySelector("div.leading-relaxed");
+      if (contentDiv) {
+        const text = deepText(contentDiv);
+        if (text && text.length > 4) {
+          const html = getHTML(contentDiv);
+          addItem("thought", text, html, contentDiv, true);
+        }
+      } else {
+        // Fallback: use deepText on the whole overflow div
+        const text = deepText(thoughtContent);
+        if (text && text.length > 4) addItem("thought", text, null, thoughtContent, true);
+      }
     }
   }
-  for (const el of chatRoot.querySelectorAll(".flex.items-baseline")) {
-    const t = (el.innerText || "").trim().replace(/\n/g, " ");
-    if (/^(Ran |Viewed |Edited )/.test(t)) addItem("tool_call", t, null, el, true);
+
+  // ── Agent response turns ───────────────────────────────────────────────────
+  // Only top-level agent responses — NOT the ones inside "Worked for" sections
+  for (const el of chatRoot.querySelectorAll("div.leading-relaxed.select-text")) {
+    // Skip if inside a "Worked for" collapse (those are thoughts, handled above)
+    if (el.closest(".isolate")) continue;
+    const text = cleanText(el);
+    if (!text || isNoise(text, 4)) continue;
+    const html = getHTML(el);
+    addItem("agent", text, html, el);
   }
+
+  // ── Inline tool call paths (.agents/..., file paths, etc.) ────────────────
   for (const el of chatRoot.querySelectorAll(".inline-flex.break-all.leading-tight.select-text, .inline-flex.leading-tight.select-text")) {
     const t = cleanText(el);
-    if (t && t.length > 2 && (t.includes("/") || t.includes("."))) addItem("tool_call", t, null, el, true);
+    if (t && t.length > 2 && (t.includes("/") || t.includes("."))) {
+      addItem("tool_call", t, null, el, true);
+    }
   }
 
   items.sort((a, b) => {
@@ -215,12 +215,10 @@ export const EXTRACT_JS = String.raw`
     role: item.role,
     text: item.text,
     html: item.html,
-    timestamp: item.timestamp,
     seq: idx
   })));
 })();
-`;
-/**
+`;/**
  * Extract the conversation title from the Antigravity chat panel header.
  * Targets the title div inside .antigravity-agent-side-panel.
  */
