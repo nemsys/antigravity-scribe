@@ -6,6 +6,10 @@ User is working on **Antigravity Scribe** extension project. To save tokens, **d
 
 - Read `llms-ctx-full.txt` using your `view_file` tool to understand the full project structure and context before starting any major tasks.
 
+## Communication Style
+- When user ask a question give direct and concise answer, without any pleasantries, greetings or giving extra information, if not explicitly asked.
+- do not repeat user prompt in your response
+- do not output explanation, why you did what you did, unless explicitly asked
 
 ## Your Task
 
