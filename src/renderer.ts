@@ -1,6 +1,6 @@
 import * as path from "path";
 import TurndownService from "turndown";
-import { Turn, ROLE_ICONS } from "./extractor";
+import { ConvNode } from "./extractor";
 import { BrainResult } from "./brain";
 
 export interface RenderOptions {
@@ -11,7 +11,7 @@ export interface RenderOptions {
 }
 
 // ---------------------------------------------------------------------------
-// Turndown instance — configured once, reused
+// Turndown instance
 // ---------------------------------------------------------------------------
 const td = new TurndownService({
   headingStyle: "atx",
@@ -19,34 +19,27 @@ const td = new TurndownService({
   bulletListMarker: "-",
 });
 
-// Preserve tables
 td.addRule("table", {
   filter: ["table"],
   replacement: (_content, node) => {
     const el = node as HTMLElement;
     const rows = Array.from(el.querySelectorAll("tr"));
     if (!rows.length) return "";
-
     const toRow = (cells: Element[]) =>
-      "| " + cells.map(c => (c.textContent || "").trim().replace(/\n/g, " ")).join(" | ") + " |";
-
+      "| " +
+      cells.map(c => (c.textContent || "").trim().replace(/\n/g, " ")).join(" | ") +
+      " |";
     const header = rows[0];
     const headerCells = Array.from(header.querySelectorAll("th, td"));
     const separator = "| " + headerCells.map(() => "---").join(" | ") + " |";
-
-    const bodyRows = rows.slice(1).map(r =>
-      toRow(Array.from(r.querySelectorAll("td")))
-    );
-
+    const bodyRows = rows.slice(1).map(r => toRow(Array.from(r.querySelectorAll("td"))));
     return "\n\n" + toRow(headerCells) + "\n" + separator + "\n" + bodyRows.join("\n") + "\n\n";
-  }
+  },
 });
 
-// Strip node="[object Object]" and other Antigravity attrs — already done in JS
-// but keep code blocks clean
 td.addRule("inlineCode", {
-  filter: (node) => node.nodeName === "CODE" && node.parentNode?.nodeName !== "PRE",
-  replacement: (content) => "`" + content + "`",
+  filter: node => node.nodeName === "CODE" && node.parentNode?.nodeName !== "PRE",
+  replacement: content => "`" + content + "`",
 });
 
 function htmlToMarkdown(html: string): string {
@@ -58,16 +51,126 @@ function htmlToMarkdown(html: string): string {
 }
 
 // ---------------------------------------------------------------------------
-// renderNote
+// Heading depth per role
+//
+// Rendered structure mirrors the visual hierarchy in the panel:
+//   ## 👤 USER / ## 🤖 AGENT          (top-level turns)
+//   ### ⏱ Worked for 1m               (tool-use block)
+//   #### 🔍 Explored 3 files, 2 pages  (sub-step group)
+//   ##### 🧠 Thought for 3s            (thought inside explored)
+//   ##### 🔧 Actions                   (action group inside explored)
+//   #### ▶ Ran `curl ...`              (command at worked level)
 // ---------------------------------------------------------------------------
-export function renderNote(turns: Turn[], opts: RenderOptions): string {
+const ROLE_HEADING: Record<string, number> = {
+  user: 2,
+  agent: 2,
+  worked: 3,
+  explored: 4,
+  thought: 5,
+  actions: 5,
+  ran: 4,
+};
+
+const ROLE_ICON: Record<string, string> = {
+  user: "\u{1F464}",   // 👤
+  agent: "\u{1F916}",   // 🤖
+  worked: "\u23F1",      // ⏱
+  explored: "\u{1F50D}",   // 🔍
+  thought: "\u{1F9E0}",   // 🧠
+  actions: "\u{1F527}",   // 🔧
+  ran: "\u25B6",      // ▶
+};
+
+function h(depth: number): string {
+  return "#".repeat(Math.max(1, Math.min(depth, 6)));
+}
+
+// ---------------------------------------------------------------------------
+// renderNode — recursive
+// ---------------------------------------------------------------------------
+function renderNode(node: ConvNode, lines: string[]): void {
+  const depth = ROLE_HEADING[node.role] ?? 3;
+  const icon = ROLE_ICON[node.role] ?? "\u2753";
+  const hdr = h(depth);
+
+  switch (node.role) {
+
+    case "user": {
+      lines.push(`${hdr} ${icon} USER`);
+      lines.push("");
+      lines.push(node.label);
+      lines.push("");
+      break;
+    }
+
+    case "agent": {
+      lines.push(`${hdr} ${icon} AGENT`);
+      lines.push("");
+      lines.push(node.html ? htmlToMarkdown(node.html) : node.detail);
+      lines.push("");
+      break;
+    }
+
+    case "worked": {
+      lines.push(`${hdr} ${icon} ${node.label}`);
+      lines.push("");
+      for (const child of node.children) renderNode(child, lines);
+      break;
+    }
+
+    case "explored": {
+      lines.push(`${hdr} ${icon} ${node.label}`);
+      lines.push("");
+      for (const child of node.children) renderNode(child, lines);
+      break;
+    }
+
+    case "thought": {
+      lines.push(`${hdr} ${icon} ${node.label}`);
+      lines.push("");
+      const body = node.html ? htmlToMarkdown(node.html) : node.detail;
+      if (body) {
+        lines.push(body);
+        lines.push("");
+      }
+      break;
+    }
+
+    case "actions": {
+      lines.push(`${hdr} ${icon} Actions`);
+      lines.push("");
+      for (const action of node.children) {
+        const detail = action.detail ? ` \`${action.detail}\`` : "";
+        lines.push(`- ${action.label}${detail}`);
+      }
+      lines.push("");
+      break;
+    }
+
+    case "ran": {
+      const cmd = node.detail ? ` \`${node.detail}\`` : "";
+      lines.push(`${hdr} ${icon} ${node.label}${cmd}`);
+      lines.push("");
+      break;
+    }
+
+    // 'action' nodes only appear as list items inside 'actions'; skip standalone
+    default:
+      break;
+  }
+}
+
+// ---------------------------------------------------------------------------
+// renderNote — public entry point
+// ---------------------------------------------------------------------------
+export function renderNote(nodes: ConvNode[], opts: RenderOptions): string {
   const now = new Date();
   const isoDate = now.toISOString().split("T")[0];
   const isoTime = now.toTimeString().slice(0, 5);
 
   const lines: string[] = [];
 
-  // ── Frontmatter ────────────────────────────────────────────────────────────
+  // ── Frontmatter ──────────────────────────────────────────────────────────
   lines.push("---");
   lines.push(`date: ${isoDate}`);
   lines.push(`time: ${isoTime}`);
@@ -83,7 +186,7 @@ export function renderNote(turns: Turn[], opts: RenderOptions): string {
   lines.push("---");
   lines.push("");
 
-  // ── Artifacts ──────────────────────────────────────────────────────────────
+  // ── Artifacts ────────────────────────────────────────────────────────────
   if (opts.brainResult && opts.brainResult.artifacts.length > 0) {
     lines.push("## Artifacts");
     lines.push("");
@@ -118,37 +221,30 @@ export function renderNote(turns: Turn[], opts: RenderOptions): string {
     lines.push("");
   }
 
-  // ── Session turns ──────────────────────────────────────────────────────────
+  // ── Session ───────────────────────────────────────────────────────────────
   lines.push("## Session");
   lines.push("");
 
-  if (turns.length === 0) {
+  if (nodes.length === 0) {
     lines.push("*(no turns captured)*");
     lines.push("");
   }
 
-  for (const turn of turns) {
-    const role = turn.role ?? "unknown";
-    const icon = ROLE_ICONS[role] ?? "\u2753";
-    const label = role.toUpperCase().replace("_", " ");
-    lines.push(`### ${icon} ${label}`);
-    lines.push("");
-
-    // Use HTML→Markdown for agent/thought turns when available
-    if ((role === "agent" || role === "thought") && turn.html) {
-      lines.push(htmlToMarkdown(turn.html));
-    } else {
-      lines.push(turn.text.trim());
-    }
-
-    lines.push("");
+  for (const node of nodes) {
+    renderNode(node, lines);
   }
 
   return lines.join("\n");
 }
 
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
 function humanizeName(name: string): string {
-  return name.split("_").map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(" ");
+  return name
+    .split("_")
+    .map(w => w.charAt(0).toUpperCase() + w.slice(1))
+    .join(" ");
 }
 
 export function sessionFilename(task: string, date: Date = new Date()): string {

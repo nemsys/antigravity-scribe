@@ -1,24 +1,50 @@
-export interface Turn {
-  role: string;
-  text: string;
-  html: string | null;   // raw innerHTML for agent/thought turns (used for MD conversion)
-  seq: number;
+// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+
+export type NodeRole =
+  | "user"
+  | "agent"
+  | "worked"
+  | "explored"
+  | "thought"
+  | "actions"   // group container — children are individual 'action' nodes
+  | "action"    // single action row: Analyzed, Created outline, Read page
+  | "ran"       // Ran / Edited / Created command row
+  | "_no_chat";
+
+export interface ConvNode {
+  role: NodeRole;
+  /** Primary text: user message, "Worked for 1m", "Thought for 3s", verb "Analyzed" … */
+  label: string;
+  /** Secondary text: chip ref "llms-ctx-full.txt#L1-800", command, thought body */
+  detail: string;
+  /** Raw innerHTML for agent / thought content — converted to Markdown by renderer */
+  html: string | null;
+  children: ConvNode[];
 }
 
-export const ROLE_ICONS: Record<string, string> = {
-  user: "\u{1F464}",
-  thought: "\u{1F9E0}",
-  tool_call: "\u{1F527}",
-  agent: "\u{1F916}",
-  unknown: "\u2753",
-};
+// ---------------------------------------------------------------------------
+// Extract conversation title from the panel header
+// ---------------------------------------------------------------------------
+export const EXTRACT_TITLE_JS = `(function() {
+  const panel = document.querySelector('.antigravity-agent-side-panel');
+  if (!panel) return null;
+  const titleEl = panel.querySelector('.flex.min-w-0.items-center.overflow-hidden.text-ellipsis.whitespace-nowrap');
+  if (!titleEl) return null;
+  const t = (titleEl.innerText || titleEl.textContent || "").trim();
+  if (t && t.length > 2 && t.length < 120) return t;
+  return null;
+})();`;
 
 // ---------------------------------------------------------------------------
-// EXTRACT_JS — verbatim from ag-snap.py
+// Main extraction — returns ConvNode[] as JSON string
 // ---------------------------------------------------------------------------
 export const EXTRACT_JS = String.raw`
 (function () {
   "use strict";
+
+  // ── Find chat root ────────────────────────────────────────────────────────
 
   function containerOf(el) {
     let n = el.parentElement;
@@ -34,7 +60,7 @@ export const EXTRACT_JS = String.raw`
     for (const sel of [
       '[placeholder*="Ask anything"]',
       '[aria-placeholder*="Ask anything"]',
-      '[aria-label*="Ask anything"]'
+      '[aria-label*="Ask anything"]',
     ]) {
       const el = document.querySelector(sel);
       if (el) { const c = containerOf(el); if (c) return c; }
@@ -43,7 +69,10 @@ export const EXTRACT_JS = String.raw`
     let node;
     while ((node = walker.nextNode())) {
       const t = (node.innerText || "").trim();
-      if (t === "Ask anything, @ to mention, / for workflows" && !node.children.length) {
+      if (
+        t === "Ask anything, @ to mention, / for workflows" &&
+        !node.children.length
+      ) {
         const c = containerOf(node);
         if (c) return c;
       }
@@ -53,23 +82,12 @@ export const EXTRACT_JS = String.raw`
 
   const chatRoot = findChatRoot();
   if (!chatRoot) {
-    return JSON.stringify([{"role":"_no_chat","text":"Chat panel not found","html":null}]);
+    return JSON.stringify([
+      { role: "_no_chat", label: "Chat panel not found", detail: "", html: null, children: [] },
+    ]);
   }
 
-  function cleanText(el) {
-    const clone = el.cloneNode(true);
-    clone.querySelectorAll(
-      "style, script, link, button, .copy-button, [data-testid='revert-button'], .google-symbols, svg"
-    ).forEach(t => t.remove());
-    let txt = (clone.innerText || clone.textContent || "").trim();
-    txt = txt.replace(/^(bash|python|terminal|copy|content_copy|alternate_email|check)\s+/i, "");
-    txt = txt.replace(/\s+(copy|content_copy|alternate_email|check)$/i, "");
-    txt = txt.replace(/\/\*[\s\S]*?\*\//g, "");
-    txt = txt.replace(/@media\s*\([^)]*\)\s*\{[\s\S]*?\}\s*\}/g, "");
-    txt = txt.replace(/\.[a-zA-Z_-]+\s*\{[^}]*\}/g, "");
-    txt = txt.replace(/div:has\([^)]*\)[\s\S]*?(?=\n\n|\n[A-Z]|$)/g, "");
-    return txt.trim();
-  }
+  // ── DOM helpers ───────────────────────────────────────────────────────────
 
   function getHTML(el) {
     const clone = el.cloneNode(true);
@@ -80,154 +98,284 @@ export const EXTRACT_JS = String.raw`
 
   function deepText(el) {
     const clone = el.cloneNode(true);
-    clone.querySelectorAll("style, script, link").forEach(t => t.remove());
-    let txt = (clone.textContent || "").trim();
-    txt = txt.replace(/\/\*[\s\S]*?\*\//g, "");
-    txt = txt.replace(/@media\s*\([^)]*\)\s*\{[\s\S]*?\}\s*\}/g, "");
-    txt = txt.replace(/\.[a-zA-Z_-]+\s*\{[^}]*\}/g, "");
-    return txt.trim();
+    clone.querySelectorAll("style, script, link, .google-symbols, svg").forEach(t => t.remove());
+    return (clone.textContent || "")
+      .replace(/\/\*[\s\S]*?\*\//g, "")
+      .replace(/@media[^{]*\{[\s\S]*?\}\s*\}/g, "")
+      .replace(/\.[a-zA-Z_-]+\s*\{[^}]*\}/g, "")
+      .replace(/\s+/g, " ")
+      .trim();
   }
 
-  const items = [];
-  const seenFp = new Set();
-
-  function addItem(role, text, html, el, skipNoise) {
-    text = (text || "").replace(/alternate_email\s*content_copy/g, "").trim();
-    text = text.replace(/chevron_right/g, "").trim();
-    if (!text) return;
-    const fp = role + ":" + text.slice(0, 300);
-    if (seenFp.has(fp)) return;
-    seenFp.add(fp);
-    items.push({ el, role, text, html: html || null });
+  function cleanUserText(el) {
+    const clone = el.cloneNode(true);
+    clone.querySelectorAll(
+      "style, script, link, button, [data-testid='revert-button'], .google-symbols, svg"
+    ).forEach(t => t.remove());
+    return (clone.innerText || clone.textContent || "").trim();
   }
 
-  const NOISE_EXACT = new Set(["Plan", "Send", "mic", "Review Changes", "Accept all", "Reject all",
-    "See all", "Attach", "alternate_email", "content_copy", "python", "text", "Markdown",
-    "Go Live", "Antigravity - Settings", "chevron_right", "Drag a view here to display.",
-    "add", "more_vert", "check", "undo"]);
-  const NOISE_RE = [
-    /^Ask anything[,.].*@ to mention/is, /^AI may make mistakes/i, /^Gemini \d/i, /^Claude /i,
-    /^\d+ Files? With Changes\s*$/, /^[+-]\d+\s*$/, /^\+\d+ -\d+$/,
-    /^Press desired key/i, /^[A-Z][a-zA-Z ]+\n\d+[hm]\s*$/, /^F-\d+\s+LF\s+/,
-    /^AG:\s*\d+-\d+%/,
-    /^\w[\w.-]*\.(py|js|ts|md|json|yaml|sh|txt|css)\s*$/,
-    /^\w[\w.-]*\.(py|js|ts|md|json|yaml|sh|txt|css)\s+\+\d+/,
-    /^border-/, /^margin-/, /^padding-/,
-    /^\{[\s\S]*:\s*[\s\S]*\}/, /^alternate_email\s*content_copy/
-  ];
-  function isNoise(text, minLen) {
-    if (!text || text.length < (minLen || 2)) return true;
-    if (NOISE_EXACT.has(text)) return true;
-    if (NOISE_RE.some(re => re.test(text))) return true;
-    if (/\{[^}]*(?:border|margin|padding|color|font|display)\s*:/i.test(text)) return true;
-    return false;
+  // ── Chip text extraction ──────────────────────────────────────────────────
+  //
+  // Two chip shapes appear in the DOM:
+  //   File chip:  .inline-flex.break-all.leading-tight.select-text
+  //               textContent gives "llms-ctx-full.txt#L1-800" directly
+  //   Page chip:  span.opacity-70 inside the chip (NOT the verb, NOT google-symbols)
+  //               e.g. "llmstxt.org" / "fastht.ml"
+
+  function chipText(container) {
+    const fileSpan = container.querySelector(".inline-flex.break-all.leading-tight");
+    if (fileSpan) return (fileSpan.textContent || "").trim();
+
+    // Page chip: find span.opacity-70 that is NOT a google-symbols span
+    const opSpans = container.querySelectorAll("span.opacity-70");
+    for (const s of opSpans) {
+      if (s.classList.contains("google-symbols")) continue;
+      if (s.classList.contains("shrink-0")) continue; // verb span, not chip
+      const t = (s.textContent || "").trim();
+      if (t.length > 1) return t;
+    }
+    return "";
   }
 
-  // ── User turns ─────────────────────────────────────────────────────────────
-  for (const step of chatRoot.querySelectorAll('[data-testid="user-input-step"]')) {
-    const inner = step.querySelector(".whitespace-pre-wrap");
-    if (!inner) continue;
-    const text = cleanText(inner);
-    if (!isNoise(text, 1)) addItem("user", text, null, step);
-  }
+  // ── Parse the innermost content div of an action row ─────────────────────
+  //
+  // Three patterns:
+  //   "Analyzed"       →  span.shrink-0.opacity-70  +  .flex.items-center.overflow-hidden
+  //   "Created/Read"   →  p.opacity-70              +  [data-tooltip-id]
+  //   "Ran/Edited"     →  span.opacity-70.mr-*      +  [class*="font-mono"]
 
-  // ── "Worked for Xs" turn summaries + nested tool calls + thoughts ──────────
-  for (const btn of chatRoot.querySelectorAll("button")) {
-    const spans = btn.querySelectorAll("span.opacity-70");
-    if (!spans.length) continue;
-    const label = (spans[0].innerText || "").trim();
-    if (!/^(Worked|Thinking) for \d/i.test(label)) continue;
+  function parseContentDiv(div) {
+    if (!div) return null;
 
-    // Capture "Worked for Xs" as a tool_call summary
-    addItem("tool_call", label, null, btn, true);
-
-    // Capture nested tool action buttons inside the expanded section
-    const expandedSection = btn.nextElementSibling;
-    if (!expandedSection) continue;
-
-    // Nested tool calls (Explored, Ran, Viewed, etc.)
-    for (const inner of expandedSection.querySelectorAll("button")) {
-      const t = (inner.innerText || "").trim().replace(/\n/g, " ").replace(/\s+/g, " ");
-      if (/^(Explored|Ran|Viewed|Analyzed|Created|Edited|Searched|Generated|Navigat)/i.test(t)) {
-        // Get detail from code block if available
-        let detail = t.replace(/chevron_right/g, "").trim();
-        const code = inner.nextElementSibling && inner.nextElementSibling.querySelector("pre, code, .font-mono");
-        if (code) {
-          const codeText = cleanText(code);
-          if (codeText && codeText.length > 5) detail = t + ":\n" + codeText;
-        }
-        addItem("tool_call", detail, null, inner, true);
-      }
+    // Analyzed pattern
+    const shrinkVerb = div.querySelector("span.shrink-0.opacity-70");
+    if (shrinkVerb) {
+      const verb = (shrinkVerb.textContent || "").trim();
+      const chipContainer = div.querySelector(".flex.items-center.overflow-hidden");
+      return { verb, detail: chipContainer ? chipText(chipContainer) : "" };
     }
 
-    // Expanded thoughts inside .isolate divs
-    for (const isolate of expandedSection.querySelectorAll(".isolate")) {
-      const thoughtBtn = isolate.querySelector("button");
-      if (!thoughtBtn) continue;
-      const btnText = (thoughtBtn.innerText || "").trim().replace(/\n/g, " ");
-      if (!/^Thought for \d/i.test(btnText)) continue;
+    // Created outline / Read page pattern
+    const pVerb = div.querySelector("p.opacity-70");
+    if (pVerb) {
+      const verb = (pVerb.textContent || "").trim();
+      const chipContainer = div.querySelector("[data-tooltip-id]");
+      return { verb, detail: chipContainer ? chipText(chipContainer) : "" };
+    }
 
-      // Both expanded (opacity-100) and collapsed (opacity-0/max-h-0) thoughts
-      const thoughtContent = isolate.querySelector(".overflow-hidden");
-      if (!thoughtContent) continue;
+    // Ran / Edited / Created command pattern
+    const opVerb = div.querySelector("span.opacity-70");
+    const mono = div.querySelector('[class*="font-mono"]');
+    if (opVerb && mono) {
+      return {
+        verb: (opVerb.textContent || "").trim(),
+        detail: (mono.textContent || "").trim(),
+      };
+    }
 
-      // Get the leading-relaxed div inside
-      const contentDiv = thoughtContent.querySelector("div.leading-relaxed");
-      if (contentDiv) {
-        const text = deepText(contentDiv);
-        if (text && text.length > 4) {
-          const html = getHTML(contentDiv);
-          addItem("thought", text, html, contentDiv, true);
+    return null;
+  }
+
+  // Parse one .flex.flex-row row → action node or null
+  function parseFlexRow(row) {
+    const truncateDiv = row.querySelector(".truncate");
+    const contentDiv = truncateDiv
+      ? truncateDiv.firstElementChild || truncateDiv
+      : null;
+    const parsed = parseContentDiv(contentDiv);
+    if (!parsed || (!parsed.verb && !parsed.detail)) return null;
+    return {
+      role: "action",
+      label: parsed.verb,
+      detail: parsed.detail,
+      html: null,
+      children: [],
+    };
+  }
+
+  // ── Parse "Explored" expanded section ────────────────────────────────────
+  //
+  // expandedSibling = div.relative immediately after the "Explored" button.
+  // Inside: div.overflow-y-auto > div.flex.flex-col
+  // Children of that flex-col are ALL div.flex.flex-row, each containing either:
+  //   - .isolate  →  thought block
+  //   - plain action row content
+
+  function parseExploredContent(expandedSibling) {
+    if (!expandedSibling) return [];
+    const overflowDiv = expandedSibling.querySelector(".overflow-y-auto");
+    const inner = overflowDiv ? overflowDiv.firstElementChild : null;
+    if (!inner) return [];
+
+    const children = [];
+    let pendingActions = [];
+
+    function flushActions() {
+      if (!pendingActions.length) return;
+      children.push({
+        role: "actions",
+        label: "",
+        detail: "",
+        html: null,
+        children: [...pendingActions],
+      });
+      pendingActions = [];
+    }
+
+    for (const row of Array.from(inner.children)) {
+      // Each row is div.flex.flex-row wrapping either a .isolate or an action
+      const isolate = row.querySelector(".isolate");
+      if (isolate) {
+        flushActions();
+        const btn = isolate.querySelector("button");
+        const labelSpan = btn && btn.querySelector("span.cursor-pointer");
+        const rawLabel = (
+          (labelSpan && labelSpan.textContent) ||
+          (btn && btn.textContent) ||
+          "Thought"
+        ).trim().replace(/\s+/g, " ");
+        // Strip the chevron icon text that may leak in
+        const label = rawLabel.replace(/chevron_right/g, "").trim();
+        const contentDiv = isolate.querySelector("div.leading-relaxed");
+        const html = contentDiv ? getHTML(contentDiv) : null;
+        const text = contentDiv ? deepText(contentDiv) : "";
+        if (label.length > 1 || text || html) {
+          children.push({ role: "thought", label, detail: text, html, children: [] });
         }
       } else {
-        // Fallback: use deepText on the whole overflow div
-        const text = deepText(thoughtContent);
-        if (text && text.length > 4) addItem("thought", text, null, thoughtContent, true);
+        const action = parseFlexRow(row);
+        if (action) pendingActions.push(action);
       }
     }
+    flushActions();
+    return children;
   }
 
-  // ── Agent response turns ───────────────────────────────────────────────────
-  // Only top-level agent responses — NOT the ones inside "Worked for" sections
-  for (const el of chatRoot.querySelectorAll("div.leading-relaxed.select-text")) {
-    // Skip if inside a "Worked for" collapse (those are thoughts, handled above)
-    if (el.closest(".isolate")) continue;
-    const text = cleanText(el);
-    if (!text || isNoise(text, 4)) continue;
-    const html = getHTML(el);
-    addItem("agent", text, html, el);
+  // ── Parse "Worked for Xm" expanded section ───────────────────────────────
+  //
+  // expandedSibling = div.relative immediately after the "Worked for" button.
+  // Inside: div.overflow-y-auto > div.flex.flex-col
+  // Children:
+  //   div.relative   →  "Explored N files, M pages" button + its expanded sibling
+  //   div.flex.flex-row  →  Ran / Edited / Created command rows
+
+  function parseWorkedContent(expandedSibling) {
+    if (!expandedSibling) return [];
+    const overflowDiv = expandedSibling.querySelector(".overflow-y-auto");
+    const inner = overflowDiv ? overflowDiv.firstElementChild : null;
+    if (!inner) return [];
+
+    const children = [];
+
+    for (const child of Array.from(inner.children)) {
+      if (child.classList.contains("relative")) {
+        // "Explored N files, M pages" button wrapper
+        const btn = Array.from(child.children).find(c => c.tagName === "BUTTON");
+        if (!btn) continue;
+        const opacity70 = btn.querySelector("span.opacity-70");
+        if (!opacity70) continue;
+        const verb = (opacity70.textContent || "").trim();
+        // Second span holds the count: "3 files, 2 pages"
+        const countSpan = Array.from(btn.querySelectorAll("span")).find(
+          s =>
+            !s.classList.contains("opacity-70") &&
+            !s.classList.contains("google-symbols") &&
+            (s.textContent || "").trim().length > 0
+        );
+        const count = countSpan ? (countSpan.textContent || "").trim() : "";
+        const label = count ? verb + " " + count : verb;
+        const exploredExpanded = btn.nextElementSibling;
+        const exploredChildren = parseExploredContent(exploredExpanded);
+        children.push({
+          role: "explored",
+          label,
+          detail: "",
+          html: null,
+          children: exploredChildren,
+        });
+      } else if (child.classList.contains("flex") && child.classList.contains("flex-row")) {
+        // Ran / Edited / Created command rows at the worked level
+        const action = parseFlexRow(child);
+        if (action) {
+          // Promote "action" to "ran" for worked-level rows
+          children.push({ ...action, role: "ran" });
+        }
+      }
+    }
+
+    return children;
   }
 
-  // ── Inline tool call paths (.agents/..., file paths, etc.) ────────────────
-  for (const el of chatRoot.querySelectorAll(".inline-flex.break-all.leading-tight.select-text, .inline-flex.leading-tight.select-text")) {
-    const t = cleanText(el);
-    if (t && t.length > 2 && (t.includes("/") || t.includes("."))) {
-      addItem("tool_call", t, null, el, true);
+  // ── Main pass ─────────────────────────────────────────────────────────────
+
+  const nodes = []; // { el, node }
+  const seenEls = new WeakSet();
+
+  // 1. User turns
+  for (const step of chatRoot.querySelectorAll('[data-testid="user-input-step"]')) {
+    if (seenEls.has(step)) continue;
+    seenEls.add(step);
+    const inner = step.querySelector(".whitespace-pre-wrap");
+    if (!inner) continue;
+    const text = cleanUserText(inner);
+    if (text) {
+      nodes.push({
+        el: step,
+        node: { role: "user", label: text, detail: "", html: null, children: [] },
+      });
     }
   }
 
-  items.sort((a, b) => {
+  // 2. "Worked for Xm" / "Thinking for Xs" blocks
+  for (const btn of chatRoot.querySelectorAll("button")) {
+    // Must be a direct span.opacity-70 child (not deeply nested)
+    const opacity70 = Array.from(btn.children).find(
+      c => c.tagName === "SPAN" && c.classList.contains("opacity-70")
+    );
+    if (!opacity70) continue;
+    const labelText = (opacity70.textContent || "").trim();
+    if (!/^(Worked|Thinking) for \d/i.test(labelText)) continue;
+    if (seenEls.has(btn)) continue;
+    seenEls.add(btn);
+
+    const expandedSibling = btn.nextElementSibling;
+    const workedChildren = parseWorkedContent(expandedSibling);
+
+    nodes.push({
+      el: btn,
+      node: {
+        role: "worked",
+        label: labelText,
+        detail: "",
+        html: null,
+        children: workedChildren,
+      },
+    });
+  }
+
+  // 3. Agent response turns (div.leading-relaxed.select-text NOT inside .isolate)
+  for (const el of chatRoot.querySelectorAll("div.leading-relaxed.select-text")) {
+    if (el.closest(".isolate")) continue;
+    if (seenEls.has(el)) continue;
+    seenEls.add(el);
+    const text = deepText(el);
+    if (!text || text.length < 4) continue;
+    const html = getHTML(el);
+    nodes.push({
+      el,
+      node: { role: "agent", label: "", detail: text, html, children: [] },
+    });
+  }
+
+  // Sort by DOM order
+  nodes.sort((a, b) => {
     if (a.el === b.el) return 0;
-    return (a.el.compareDocumentPosition(b.el) & Node.DOCUMENT_POSITION_FOLLOWING) ? -1 : 1;
+    return a.el.compareDocumentPosition(b.el) & Node.DOCUMENT_POSITION_FOLLOWING
+      ? -1
+      : 1;
   });
 
-  return JSON.stringify(items.map((item, idx) => ({
-    role: item.role,
-    text: item.text,
-    html: item.html,
-    seq: idx
-  })));
+  return JSON.stringify(nodes.map(n => n.node));
 })();
-`;/**
- * Extract the conversation title from the Antigravity chat panel header.
- * Targets the title div inside .antigravity-agent-side-panel.
- */
-export const EXTRACT_TITLE_JS = `(function() {
-  const panel = document.querySelector('.antigravity-agent-side-panel');
-  if (!panel) return null;
-  const titleEl = panel.querySelector('.flex.min-w-0.items-center.overflow-hidden.text-ellipsis.whitespace-nowrap');
-  if (!titleEl) return null;
-  const t = (titleEl.innerText || titleEl.textContent || "").trim();
-  if (t && t.length > 2 && t.length < 120) return t;
-  return null;
-})();`;
+`;

@@ -1,13 +1,13 @@
 import * as vscode from "vscode";
 import { findTarget, CDPClient } from "./cdp";
-import { EXTRACT_JS, EXTRACT_TITLE_JS, Turn } from "./extractor";
+import { EXTRACT_JS, EXTRACT_TITLE_JS, ConvNode } from "./extractor";
 import { findActiveBrainDir, readArtifacts, BrainResult } from "./brain";
 import { renderNote, sessionFilename } from "./renderer";
 import { prepareVault, copyImages, writeNote } from "./vault";
 
 export interface SnapResult {
   outPath: string;
-  turnCount: number;
+  nodeCount: number;
   artifactCount: number;
   imageCount: number;
   skipped?: boolean;
@@ -24,7 +24,7 @@ export async function runSnap(task: string): Promise<SnapResult> {
   const wsFolder =
     vscode.workspace.workspaceFolders?.[0]?.uri.fsPath ?? process.cwd();
 
-  // ── 1. CDP: extract chat turns ─────────────────────────────────────────────
+  // ── 1. CDP: extract conversation tree ─────────────────────────────────────
   const target = await findTarget(port);
   if (!target) {
     throw new Error(
@@ -50,26 +50,30 @@ export async function runSnap(task: string): Promise<SnapResult> {
     throw new Error("JS extraction returned nothing — is Antigravity responding?");
   }
 
-  const turns: Turn[] = JSON.parse(raw);
+  const nodes: ConvNode[] = JSON.parse(raw);
 
-  if (turns.length === 1 && turns[0].role === "_no_chat") {
+  if (nodes.length === 1 && nodes[0].role === "_no_chat") {
     throw new Error(
       "Chat panel not found — is a conversation open in Antigravity?"
     );
   }
 
-  if (turns.length === 0) {
+  if (nodes.length === 0) {
     vscode.window.showWarningMessage(
       "Antigravity Scribe: Conversation is empty — start a conversation before capturing."
     );
-    return { outPath: "", turnCount: 0, artifactCount: 0, imageCount: 0, skipped: true };
+    return { outPath: "", nodeCount: 0, artifactCount: 0, imageCount: 0, skipped: true };
   }
 
-  // ── 1b. Resolve effective task label ─────────────────────────────────────
-  // If task is the default "session" and we got a conversation title, use that
-  const effectiveTask = (task === "session" && conversationTitle)
-    ? conversationTitle.toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 50)
-    : task;
+  // ── 1b. Resolve effective task label ──────────────────────────────────────
+  const effectiveTask =
+    task === "session" && conversationTitle
+      ? conversationTitle
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-|-$/g, "")
+        .slice(0, 50)
+      : task;
 
   // ── 2. Brain: find active dir and read artifacts ───────────────────────────
   let brainResult: BrainResult | null = null;
@@ -80,7 +84,6 @@ export async function runSnap(task: string): Promise<SnapResult> {
       brainResult = readArtifacts(brainPath, activeUuid);
     }
   } catch (err: any) {
-    // Non-fatal: warn but still write the chat turns
     vscode.window.showWarningMessage(
       `Antigravity Scribe: Could not read artifacts — ${err.message}`
     );
@@ -94,7 +97,7 @@ export async function runSnap(task: string): Promise<SnapResult> {
 
   // ── 4. Render and write note ───────────────────────────────────────────────
   const now = new Date();
-  const note = renderNote(turns, {
+  const note = renderNote(nodes, {
     task: effectiveTask,
     workspacePath: wsFolder,
     brainResult,
@@ -106,7 +109,7 @@ export async function runSnap(task: string): Promise<SnapResult> {
 
   return {
     outPath,
-    turnCount: turns.length,
+    nodeCount: nodes.length,
     artifactCount: brainResult?.artifacts.length ?? 0,
     imageCount: copiedImages.size,
   };
