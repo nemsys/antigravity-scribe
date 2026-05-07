@@ -108,11 +108,55 @@ export const EXTRACT_JS = String.raw`
   }
 
   function cleanUserText(el) {
-    const clone = el.cloneNode(true);
-    clone.querySelectorAll(
-      "style, script, link, button, [data-testid='revert-button'], .google-symbols, svg"
-    ).forEach(t => t.remove());
-    return (clone.innerText || clone.textContent || "").trim();
+    // Walk child nodes so that @mention chips become @[filename] tokens
+    // instead of being collapsed into bare text by innerText.
+    function walkNode(node) {
+      // Element node
+      if (node.nodeType === 1 /* ELEMENT_NODE */) {
+        const tag = node.tagName;
+        // Strip noise elements entirely
+        if (
+          tag === "STYLE" || tag === "SCRIPT" || tag === "LINK" || tag === "SVG" ||
+          node.classList.contains("google-symbols") ||
+          node.getAttribute("data-testid") === "revert-button"
+        ) return "";
+
+        // Button elements (e.g. edit/revert) — skip
+        if (tag === "BUTTON") return "";
+
+        // @mention / file chip: Antigravity renders these as inline-flex spans
+        // with class "break-all" inside the user message bubble.
+        // We recognise a chip when the element is inline-flex AND contains
+        // break-all text (the filename), OR has a data-tooltip-id attribute
+        // that typically wraps @mention chips.
+        const isChip =
+          (node.classList.contains("inline-flex") && node.classList.contains("break-all")) ||
+          (node.classList.contains("inline-flex") && node.getAttribute("data-tooltip-id") != null) ||
+          node.getAttribute("data-mention") != null;
+
+        if (isChip) {
+          // Extract the visible filename from the chip
+          const chipName = (node.textContent || "").trim();
+          return chipName ? "@[" + chipName + "]" : "";
+        }
+
+        // Recurse into other elements
+        let out = "";
+        for (const child of Array.from(node.childNodes)) {
+          out += walkNode(child);
+        }
+        return out;
+      }
+
+      // Text node — return raw text
+      if (node.nodeType === 3 /* TEXT_NODE */) {
+        return node.textContent || "";
+      }
+
+      return "";
+    }
+
+    return walkNode(el).replace(/[\t ]+/g, " ").trim();
   }
 
   // ── Chip text extraction ──────────────────────────────────────────────────
