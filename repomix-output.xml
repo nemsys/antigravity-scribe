@@ -1,0 +1,885 @@
+<repomix><file_summary>This file is a merged representation of a subset of the codebase, containing files not matching ignore patterns, combined into a single document by Repomix.
+The content has been processed where line numbers have been added, content has been formatted for parsing in xml style, content has been compressed (code blocks are separated by ⋮---- delimiter).<purpose>This file contains a packed representation of a subset of the repository&apos;s contents that is considered the most important context.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.</purpose><file_format>The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Repository files, each consisting of:
+  - File path as an attribute
+  - Full contents of the file</file_format><usage_guidelines>- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.</usage_guidelines><notes>- Some files may have been excluded based on .gitignore rules and Repomix&apos;s configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching these patterns are excluded: .agents/**, .debug/**, llms-*.txt, LICENSE, CHANGELOG.md, .gitignore, .vscodeignore, .repomixignore, repomix.config.json, *.png
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Line numbers have been added to the beginning of each line
+- Content has been formatted for parsing in xml style
+- Content has been compressed - code blocks are separated by ⋮---- delimiter
+- Files are sorted by Git change count (files with more changes are at the bottom)</notes></file_summary><directory_structure>assets/
+  logo/
+    chatgpt-1.png
+    gemini-1.jpeg
+    gemini-1.png
+scripts/
+  reinstall.sh
+src/
+  brain.ts
+  cdp.ts
+  extension.ts
+  extractor.ts
+  renderer.ts
+  snapRunner.ts
+  vault.ts
+package.json
+README.md
+tsconfig.json</directory_structure><files>This section contains the contents of the repository&apos;s files.<file path="src/vault.ts">import { expandHome } from &quot;./brain&quot;;
+⋮----
+export interface VaultPaths {
+  sessionDir: string;   // &lt;vault&gt;/&lt;vaultFolder&gt;/
+  assetsDir: string;    // &lt;vault&gt;/&lt;vaultFolder&gt;/assets/
+}
+⋮----
+sessionDir: string;   // &lt;vault&gt;/&lt;vaultFolder&gt;/
+assetsDir: string;    // &lt;vault&gt;/&lt;vaultFolder&gt;/assets/
+⋮----
+/**
+ * Resolve and create the vault output directories.
+ */
+export function prepareVault(vaultPath: string, vaultFolder: string): VaultPaths
+⋮----
+/**
+ * Copy image files from a brain artifact dir into vault assets.
+ * Returns a Map of { original filename → vault-relative path for Obsidian embed }.
+ *
+ * Uses &quot;assets/&lt;filename&gt;&quot; as the embed path — Obsidian resolves this relative
+ * to the note&apos;s folder, which is sessionDir.
+ */
+export function copyImages(
+  imagePaths: string[],
+  assetsDir: string
+): Map&lt;string, string&gt;
+⋮----
+// Non-fatal — image might be locked or missing
+⋮----
+/**
+ * Write the session note to the vault.
+ */
+export function writeNote(sessionDir: string, filename: string, content: string): string</file><file path="src/brain.ts">export interface ArtifactMeta {
+  artifactType: string;
+  summary: string;
+  updatedAt: string;
+}
+⋮----
+export interface Artifact {
+  name: string;           // e.g. &quot;task&quot;, &quot;implementation_plan&quot;
+  meta: ArtifactMeta;
+  content: string;        // contents of the .resolved file
+  images: string[];       // absolute paths to .png files in the same dir
+}
+⋮----
+name: string;           // e.g. &quot;task&quot;, &quot;implementation_plan&quot;
+⋮----
+content: string;        // contents of the .resolved file
+images: string[];       // absolute paths to .png files in the same dir
+⋮----
+export interface BrainResult {
+  uuid: string;
+  artifacts: Artifact[];
+  allImages: string[];    // all .png paths in the dir (some may not belong to an artifact)
+}
+⋮----
+allImages: string[];    // all .png paths in the dir (some may not belong to an artifact)
+⋮----
+/**
+ * Expand ~ in paths.
+ */
+export function expandHome(p: string): string
+⋮----
+// os.homedir() reads the HOME env var which may be overridden
+// (e.g. by Antigravity profile aliases). Read the real home from passwd instead.
+⋮----
+/**
+ * Find the most recently modified UUID directory inside brainPath.
+ * This is the active session&apos;s artifact folder — Antigravity writes
+ * artifact files in real-time, so the hottest dir is always the current one.
+ */
+export function findActiveBrainDir(brainPath: string): string | null
+⋮----
+/**
+ * Read all artifacts from a brain UUID directory.
+ * - Reads *.resolved (final version) — skips *.resolved.N (revision history)
+ * - Reads paired *.metadata.json for each artifact
+ * - Collects all *.png paths
+ */
+export function readArtifacts(brainPath: string, uuid: string): BrainResult
+⋮----
+// Collect .resolved base names (e.g. &quot;task.md&quot;, &quot;implementation_plan.md&quot;)
+// A valid .resolved file is exactly &quot;&lt;name&gt;.resolved&quot; with no further extension
+⋮----
+// Exclude revision files: task.md.resolved.0, task.md.resolved.1 etc.
+⋮----
+const baseName = resolvedFile.slice(0, -(&quot;.resolved&quot;.length)); // e.g. &quot;task.md&quot;
+⋮----
+// Skip if no metadata (probably a temp file)
+⋮----
+// Human-readable name: &quot;task.md&quot; → &quot;task&quot;, &quot;implementation_plan.md&quot; → &quot;implementation_plan&quot;
+⋮----
+// Sort by updatedAt ascending so task comes before implementation_plan etc.</file><file path="src/cdp.ts">export interface CDPTarget {
+  id: string;
+  type: string;
+  title: string;
+  url: string;
+  webSocketDebuggerUrl: string;
+}
+⋮----
+/**
+ * Fetch CDP targets from /json and return the best page target.
+ */
+export async function findTarget(port: number): Promise&lt;CDPTarget | null&gt;
+⋮----
+export class CDPClient
+⋮----
+async connect(wsUrl: string): Promise&lt;void&gt;
+⋮----
+// ignore malformed frames
+⋮----
+send(method: string, params: Record&lt;string, unknown&gt; =
+⋮----
+async evalJS(js: string): Promise&lt;string | null&gt;
+⋮----
+close(): void
+⋮----
+function httpGetJson&lt;T&gt;(url: string): Promise&lt;T | null&gt;</file><file path="tsconfig.json">{
+  &quot;compilerOptions&quot;: {
+    &quot;module&quot;: &quot;commonjs&quot;,
+    &quot;target&quot;: &quot;ES2020&quot;,
+    &quot;lib&quot;: [&quot;ES2020&quot;],
+    &quot;outDir&quot;: &quot;./dist&quot;,
+    &quot;rootDir&quot;: &quot;./src&quot;,
+    &quot;strict&quot;: true,
+    &quot;esModuleInterop&quot;: true,
+    &quot;skipLibCheck&quot;: true,
+    &quot;sourceMap&quot;: true,
+    &quot;types&quot;: [&quot;node&quot;]
+  },
+  &quot;include&quot;: [&quot;src/**/*&quot;],
+  &quot;exclude&quot;: [&quot;node_modules&quot;, &quot;dist&quot;, &quot;standalone.ts&quot;]
+}</file><file path="scripts/reinstall.sh">#!/bin/bash
+set -e
+cd /data/projects/antigravity-scribe
+
+npm run package
+
+HOME=&quot;/home/nemsys/Antigravity_Profiles/phoneiep/app_config&quot; \
+  antigravity \
+  --extensions-dir=&quot;/home/nemsys/Antigravity_Profiles/phoneiep/app_config/.antigravity/extensions&quot; \
+  --install-extension /data/projects/antigravity-scribe/antigravity-scribe-0.1.0.vsix
+
+echo &quot;✓ Installed — reload Antigravity window&quot;</file><file path="src/extension.ts">import { runSnap, runDiagnose } from &quot;./snapRunner&quot;;
+⋮----
+export function activate(ctx: vscode.ExtensionContext)
+⋮----
+// ── Output channel (created once, reused) ──────────────────────────────────
+⋮----
+// ── Status bar ─────────────────────────────────────────────────────────────
+⋮----
+// ── Commands ───────────────────────────────────────────────────────────────
+⋮----
+export function deactivate()
+⋮----
+// ---------------------------------------------------------------------------
+// Internal
+// ---------------------------------------------------------------------------
+⋮----
+async function captureWithTask(task: string)
+⋮----
+function setIdle()
+⋮----
+function setBusy()</file><file path="src/renderer.ts">import TurndownService from &quot;turndown&quot;;
+import { ConvNode } from &quot;./extractor&quot;;
+import { BrainResult } from &quot;./brain&quot;;
+⋮----
+export interface RenderOptions {
+  task: string;
+  workspacePath: string;
+  brainResult: BrainResult | null;
+  copiedImages: Map&lt;string, string&gt;;
+}
+⋮----
+// ---------------------------------------------------------------------------
+// Turndown instance
+// ---------------------------------------------------------------------------
+⋮----
+const toRow = (cells: Element[])
+⋮----
+function htmlToMarkdown(html: string): string
+⋮----
+// ---------------------------------------------------------------------------
+// Heading depth per role
+//
+// Rendered structure mirrors the visual hierarchy in the panel:
+//   ## 👤 USER / ## 🤖 AGENT          (top-level turns)
+//   ### ⏱ Worked for 1m               (tool-use block)
+//   #### 🔍 Explored 3 files, 2 pages  (sub-step group)
+//   ##### 🧠 Thought for 3s            (thought inside explored)
+//   ##### 🔧 Actions                   (action group inside explored)
+//   #### ▶ Ran `curl ...`              (command at worked level)
+// ---------------------------------------------------------------------------
+⋮----
+user: &quot;\u{1F464}&quot;,   // 👤
+agent: &quot;\u{1F916}&quot;,   // 🤖
+worked: &quot;\u23F1&quot;,      // ⏱
+explored: &quot;\u{1F50D}&quot;,   // 🔍
+thought: &quot;\u{1F9E0}&quot;,   // 🧠
+actions: &quot;\u{1F527}&quot;,   // 🔧
+ran: &quot;\u25B6&quot;,      // ▶
+⋮----
+function h(depth: number): string
+⋮----
+// ---------------------------------------------------------------------------
+// renderNode — recursive
+// ---------------------------------------------------------------------------
+function renderNode(node: ConvNode, lines: string[]): void
+⋮----
+// &apos;action&apos; nodes only appear as list items inside &apos;actions&apos;; skip standalone
+⋮----
+// ---------------------------------------------------------------------------
+// renderNote — public entry point
+// ---------------------------------------------------------------------------
+export function renderNote(nodes: ConvNode[], opts: RenderOptions): string
+⋮----
+// ── Frontmatter ──────────────────────────────────────────────────────────
+⋮----
+// ── Artifacts ────────────────────────────────────────────────────────────
+⋮----
+// ── Session ───────────────────────────────────────────────────────────────
+⋮----
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+function humanizeName(name: string): string
+⋮----
+export function sessionFilename(task: string, date: Date = new Date()): string
+⋮----
+const pad = (n: number)</file><file path="README.md"># Antigravity Scribe
+
+&gt; **Capture agents thinking, tool calls &amp; artifacts to your Obsidian vault**
+
+Antigravity Scribe is a VS Code extension for [Google Antigravity IDE](https://antigravity.google) that captures the full content of an agent session — chat turns, thinking blocks, tool calls, task lists, implementation plans, and screenshots — and writes a single structured Markdown note directly into your Obsidian vault.
+
+No copy-pasting. No manual logging. Run the capture when your session is done and the note appears.
+
+---
+
+## Table of Contents
+
+- [How It Works](#how-it-works)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Configuration](#configuration)
+- [Getting Started](#getting-started)
+- [Commands](#commands)
+- [Output Format](#output-format)
+- [Artifact Matching](#artifact-matching)
+- [Custom Antigravity Profiles](#custom-antigravity-profiles)
+- [Troubleshooting](#troubleshooting)
+- [Building from Source](#building-from-source)
+
+---
+
+## How It Works
+
+Antigravity Scribe uses two data sources and combines them into one note:
+
+**1. Chrome DevTools Protocol (CDP)**
+Connects to Antigravity&apos;s built-in Chromium process via a local debug port and extracts the full conversation from the DOM — user messages, agent responses, thinking blocks (expanded or collapsed), and tool call summaries. The CDP hack is needed because Antigravity does not expose an API for session data, and the conversation  are stored locally as .pb files, which are Protocol Buffers (a binary serialization format) that would require complex parsing and reverse engineering. The CDP approach is more flexible and future-proof, as it relies on the rendered UI rather than internal storage formats.
+
+**2. Brain directory (filesystem)**
+Antigravity writes its verifiable artifacts (`task.md`, `implementation_plan.md`, screenshots, browser recordings) to a local `brain/` directory in real-time during every session. The extension reads the most recently modified UUID folder — which is always the active session — and includes the artifact content and images in the note.
+
+Both sources are combined into a single Obsidian-native Markdown note with YAML frontmatter, embedded images, and linked artifacts.
+
+---
+
+## Requirements
+
+- **Google Antigravity IDE** — [download here](https://antigravity.google)
+- **Antigravity must be launched with the CDP debug port enabled** (see [Getting Started](#getting-started))
+- **An Obsidian vault** — the extension writes notes into it directly
+- **Node.js ≥ 18** — needed only if building from source
+- **VS Code ≥ 1.85** or any Antigravity version (it is a VS Code fork)
+
+---
+
+## Installation
+
+### Option A — Install from `.vsix` (recommended)
+
+1. Download `antigravity-scribe-0.1.0.vsix` from the [releases page](https://github.com/nemsys/antigravity-scribe/releases).
+
+2. Open Antigravity (or VS Code).
+
+3. Open the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`) and run:
+   ```
+   Extensions: Install from VSIX...
+   ```
+
+4. Select the downloaded `.vsix` file.
+
+5. Reload the window when prompted.
+
+### Option B — Install via CLI
+
+```bash
+code --install-extension antigravity-scribe-0.1.0.vsix
+```
+
+If you use a custom Antigravity binary, replace `code` with the path to your Antigravity executable.
+
+### Option C — Build from source
+
+See [Building from Source](#building-from-source) at the end of this document.
+
+---
+
+## Configuration
+
+Open Settings (`Ctrl+,`) and search for **Antigravity Scribe**, or add these keys to your `settings.json`:
+
+```jsonc
+{
+  // Required — path to your Obsidian vault root
+  &quot;agscribe.vaultPath&quot;: &quot;/home/yourname/Obsidian/Universum&quot;,
+
+  // Required if you use a custom Antigravity profile (see below)
+  // Default works for standard installations
+  &quot;agscribe.brainPath&quot;: &quot;~/.gemini/antigravity/brain&quot;,
+
+  // Folder inside the vault where session notes are written
+  // Will be created automatically if it does not exist
+  &quot;agscribe.vaultFolder&quot;: &quot;AgentSessions&quot;,
+
+  // CDP port Antigravity is listening on
+  // Must match --remote-debugging-port when you launch Antigravity
+  &quot;agscribe.port&quot;: 9222,
+
+  // Open the captured note in the editor immediately after capture
+  &quot;agscribe.openAfterCapture&quot;: true
+}
+```
+
+### Minimum required configuration
+
+You must set at least `agscribe.vaultPath`. Everything else has a working default.
+
+```jsonc
+{
+  &quot;agscribe.vaultPath&quot;: &quot;/absolute/path/to/your/vault&quot;
+}
+```
+
+---
+
+## Getting Started
+
+### Step 1 — Launch Antigravity with CDP enabled
+
+Antigravity Scribe connects to Antigravity via the Chrome DevTools Protocol. You must start Antigravity with the debug port flag.
+
+**Linux / macOS:**
+```bash
+antigravity --remote-debugging-port=9222
+```
+
+**If you use a launcher script or `.desktop` entry**, add the flag to the `Exec=` line:
+```ini
+Exec=/usr/bin/antigravity --remote-debugging-port=9222 %F
+```
+
+**If you run multiple Antigravity profiles**, use a different port per profile:
+```bash
+antigravity --remote-debugging-port=9222 --user-data-dir=~/Antigravity_Profiles/profile1
+antigravity --remote-debugging-port=9333 --user-data-dir=~/Antigravity_Profiles/profile2
+```
+Then set `agscribe.port` to match the instance you want to capture from.
+
+&gt; The debug port binds to `127.0.0.1` only — it is not exposed to the network.
+
+---
+
+### Step 2 — Configure the extension
+
+At minimum, set your vault path. Open `settings.json` and add:
+
+```jsonc
+{
+  &quot;agscribe.vaultPath&quot;: &quot;/home/yourname/Obsidian/Universum&quot;
+}
+```
+
+If you use a custom Antigravity profile, also set `agscribe.brainPath`
+(see [Custom Antigravity Profiles](#custom-antigravity-profiles)).
+
+---
+
+### Step 3 — Verify the setup with diagnostics
+
+Before your first real capture, run:
+
+```
+Antigravity Scribe: Diagnose Connection
+```
+
+(Command Palette → `Ctrl+Shift+P`)
+
+You should see:
+```
+=== Antigravity Scribe Diagnostics ===
+
+CDP port 9222: ✓  Antigravity - my-project
+Brain path:    ✓  /home/yourname/Antigravity_Profiles/phoneiep/app_config/.gemini/antigravity/brain
+Active brain UUID: 50fa0573-52e0-4755-96f4-c98d1e808133
+Vault path:    ✓  /home/yourname/Obsidian/Universum
+```
+
+If any line shows `✗`, fix it before proceeding — see [Troubleshooting](#troubleshooting).
+
+---
+
+### Step 4 — Have your agent conversation
+
+Work normally in Antigravity. Let the agent complete its task, review artifacts,
+and iterate as needed. Antigravity Scribe captures the state at the moment you
+trigger it, so **capture when the session is done**, not mid-stream.
+
+---
+
+### Step 5 — Capture
+
+When ready, choose one of:
+
+| Method | When to use |
+|---|---|
+| Click **$(device-camera) AG Scribe** in the status bar | Quick capture, reuses the last task label |
+| Command Palette → `Antigravity Scribe: Capture Session (named task)` | When you want to give this session a meaningful label |
+
+The task label becomes part of the filename: `20260501_1430_refactor-auth.md`
+
+The note is written to your vault and opened automatically (configurable with `agscribe.openAfterCapture`).
+
+---
+
+### Optional — Keyboard shortcut
+
+Add to `keybindings.json`:
+
+```jsonc
+[
+  {
+    &quot;key&quot;: &quot;ctrl+shift+s&quot;,
+    &quot;command&quot;: &quot;agscribe.captureNamed&quot;
+  }
+]
+```
+
+---
+
+## Commands
+
+| Command | Description |
+|---|---|
+| `Antigravity Scribe: Capture Session` | Capture using the last-used task label (default: `session`) |
+| `Antigravity Scribe: Capture Session (named task)` | Prompt for a label, then capture |
+| `Antigravity Scribe: Open Sessions in Vault` | Reveal the sessions folder in the Explorer sidebar |
+| `Antigravity Scribe: Diagnose Connection` | Check CDP, brain path, and vault config |
+
+---
+
+## Output Format
+
+### Vault structure
+
+```
+&lt;vault&gt;/
+└── AgentSessions/
+    ├── 20260501_1430_refactor-auth.md
+    ├── 20260501_1615_session.md
+    └── assets/
+        ├── media__1776176592567.png
+        └── media__1776180012345.png
+```
+
+### Note structure
+
+```markdown
+---
+date: 2026-05-01
+time: 14:30
+agent: antigravity
+task: refactor-auth
+workspace: &quot;/home/yourname/myproject&quot;
+brain_uuid: 50fa0573-52e0-4755-96f4-c98d1e808133
+tags:
+  - agent-session
+  - antigravity
+---
+
+## Artifacts
+
+### Task
+&gt; Task tracking for implementing the auth refactor.
+*Updated: 5/1/2026, 14:23:04*
+
+- [ ] Audit existing auth middleware
+- [ ] Replace session tokens with JWT
+- [ ] Update all protected routes
+
+### Implementation Plan
+&gt; Architecture changes for JWT migration.
+*Updated: 5/1/2026, 14:25:11*
+
+1. Install `jsonwebtoken` and `@types/jsonwebtoken`
+2. Create `src/auth/jwt.ts` with sign/verify helpers
+...
+
+### Screenshots &amp; Media
+![[assets/media__1776176592567.png]]
+
+---
+
+## Session
+
+### 👤 USER  `14:22:51`
+Refactor the auth system to use JWT instead of session tokens.
+
+### 🧠 THOUGHT  `14:22:54`
+The user wants to migrate from session-based auth to JWT...
+
+### 🤖 AGENT  `14:23:01`
+I&apos;ll start by auditing the current middleware...
+
+### 🔧 TOOL CALL  `14:23:15`
+Viewed: src/middleware/auth.js
+
+### 🤖 AGENT  `14:23:22`
+The current implementation uses `express-session`...
+```
+
+### Frontmatter fields
+
+| Field | Description |
+|---|---|
+| `date` | Capture date (YYYY-MM-DD) |
+| `time` | Capture time (HH:MM) |
+| `agent` | Always `antigravity` in this version |
+| `task` | The label you provided at capture time |
+| `workspace` | Absolute path to the open workspace folder |
+| `brain_uuid` | UUID of the matched brain artifact directory |
+| `tags` | `agent-session`, `antigravity` — extend in your Obsidian templates |
+
+---
+
+## Artifact Matching
+
+Antigravity writes artifact files to a local directory in real-time while the agent works:
+
+```
+~/.gemini/antigravity/brain/
+└── &lt;uuid&gt;/
+    ├── task.md
+    ├── task.md.metadata.json
+    ├── task.md.resolved          ← final version, this is what we read
+    ├── task.md.resolved.0        ← revision history, skipped
+    ├── implementation_plan.md.resolved
+    ├── implementation_plan.md.metadata.json
+    └── media__1776176592567.png
+```
+
+The extension finds the active session by selecting the **most recently modified UUID directory**. Since Antigravity writes to this directory continuously during a session, the hottest directory is always the current one. No UUID extraction from the DOM, no timestamp window, no configuration required.
+
+The `.resolved` file is preferred over the bare `.md` — it contains the final, comment-resolved version of the artifact.
+
+---
+
+## Custom Antigravity Profiles
+
+If you launch Antigravity with `--user-data-dir` pointing to a custom location, the brain path will differ from the default.
+
+**Find your brain directory:**
+```bash
+find ~/Antigravity_Profiles/yourprofile -iname &apos;brain&apos; -type d
+```
+
+Example output:
+```
+/home/yourname/Antigravity_Profiles/phoneiep/app_config/.gemini/antigravity/brain
+```
+
+**Set it in settings:**
+```jsonc
+{
+  &quot;agscribe.brainPath&quot;: &quot;~/Antigravity_Profiles/phoneiep/app_config/.gemini/antigravity/brain&quot;
+}
+```
+
+The `~` shorthand is supported. Absolute paths also work.
+
+---
+
+## Troubleshooting
+
+### `No Antigravity CDP target on port 9222`
+
+Antigravity is not running with the debug port, or is using a different port.
+
+- Confirm the launch flag: `antigravity --remote-debugging-port=9222`
+- Confirm `agscribe.port` matches
+- Test manually in a terminal: `curl http://localhost:9222/json`  
+  You should get a JSON array. If the connection is refused, the port is not active.
+
+### `Chat panel not found`
+
+The CDP connection succeeded but the conversation UI could not be located.
+
+- Make sure a conversation is open and visible — not just the Agent Manager dashboard
+- Scroll the chat panel so it is fully rendered
+- Try capturing again
+
+### `Brain path not found`
+
+The configured `agscribe.brainPath` does not exist.
+
+- Run: `find ~ -iname &apos;brain&apos; -path &apos;*antigravity*&apos; -type d`
+- Update `agscribe.brainPath` with the result
+
+### `agscribe.vaultPath is not set`
+
+Open Settings, search **Antigravity Scribe**, fill in **Vault Path**.
+
+### Artifacts appear from the wrong session
+
+This can happen if you start a new conversation immediately before capturing the previous one, causing the brain directory to change.
+
+- Always capture before starting a new conversation
+- The `brain_uuid` in the note&apos;s frontmatter lets you verify which brain dir was used
+
+### Images are broken in Obsidian
+
+- Check that images were copied: `ls &lt;vault&gt;/AgentSessions/assets/`
+- In Obsidian go to **Settings → Files &amp; Links → New link format** → set to **Relative path to file** or **Shortest path**
+- The embed syntax used is `![[assets/filename.png]]`, relative to the note&apos;s folder
+
+---
+
+## Building from Source
+
+```bash
+# 1. Unzip or clone the source
+cd antigravity-scribe
+
+# Install dependencies, compile, and package in one step:
+npm install &amp;&amp; npm run compile &amp;&amp; npm run package
+# → antigravity-scribe-0.1.0.vsix
+
+# 5. Install
+code --install-extension antigravity-scribe-0.1.0.vsix
+```
+
+**Development mode** (live recompile on save):
+
+```bash
+npm run watch
+```
+
+Then press `F5` in Antigravity / VS Code to launch an Extension Development Host with the extension loaded. Changes take effect after `Ctrl+R` in the host window.
+
+---
+
+## License
+
+MIT © [Sciscend ЕООД](https://sciscend.com)</file><file path="src/extractor.ts">// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+⋮----
+export type NodeRole =
+  | &quot;user&quot;
+  | &quot;agent&quot;
+  | &quot;worked&quot;
+  | &quot;explored&quot;
+  | &quot;thought&quot;
+  | &quot;actions&quot;   // group container — children are individual &apos;action&apos; nodes
+  | &quot;action&quot;    // single action row: Analyzed, Created outline, Read page
+  | &quot;ran&quot;       // Ran / Edited / Created command row
+  | &quot;_no_chat&quot;;
+⋮----
+| &quot;actions&quot;   // group container — children are individual &apos;action&apos; nodes
+| &quot;action&quot;    // single action row: Analyzed, Created outline, Read page
+| &quot;ran&quot;       // Ran / Edited / Created command row
+⋮----
+export interface ConvNode {
+  role: NodeRole;
+  /** Primary text: user message, &quot;Worked for 1m&quot;, &quot;Thought for 3s&quot;, verb &quot;Analyzed&quot; … */
+  label: string;
+  /** Secondary text: chip ref &quot;llms-ctx-full.txt#L1-800&quot;, command, thought body */
+  detail: string;
+  /** Raw innerHTML for agent / thought content — converted to Markdown by renderer */
+  html: string | null;
+  children: ConvNode[];
+}
+⋮----
+/** Primary text: user message, &quot;Worked for 1m&quot;, &quot;Thought for 3s&quot;, verb &quot;Analyzed&quot; … */
+⋮----
+/** Secondary text: chip ref &quot;llms-ctx-full.txt#L1-800&quot;, command, thought body */
+⋮----
+/** Raw innerHTML for agent / thought content — converted to Markdown by renderer */
+⋮----
+// ---------------------------------------------------------------------------
+// Extract conversation title from the panel header
+// ---------------------------------------------------------------------------
+⋮----
+// ---------------------------------------------------------------------------
+// Main extraction — returns ConvNode[] as JSON string
+// ---------------------------------------------------------------------------</file><file path="src/snapRunner.ts">import { findTarget, CDPClient } from &quot;./cdp&quot;;
+import { EXTRACT_JS, EXTRACT_TITLE_JS, ConvNode } from &quot;./extractor&quot;;
+import { findActiveBrainDir, readArtifacts, BrainResult } from &quot;./brain&quot;;
+import { renderNote, sessionFilename } from &quot;./renderer&quot;;
+import { prepareVault, copyImages, writeNote } from &quot;./vault&quot;;
+⋮----
+export interface SnapResult {
+  outPath: string;
+  nodeCount: number;
+  artifactCount: number;
+  imageCount: number;
+  skipped?: boolean;
+}
+⋮----
+export async function runSnap(task: string): Promise&lt;SnapResult&gt;
+⋮----
+// ── 1. CDP: extract conversation tree ─────────────────────────────────────
+⋮----
+// ── 1b. Resolve effective task label ──────────────────────────────────────
+⋮----
+// ── 2. Brain: find active dir and read artifacts ───────────────────────────
+⋮----
+// ── 3. Vault: prepare dirs and copy images ─────────────────────────────────
+⋮----
+// ── 4. Render and write note ───────────────────────────────────────────────
+⋮----
+// ---------------------------------------------------------------------------
+// Diagnostic: report config state without capturing
+// ---------------------------------------------------------------------------
+export async function runDiagnose(out: vscode.OutputChannel): Promise&lt;void&gt;
+⋮----
+const ok = (msg: string) =&gt; out.appendLine(`✅ $
+const err = (msg: string) =&gt; out.appendLine(`❌ $
+const info = (msg: string) =&gt; out.appendLine(`   $
+⋮----
+// CDP
+⋮----
+// Brain
+⋮----
+// Vault</file><file path="package.json">{
+  &quot;name&quot;: &quot;antigravity-scribe&quot;,
+  &quot;displayName&quot;: &quot;Antigravity Scribe&quot;,
+  &quot;description&quot;: &quot;Capture thinking, tool calls &amp; artifacts to your Obsidian vault&quot;,
+  &quot;version&quot;: &quot;0.1.0&quot;,
+  &quot;publisher&quot;: &quot;sciscend&quot;,
+  &quot;engines&quot;: {
+    &quot;vscode&quot;: &quot;^1.85.0&quot;
+  },
+  &quot;categories&quot;: [
+    &quot;Other&quot;
+  ],
+  &quot;repository&quot;: {
+    &quot;type&quot;: &quot;git&quot;,
+    &quot;url&quot;: &quot;https://github.com/sciscend/antigravity-scribe.git&quot;
+  },
+  &quot;keywords&quot;: [
+    &quot;antigravity&quot;,
+    &quot;obsidian&quot;,
+    &quot;agent&quot;,
+    &quot;capture&quot;,
+    &quot;ai&quot;,
+    &quot;session&quot;
+  ],
+  &quot;activationEvents&quot;: [
+    &quot;onStartupFinished&quot;
+  ],
+  &quot;main&quot;: &quot;./dist/extension.js&quot;,
+  &quot;contributes&quot;: {
+    &quot;commands&quot;: [
+      {
+        &quot;command&quot;: &quot;agscribe.capture&quot;,
+        &quot;title&quot;: &quot;Antigravity Scribe: Capture Session&quot;
+      },
+      {
+        &quot;command&quot;: &quot;agscribe.captureNamed&quot;,
+        &quot;title&quot;: &quot;Antigravity Scribe: Capture Session (named task)&quot;
+      },
+      {
+        &quot;command&quot;: &quot;agscribe.openVault&quot;,
+        &quot;title&quot;: &quot;Antigravity Scribe: Open Sessions in Vault&quot;
+      },
+      {
+        &quot;command&quot;: &quot;agscribe.diagnose&quot;,
+        &quot;title&quot;: &quot;Antigravity Scribe: Diagnose Connection&quot;
+      }
+    ],
+    &quot;configuration&quot;: {
+      &quot;title&quot;: &quot;Antigravity Scribe&quot;,
+      &quot;properties&quot;: {
+        &quot;agscribe.port&quot;: {
+          &quot;type&quot;: &quot;number&quot;,
+          &quot;default&quot;: 9222,
+          &quot;description&quot;: &quot;CDP remote debugging port Antigravity is listening on&quot;
+        },
+        &quot;agscribe.brainPath&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;default&quot;: &quot;~/.gemini/antigravity/brain&quot;,
+          &quot;description&quot;: &quot;Path to Antigravity brain directory. Supports ~ expansion. For custom profiles, set the full path (e.g. ~/Antigravity_Profiles/phoneiep/app_config/.gemini/antigravity/brain)&quot;
+        },
+        &quot;agscribe.vaultPath&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;default&quot;: &quot;&quot;,
+          &quot;description&quot;: &quot;Absolute path to your Obsidian vault root (required)&quot;
+        },
+        &quot;agscribe.vaultFolder&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;default&quot;: &quot;AgentSessions&quot;,
+          &quot;description&quot;: &quot;Folder inside the vault where session notes are written&quot;
+        },
+        &quot;agscribe.openAfterCapture&quot;: {
+          &quot;type&quot;: &quot;boolean&quot;,
+          &quot;default&quot;: true,
+          &quot;description&quot;: &quot;Open the session note in editor after capture&quot;
+        }
+      }
+    }
+  },
+  &quot;scripts&quot;: {
+    &quot;vscode:prepublish&quot;: &quot;npm run bundle&quot;,
+    &quot;compile&quot;: &quot;tsc -p ./&quot;,
+    &quot;bundle&quot;: &quot;esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --minify&quot;,
+    &quot;watch&quot;: &quot;npm run bundle -- --watch&quot;,
+    &quot;package&quot;: &quot;npm run bundle &amp;&amp; vsce package&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;@types/node&quot;: &quot;^20.0.0&quot;,
+    &quot;@types/turndown&quot;: &quot;^5.0.5&quot;,
+    &quot;@types/vscode&quot;: &quot;^1.85.0&quot;,
+    &quot;@types/ws&quot;: &quot;^8.5.10&quot;,
+    &quot;@vscode/vsce&quot;: &quot;^2.24.0&quot;,
+    &quot;esbuild&quot;: &quot;^0.28.0&quot;,
+    &quot;typescript&quot;: &quot;^5.3.0&quot;
+  },
+  &quot;dependencies&quot;: {
+    &quot;turndown&quot;: &quot;^7.2.0&quot;,
+    &quot;ws&quot;: &quot;^8.16.0&quot;
+  }
+}</file></files></repomix>
