@@ -49,7 +49,7 @@ export function activate(ctx: vscode.ExtensionContext) {
         return;
       }
 
-      const { expandHome } = await import("./brain");
+      const { expandHome } = await import("./utils");
       const fullPath = require("path").join(expandHome(vaultPath), vaultFolder);
       await vscode.commands.executeCommand("revealInExplorer", vscode.Uri.file(fullPath));
     })
@@ -78,12 +78,10 @@ async function captureWithTask(task: string) {
   try {
     const result = await runSnap(task);
     if (result.skipped) return;
-    const { outPath, nodeCount, artifactCount, imageCount } = result;
+    const { outPath, nodeCount } = result;
 
     const parts = [
-      `${nodeCount} turn(s)`,
-      artifactCount > 0 && `${artifactCount} artifact(s)`,
-      imageCount > 0 && `${imageCount} image(s)`,
+      `${nodeCount} turn(s)`
     ].filter(Boolean).join(", ");
 
     const msg = `Antigravity Scribe: Captured ${parts} → ${path.basename(outPath)}`;

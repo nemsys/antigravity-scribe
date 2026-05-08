@@ -1,6 +1,6 @@
 import * as fs from "fs";
 import * as path from "path";
-import { expandHome } from "./brain";
+import { expandHome } from "./utils";
 
 export interface VaultPaths {
   sessionDir: string;   // <vault>/<vaultFolder>/
@@ -32,33 +32,6 @@ export function prepareVault(vaultPath: string, vaultFolder: string): VaultPaths
   return { sessionDir, assetsDir };
 }
 
-/**
- * Copy image files from a brain artifact dir into vault assets.
- * Returns a Map of { original filename → vault-relative path for Obsidian embed }.
- *
- * Uses "assets/<filename>" as the embed path — Obsidian resolves this relative
- * to the note's folder, which is sessionDir.
- */
-export function copyImages(
-  imagePaths: string[],
-  assetsDir: string
-): Map<string, string> {
-  const result = new Map<string, string>();
-
-  for (const src of imagePaths) {
-    const filename = path.basename(src);
-    const dest = path.join(assetsDir, filename);
-
-    try {
-      fs.copyFileSync(src, dest);
-      result.set(filename, `assets/${filename}`);
-    } catch {
-      // Non-fatal — image might be locked or missing
-    }
-  }
-
-  return result;
-}
 
 /**
  * Write the session note to the vault.

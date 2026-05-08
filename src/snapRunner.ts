@@ -1,15 +1,12 @@
 import * as vscode from "vscode";
 import { findTarget, CDPClient } from "./cdp";
 import { EXTRACT_JS, EXTRACT_TITLE_JS, ConvNode } from "./extractor";
-import { findActiveBrainDir, readArtifacts, BrainResult } from "./brain";
 import { renderNote, sessionFilename } from "./renderer";
-import { prepareVault, copyImages, writeNote } from "./vault";
+import { prepareVault, writeNote } from "./vault";
 
 export interface SnapResult {
   outPath: string;
   nodeCount: number;
-  artifactCount: number;
-  imageCount: number;
   skipped?: boolean;
 }
 
@@ -17,7 +14,6 @@ export async function runSnap(task: string): Promise<SnapResult> {
   const resolvedTask = task || "session";
   const cfg = vscode.workspace.getConfiguration("agscribe");
   const port = cfg.get<number>("port", 9222);
-  const brainPath = cfg.get<string>("brainPath", "~/.gemini/antigravity/brain");
   const vaultPath = cfg.get<string>("vaultPath", "");
   const vaultFolder = cfg.get<string>("vaultFolder", "AgentSessions");
 
@@ -62,7 +58,7 @@ export async function runSnap(task: string): Promise<SnapResult> {
     vscode.window.showWarningMessage(
       "Antigravity Scribe: Conversation is empty — start a conversation before capturing."
     );
-    return { outPath: "", nodeCount: 0, artifactCount: 0, imageCount: 0, skipped: true };
+    return { outPath: "", nodeCount: 0, skipped: true };
   }
 
   // ── 1b. Resolve effective task label ──────────────────────────────────────
@@ -75,33 +71,14 @@ export async function runSnap(task: string): Promise<SnapResult> {
         .slice(0, 50)
       : task;
 
-  // ── 2. Brain: find active dir and read artifacts ───────────────────────────
-  let brainResult: BrainResult | null = null;
+  // ── 2. Vault: prepare dirs ─────────────────────────────────────────────────
+  const { sessionDir } = prepareVault(vaultPath, vaultFolder);
 
-  try {
-    const activeUuid = findActiveBrainDir(brainPath);
-    if (activeUuid) {
-      brainResult = readArtifacts(brainPath, activeUuid);
-    }
-  } catch (err: any) {
-    vscode.window.showWarningMessage(
-      `Antigravity Scribe: Could not read artifacts — ${err.message}`
-    );
-  }
-
-  // ── 3. Vault: prepare dirs and copy images ─────────────────────────────────
-  const { sessionDir, assetsDir } = prepareVault(vaultPath, vaultFolder);
-
-  const allImages = brainResult?.allImages ?? [];
-  const copiedImages = copyImages(allImages, assetsDir);
-
-  // ── 4. Render and write note ───────────────────────────────────────────────
+  // ── 3. Render and write note ───────────────────────────────────────────────
   const now = new Date();
   const note = renderNote(nodes, {
     task: effectiveTask,
     workspacePath: wsFolder,
-    brainResult,
-    copiedImages,
   });
 
   const filename = sessionFilename(effectiveTask, now);
@@ -110,8 +87,6 @@ export async function runSnap(task: string): Promise<SnapResult> {
   return {
     outPath,
     nodeCount: nodes.length,
-    artifactCount: brainResult?.artifacts.length ?? 0,
-    imageCount: copiedImages.size,
   };
 }
 
@@ -121,7 +96,6 @@ export async function runSnap(task: string): Promise<SnapResult> {
 export async function runDiagnose(out: vscode.OutputChannel): Promise<void> {
   const cfg = vscode.workspace.getConfiguration("agscribe");
   const port = cfg.get<number>("port", 9222);
-  const brainPath = cfg.get<string>("brainPath", "~/.gemini/antigravity/brain");
   const vaultPath = cfg.get<string>("vaultPath", "");
 
   out.clear();
@@ -143,15 +117,7 @@ export async function runDiagnose(out: vscode.OutputChannel): Promise<void> {
     info(`Launch Antigravity with --remote-debugging-port=${port}`);
   }
 
-  // Brain
-  try {
-    const { expandHome, findActiveBrainDir } = await import("./brain");
-    const uuid = findActiveBrainDir(brainPath);
-    ok(`Brain path: ${expandHome(brainPath)}`);
-    info(`Active brain UUID: ${uuid ?? "(none found)"}`);
-  } catch (e: any) {
-    err(`Brain path: ${e.message}`);
-  }
+
 
   // Vault
   if (vaultPath) {
