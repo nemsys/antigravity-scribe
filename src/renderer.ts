@@ -69,6 +69,7 @@ const ROLE_HEADING: Record<string, number> = {
   thought: 5,
   actions: 5,
   ran: 4,
+  edited: 4,
 };
 
 const ROLE_ICON: Record<string, string> = {
@@ -79,6 +80,7 @@ const ROLE_ICON: Record<string, string> = {
   thought: "\u{1F9E0}",   // 🧠
   actions: "\u{1F527}",   // 🔧
   ran: "\u25B6",      // ▶
+  edited: "\u270F\uFE0F",   // ✏️
 };
 
 function h(depth: number): string {
@@ -150,6 +152,12 @@ function renderNode(node: ConvNode, lines: string[]): void {
     case "ran": {
       const cmd = node.detail ? ` \`${node.detail}\`` : "";
       lines.push(`${hdr} ${icon} ${node.label}${cmd}`);
+      lines.push("");
+      break;
+    }
+
+    case "edited": {
+      lines.push(`${hdr} ${icon} ${node.label}`);
       lines.push("");
       break;
     }

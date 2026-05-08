@@ -11,6 +11,7 @@ export type NodeRole =
   | "actions"   // group container — children are individual 'action' nodes
   | "action"    // single action row: Analyzed, Created outline, Read page
   | "ran"       // Ran / Edited / Created command row
+  | "edited"    // Edited N file(s) section
   | "_no_chat";
 
 export interface ConvNode {
@@ -208,7 +209,9 @@ export const EXTRACT_JS = String.raw`
       return { verb, detail: chipContainer ? chipText(chipContainer) : "" };
     }
 
-    // Ran / Edited / Created command pattern
+    // Ran / Edited / Created command pattern — two sub-patterns:
+    //   a) span.opacity-70 + [class*="font-mono"]  (original)
+    //   b) span.opacity-70.mr-1\.5 + span.font-mono  (flex items-baseline layout)
     const opVerb = div.querySelector("span.opacity-70");
     const mono = div.querySelector('[class*="font-mono"]');
     if (opVerb && mono) {
@@ -314,13 +317,13 @@ export const EXTRACT_JS = String.raw`
 
     for (const child of Array.from(inner.children)) {
       if (child.classList.contains("relative")) {
-        // "Explored N files, M pages" button wrapper
-        const btn = Array.from(child.children).find(c => c.tagName === "BUTTON");
+        // Button wrapper: "Explored N files" / "Edited N file" / etc.
+        const btn = child.querySelector("button");
         if (!btn) continue;
         const opacity70 = btn.querySelector("span.opacity-70");
         if (!opacity70) continue;
         const verb = (opacity70.textContent || "").trim();
-        // Second span holds the count: "3 files, 2 pages"
+        // Second span holds the count: "3 files, 2 pages" / "1 file"
         const countSpan = Array.from(btn.querySelectorAll("span")).find(
           s =>
             !s.classList.contains("opacity-70") &&
@@ -329,21 +332,53 @@ export const EXTRACT_JS = String.raw`
         );
         const count = countSpan ? (countSpan.textContent || "").trim() : "";
         const label = count ? verb + " " + count : verb;
-        const exploredExpanded = btn.nextElementSibling;
-        const exploredChildren = parseExploredContent(exploredExpanded);
-        children.push({
-          role: "explored",
-          label,
-          detail: "",
-          html: null,
-          children: exploredChildren,
-        });
+
+        if (/^Explored/i.test(verb)) {
+          const exploredExpanded = btn.nextElementSibling;
+          const exploredChildren = parseExploredContent(exploredExpanded);
+          children.push({
+            role: "explored",
+            label,
+            detail: "",
+            html: null,
+            children: exploredChildren,
+          });
+        } else if (/^Edited/i.test(verb)) {
+          children.push({
+            role: "edited",
+            label,
+            detail: "",
+            html: null,
+            children: [],
+          });
+        } else {
+          // Generic fallback for future verbs
+          children.push({
+            role: "action",
+            label,
+            detail: "",
+            html: null,
+            children: [],
+          });
+        }
       } else if (child.classList.contains("flex") && child.classList.contains("flex-row")) {
-        // Ran / Edited / Created command rows at the worked level
-        const action = parseFlexRow(child);
-        if (action) {
-          // Promote "action" to "ran" for worked-level rows
-          children.push({ ...action, role: "ran" });
+        // Ran / Edited / Created command rows at the worked level.
+        // Inner structure: div.min-w-0.grow > div.flex.flex-col > div.group...
+        //   containing div.truncate > div.flex.items-baseline
+        //     > span.opacity-70.mr-1.5 (verb) + span.font-mono (command)
+        const truncateDiv = child.querySelector(".truncate");
+        const contentDiv = truncateDiv
+          ? truncateDiv.firstElementChild || truncateDiv
+          : null;
+        const parsed = parseContentDiv(contentDiv);
+        if (parsed && (parsed.verb || parsed.detail)) {
+          children.push({
+            role: "ran",
+            label: parsed.verb,
+            detail: parsed.detail,
+            html: null,
+            children: [],
+          });
         }
       }
     }
