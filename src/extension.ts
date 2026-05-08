@@ -78,10 +78,10 @@ async function captureWithTask(task: string) {
   try {
     const result = await runSnap(task);
     if (result.skipped) return;
-    const { outPath, turnCount, artifactCount, imageCount } = result;
+    const { outPath, nodeCount, artifactCount, imageCount } = result;
 
     const parts = [
-      `${turnCount} turn(s)`,
+      `${nodeCount} turn(s)`,
       artifactCount > 0 && `${artifactCount} artifact(s)`,
       imageCount > 0 && `${imageCount} image(s)`,
     ].filter(Boolean).join(", ");
