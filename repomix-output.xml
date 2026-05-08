@@ -29,108 +29,22 @@ or other automated processes.</purpose><file_format>The content is organized as 
 scripts/
   reinstall.sh
 src/
-  brain.ts
   cdp.ts
   extension.ts
   extractor.ts
   renderer.ts
   snapRunner.ts
+  utils.ts
   vault.ts
 package.json
 README.md
-tsconfig.json</directory_structure><files>This section contains the contents of the repository&apos;s files.<file path="src/vault.ts">import { expandHome } from &quot;./brain&quot;;
-⋮----
-export interface VaultPaths {
-  sessionDir: string;   // &lt;vault&gt;/&lt;vaultFolder&gt;/
-  assetsDir: string;    // &lt;vault&gt;/&lt;vaultFolder&gt;/assets/
-}
-⋮----
-sessionDir: string;   // &lt;vault&gt;/&lt;vaultFolder&gt;/
-assetsDir: string;    // &lt;vault&gt;/&lt;vaultFolder&gt;/assets/
-⋮----
-/**
- * Resolve and create the vault output directories.
- */
-export function prepareVault(vaultPath: string, vaultFolder: string): VaultPaths
-⋮----
-/**
- * Copy image files from a brain artifact dir into vault assets.
- * Returns a Map of { original filename → vault-relative path for Obsidian embed }.
- *
- * Uses &quot;assets/&lt;filename&gt;&quot; as the embed path — Obsidian resolves this relative
- * to the note&apos;s folder, which is sessionDir.
- */
-export function copyImages(
-  imagePaths: string[],
-  assetsDir: string
-): Map&lt;string, string&gt;
-⋮----
-// Non-fatal — image might be locked or missing
-⋮----
-/**
- * Write the session note to the vault.
- */
-export function writeNote(sessionDir: string, filename: string, content: string): string</file><file path="src/brain.ts">export interface ArtifactMeta {
-  artifactType: string;
-  summary: string;
-  updatedAt: string;
-}
-⋮----
-export interface Artifact {
-  name: string;           // e.g. &quot;task&quot;, &quot;implementation_plan&quot;
-  meta: ArtifactMeta;
-  content: string;        // contents of the .resolved file
-  images: string[];       // absolute paths to .png files in the same dir
-}
-⋮----
-name: string;           // e.g. &quot;task&quot;, &quot;implementation_plan&quot;
-⋮----
-content: string;        // contents of the .resolved file
-images: string[];       // absolute paths to .png files in the same dir
-⋮----
-export interface BrainResult {
-  uuid: string;
-  artifacts: Artifact[];
-  allImages: string[];    // all .png paths in the dir (some may not belong to an artifact)
-}
-⋮----
-allImages: string[];    // all .png paths in the dir (some may not belong to an artifact)
-⋮----
-/**
+tsconfig.json</directory_structure><files>This section contains the contents of the repository&apos;s files.<file path="src/utils.ts">/**
  * Expand ~ in paths.
  */
 export function expandHome(p: string): string
 ⋮----
 // os.homedir() reads the HOME env var which may be overridden
-// (e.g. by Antigravity profile aliases). Read the real home from passwd instead.
-⋮----
-/**
- * Find the most recently modified UUID directory inside brainPath.
- * This is the active session&apos;s artifact folder — Antigravity writes
- * artifact files in real-time, so the hottest dir is always the current one.
- */
-export function findActiveBrainDir(brainPath: string): string | null
-⋮----
-/**
- * Read all artifacts from a brain UUID directory.
- * - Reads *.resolved (final version) — skips *.resolved.N (revision history)
- * - Reads paired *.metadata.json for each artifact
- * - Collects all *.png paths
- */
-export function readArtifacts(brainPath: string, uuid: string): BrainResult
-⋮----
-// Collect .resolved base names (e.g. &quot;task.md&quot;, &quot;implementation_plan.md&quot;)
-// A valid .resolved file is exactly &quot;&lt;name&gt;.resolved&quot; with no further extension
-⋮----
-// Exclude revision files: task.md.resolved.0, task.md.resolved.1 etc.
-⋮----
-const baseName = resolvedFile.slice(0, -(&quot;.resolved&quot;.length)); // e.g. &quot;task.md&quot;
-⋮----
-// Skip if no metadata (probably a temp file)
-⋮----
-// Human-readable name: &quot;task.md&quot; → &quot;task&quot;, &quot;implementation_plan.md&quot; → &quot;implementation_plan&quot;
-⋮----
-// Sort by updatedAt ascending so task comes before implementation_plan etc.</file><file path="src/cdp.ts">export interface CDPTarget {
+// (e.g. by Antigravity profile aliases). Read the real home from passwd instead.</file><file path="src/cdp.ts">export interface CDPTarget {
   id: string;
   type: string;
   title: string;
@@ -155,7 +69,25 @@ async evalJS(js: string): Promise&lt;string | null&gt;
 ⋮----
 close(): void
 ⋮----
-function httpGetJson&lt;T&gt;(url: string): Promise&lt;T | null&gt;</file><file path="tsconfig.json">{
+function httpGetJson&lt;T&gt;(url: string): Promise&lt;T | null&gt;</file><file path="src/vault.ts">import { expandHome } from &quot;./utils&quot;;
+⋮----
+export interface VaultPaths {
+  sessionDir: string;   // &lt;vault&gt;/&lt;vaultFolder&gt;/
+  assetsDir: string;    // &lt;vault&gt;/&lt;vaultFolder&gt;/assets/
+}
+⋮----
+sessionDir: string;   // &lt;vault&gt;/&lt;vaultFolder&gt;/
+assetsDir: string;    // &lt;vault&gt;/&lt;vaultFolder&gt;/assets/
+⋮----
+/**
+ * Resolve and create the vault output directories.
+ */
+export function prepareVault(vaultPath: string, vaultFolder: string): VaultPaths
+⋮----
+/**
+ * Write the session note to the vault.
+ */
+export function writeNote(sessionDir: string, filename: string, content: string): string</file><file path="tsconfig.json">{
   &quot;compilerOptions&quot;: {
     &quot;module&quot;: &quot;commonjs&quot;,
     &quot;target&quot;: &quot;ES2020&quot;,
@@ -181,93 +113,7 @@ HOME=&quot;/home/nemsys/Antigravity_Profiles/phoneiep/app_config&quot; \
   --extensions-dir=&quot;/home/nemsys/Antigravity_Profiles/phoneiep/app_config/.antigravity/extensions&quot; \
   --install-extension /data/projects/antigravity-scribe/antigravity-scribe-0.1.0.vsix
 
-echo &quot;✓ Installed — reload Antigravity window&quot;</file><file path="src/extension.ts">import { runSnap, runDiagnose } from &quot;./snapRunner&quot;;
-⋮----
-export function activate(ctx: vscode.ExtensionContext)
-⋮----
-// ── Output channel (created once, reused) ──────────────────────────────────
-⋮----
-// ── Status bar ─────────────────────────────────────────────────────────────
-⋮----
-// ── Commands ───────────────────────────────────────────────────────────────
-⋮----
-export function deactivate()
-⋮----
-// ---------------------------------------------------------------------------
-// Internal
-// ---------------------------------------------------------------------------
-⋮----
-async function captureWithTask(task: string)
-⋮----
-function setIdle()
-⋮----
-function setBusy()</file><file path="src/renderer.ts">import TurndownService from &quot;turndown&quot;;
-import { ConvNode } from &quot;./extractor&quot;;
-import { BrainResult } from &quot;./brain&quot;;
-⋮----
-export interface RenderOptions {
-  task: string;
-  workspacePath: string;
-  brainResult: BrainResult | null;
-  copiedImages: Map&lt;string, string&gt;;
-}
-⋮----
-// ---------------------------------------------------------------------------
-// Turndown instance
-// ---------------------------------------------------------------------------
-⋮----
-const toRow = (cells: Element[])
-⋮----
-function htmlToMarkdown(html: string): string
-⋮----
-// ---------------------------------------------------------------------------
-// Heading depth per role
-//
-// Rendered structure mirrors the visual hierarchy in the panel:
-//   ## 👤 USER / ## 🤖 AGENT          (top-level turns)
-//   ### ⏱ Worked for 1m               (tool-use block)
-//   #### 🔍 Explored 3 files, 2 pages  (sub-step group)
-//   ##### 🧠 Thought for 3s            (thought inside explored)
-//   ##### 🔧 Actions                   (action group inside explored)
-//   #### ▶ Ran `curl ...`              (command at worked level)
-// ---------------------------------------------------------------------------
-⋮----
-user: &quot;\u{1F464}&quot;,   // 👤
-agent: &quot;\u{1F916}&quot;,   // 🤖
-worked: &quot;\u23F1&quot;,      // ⏱
-explored: &quot;\u{1F50D}&quot;,   // 🔍
-thought: &quot;\u{1F9E0}&quot;,   // 🧠
-actions: &quot;\u{1F527}&quot;,   // 🔧
-ran: &quot;\u25B6&quot;,      // ▶
-⋮----
-function h(depth: number): string
-⋮----
-// ---------------------------------------------------------------------------
-// renderNode — recursive
-// ---------------------------------------------------------------------------
-function renderNode(node: ConvNode, lines: string[]): void
-⋮----
-// &apos;action&apos; nodes only appear as list items inside &apos;actions&apos;; skip standalone
-⋮----
-// ---------------------------------------------------------------------------
-// renderNote — public entry point
-// ---------------------------------------------------------------------------
-export function renderNote(nodes: ConvNode[], opts: RenderOptions): string
-⋮----
-// ── Frontmatter ──────────────────────────────────────────────────────────
-⋮----
-// ── Artifacts ────────────────────────────────────────────────────────────
-⋮----
-// ── Session ───────────────────────────────────────────────────────────────
-⋮----
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-function humanizeName(name: string): string
-⋮----
-export function sessionFilename(task: string, date: Date = new Date()): string
-⋮----
-const pad = (n: number)</file><file path="README.md"># Antigravity Scribe
+echo &quot;✓ Installed — reload Antigravity window&quot;</file><file path="README.md"># Antigravity Scribe
 
 &gt; **Capture agents thinking, tool calls &amp; artifacts to your Obsidian vault**
 
@@ -703,7 +549,87 @@ Then press `F5` in Antigravity / VS Code to launch an Extension Development Host
 
 ## License
 
-MIT © [Sciscend ЕООД](https://sciscend.com)</file><file path="src/extractor.ts">// ---------------------------------------------------------------------------
+MIT © [Sciscend ЕООД](https://sciscend.com)</file><file path="src/extension.ts">import { runSnap, runDiagnose } from &quot;./snapRunner&quot;;
+⋮----
+export function activate(ctx: vscode.ExtensionContext)
+⋮----
+// ── Output channel (created once, reused) ──────────────────────────────────
+⋮----
+// ── Status bar ─────────────────────────────────────────────────────────────
+⋮----
+// ── Commands ───────────────────────────────────────────────────────────────
+⋮----
+export function deactivate()
+⋮----
+// ---------------------------------------------------------------------------
+// Internal
+// ---------------------------------------------------------------------------
+⋮----
+async function captureWithTask(task: string)
+⋮----
+function setIdle()
+⋮----
+function setBusy()</file><file path="src/renderer.ts">import TurndownService from &quot;turndown&quot;;
+import { ConvNode } from &quot;./extractor&quot;;
+⋮----
+export interface RenderOptions {
+  task: string;
+  workspacePath: string;
+}
+⋮----
+// ---------------------------------------------------------------------------
+// Turndown instance
+// ---------------------------------------------------------------------------
+⋮----
+const toRow = (cells: any[])
+⋮----
+function htmlToMarkdown(html: string): string
+⋮----
+// ---------------------------------------------------------------------------
+// Heading depth per role
+//
+// Rendered structure mirrors the visual hierarchy in the panel:
+//   ## 👤 USER / ## 🤖 AGENT          (top-level turns)
+//   ### ⏱ Worked for 1m               (tool-use block)
+//   #### 🔍 Explored 3 files, 2 pages  (sub-step group)
+//   ##### 🧠 Thought for 3s            (thought inside explored)
+//   ##### 🔧 Actions                   (action group inside explored)
+//   #### ▶ Ran `curl ...`              (command at worked level)
+// ---------------------------------------------------------------------------
+⋮----
+user: &quot;\u{1F464}&quot;,   // 👤
+agent: &quot;\u{1F916}&quot;,   // 🤖
+worked: &quot;\u23F1&quot;,      // ⏱
+explored: &quot;\u{1F50D}&quot;,   // 🔍
+thought: &quot;\u{1F9E0}&quot;,   // 🧠
+actions: &quot;\u{1F527}&quot;,   // 🔧
+ran: &quot;\u25B6&quot;,      // ▶
+⋮----
+function h(depth: number): string
+⋮----
+// ---------------------------------------------------------------------------
+// renderNode — recursive
+// ---------------------------------------------------------------------------
+function renderNode(node: ConvNode, lines: string[]): void
+⋮----
+// &apos;action&apos; nodes only appear as list items inside &apos;actions&apos;; skip standalone
+⋮----
+// ---------------------------------------------------------------------------
+// renderNote — public entry point
+// ---------------------------------------------------------------------------
+export function renderNote(nodes: ConvNode[], opts: RenderOptions): string
+⋮----
+// ── Frontmatter ──────────────────────────────────────────────────────────
+⋮----
+// ── Session ───────────────────────────────────────────────────────────────
+⋮----
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+⋮----
+export function sessionFilename(task: string, date: Date = new Date()): string
+⋮----
+const pad = (n: number)</file><file path="src/extractor.ts">// ---------------------------------------------------------------------------
 // Types
 // ---------------------------------------------------------------------------
 ⋮----
@@ -747,15 +673,12 @@ export interface ConvNode {
 // Main extraction — returns ConvNode[] as JSON string
 // ---------------------------------------------------------------------------</file><file path="src/snapRunner.ts">import { findTarget, CDPClient } from &quot;./cdp&quot;;
 import { EXTRACT_JS, EXTRACT_TITLE_JS, ConvNode } from &quot;./extractor&quot;;
-import { findActiveBrainDir, readArtifacts, BrainResult } from &quot;./brain&quot;;
 import { renderNote, sessionFilename } from &quot;./renderer&quot;;
-import { prepareVault, copyImages, writeNote } from &quot;./vault&quot;;
+import { prepareVault, writeNote } from &quot;./vault&quot;;
 ⋮----
 export interface SnapResult {
   outPath: string;
   nodeCount: number;
-  artifactCount: number;
-  imageCount: number;
   skipped?: boolean;
 }
 ⋮----
@@ -765,11 +688,9 @@ export async function runSnap(task: string): Promise&lt;SnapResult&gt;
 ⋮----
 // ── 1b. Resolve effective task label ──────────────────────────────────────
 ⋮----
-// ── 2. Brain: find active dir and read artifacts ───────────────────────────
+// ── 2. Vault: prepare dirs ─────────────────────────────────────────────────
 ⋮----
-// ── 3. Vault: prepare dirs and copy images ─────────────────────────────────
-⋮----
-// ── 4. Render and write note ───────────────────────────────────────────────
+// ── 3. Render and write note ───────────────────────────────────────────────
 ⋮----
 // ---------------------------------------------------------------------------
 // Diagnostic: report config state without capturing
@@ -781,8 +702,6 @@ const err = (msg: string) =&gt; out.appendLine(`❌ $
 const info = (msg: string) =&gt; out.appendLine(`   $
 ⋮----
 // CDP
-⋮----
-// Brain
 ⋮----
 // Vault</file><file path="package.json">{
   &quot;name&quot;: &quot;antigravity-scribe&quot;,
