@@ -1,12 +1,21 @@
 #!/bin/bash
 set -e
-cd /data/projects/antigravity-scribe
 
+# Change to project root relative to script
+cd "$(dirname "$0")/.."
+
+# Load workspace-specific environment variables if .env exists
+if [ -f .env ]; then
+  export $(grep -v '^#' .env | xargs)
+fi
+
+# Rebuild the extension
 npm run package
 
-HOME="/home/nemsys/Antigravity_Profiles/phoneiep/app_config" \
+PROFILE_HOME="${ANTIGRAVITY_PROFILE_DIR:-$HOME}"
+HOME="$PROFILE_HOME" \
   antigravity \
-  --extensions-dir="/home/nemsys/Antigravity_Profiles/phoneiep/app_config/.antigravity/extensions" \
-  --install-extension /data/projects/antigravity-scribe/antigravity-scribe-0.1.0.vsix
+  --extensions-dir="$PROFILE_HOME/.antigravity/extensions" \
+  --install-extension ./antigravity-scribe-*.vsix
 
-echo "✓ Installed — reload Antigravity window"
+echo "✓ Context Updated & Extension Installed — reload Antigravity window"
