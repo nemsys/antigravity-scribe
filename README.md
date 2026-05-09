@@ -2,7 +2,7 @@
 
 > **Capture agents thinking, tool calls & artifacts to your Obsidian vault**
 
-Antigravity Scribe is a VS Code extension for [Google Antigravity IDE](https://antigravity.google) that captures the full content of an agent session — chat turns, thinking blocks, tool calls, task lists, implementation plans, and screenshots — and writes a single structured Markdown note directly into your Obsidian vault.
+Antigravity Scribe is a VS Code extension for [Google Antigravity IDE](https://antigravity.google) that captures the full content of an agent session — chat turns, thinking blocks, tool calls, task lists, and implementation plans — and writes a single structured Markdown note directly into your Obsidian vault.
 
 No copy-pasting. No manual logging. Run the capture when your session is done and the note appears.
 
@@ -32,9 +32,9 @@ Antigravity Scribe uses two data sources and combines them into one note:
 Connects to Antigravity's built-in Chromium process via a local debug port and extracts the full conversation from the DOM — user messages, agent responses, thinking blocks (expanded or collapsed), and tool call summaries. The CDP hack is needed because Antigravity does not expose an API for session data, and the conversation  are stored locally as .pb files, which are Protocol Buffers (a binary serialization format) that would require complex parsing and reverse engineering. The CDP approach is more flexible and future-proof, as it relies on the rendered UI rather than internal storage formats.
 
 **2. Brain directory (filesystem)**
-Antigravity writes its verifiable artifacts (`task.md`, `implementation_plan.md`, screenshots, browser recordings) to a local `brain/` directory in real-time during every session. The extension reads the most recently modified UUID folder — which is always the active session — and includes the artifact content and images in the note.
+Antigravity writes its verifiable artifacts (`task.md`, `implementation_plan.md`) to a local `brain/` directory in real-time during every session. The extension reads the most recently modified UUID folder — which is always the active session — and includes the artifact content in the note.
 
-Both sources are combined into a single Obsidian-native Markdown note with YAML frontmatter, embedded images, and linked artifacts.
+Both sources are combined into a single Obsidian-native Markdown note with YAML frontmatter and linked artifacts.
 
 ---
 
@@ -240,10 +240,7 @@ Add to `keybindings.json`:
 <vault>/
 └── AgentSessions/
     ├── 20260501_1430_refactor-auth.md
-    ├── 20260501_1615_session.md
-    └── assets/
-        ├── media__1776176592567.png
-        └── media__1776180012345.png
+    └── 20260501_1615_session.md
 ```
 
 ### Note structure
@@ -278,9 +275,6 @@ tags:
 1. Install `jsonwebtoken` and `@types/jsonwebtoken`
 2. Create `src/auth/jwt.ts` with sign/verify helpers
 ...
-
-### Screenshots & Media
-![[assets/media__1776176592567.png]]
 
 ---
 
@@ -328,8 +322,7 @@ Antigravity writes artifact files to a local directory in real-time while the ag
     ├── task.md.resolved          ← final version, this is what we read
     ├── task.md.resolved.0        ← revision history, skipped
     ├── implementation_plan.md.resolved
-    ├── implementation_plan.md.metadata.json
-    └── media__1776176592567.png
+    └── implementation_plan.md.metadata.json
 ```
 
 The extension finds the active session by selecting the **most recently modified UUID directory**. Since Antigravity writes to this directory continuously during a session, the hottest directory is always the current one. No UUID extraction from the DOM, no timestamp window, no configuration required.
@@ -400,12 +393,6 @@ This can happen if you start a new conversation immediately before capturing the
 - Always capture before starting a new conversation
 - The `brain_uuid` in the note's frontmatter lets you verify which brain dir was used
 
-### Images are broken in Obsidian
-
-- Check that images were copied: `ls <vault>/AgentSessions/assets/`
-- In Obsidian go to **Settings → Files & Links → New link format** → set to **Relative path to file** or **Shortest path**
-- The embed syntax used is `![[assets/filename.png]]`, relative to the note's folder
-
 ---
 
 ## Building from Source
@@ -429,6 +416,16 @@ npm run watch
 ```
 
 Then press `F5` in Antigravity / VS Code to launch an Extension Development Host with the extension loaded. Changes take effect after `Ctrl+R` in the host window.
+
+### Option D — Use the reinstall script (recommended for contributors)
+
+If you are developing the extension, use the provided script to build and install it in one go:
+
+```bash
+# Set your profile dir if different from default
+export ANTIGRAVITY_PROFILE_DIR="~/Antigravity_Profiles/myprofile/app_config"
+./scripts/reinstall.sh
+```
 
 ---
 

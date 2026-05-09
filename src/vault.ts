@@ -4,7 +4,6 @@ import { expandHome } from "./utils";
 
 export interface VaultPaths {
   sessionDir: string;   // <vault>/<vaultFolder>/
-  assetsDir: string;    // <vault>/<vaultFolder>/assets/
 }
 
 /**
@@ -24,12 +23,9 @@ export function prepareVault(vaultPath: string, vaultFolder: string): VaultPaths
   }
 
   const sessionDir = path.join(resolvedVault, vaultFolder);
-  const assetsDir = path.join(sessionDir, "assets");
-
   fs.mkdirSync(sessionDir, { recursive: true });
-  fs.mkdirSync(assetsDir, { recursive: true });
 
-  return { sessionDir, assetsDir };
+  return { sessionDir };
 }
 
 

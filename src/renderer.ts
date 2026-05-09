@@ -19,6 +19,12 @@ const td = new TurndownService({
   bulletListMarker: "-",
 });
 
+// Ignore images since we no longer capture them
+td.addRule("ignoreImages", {
+  filter: ["img"],
+  replacement: () => "",
+});
+
 td.addRule("table", {
   filter: ["table"],
   replacement: (_content, node) => {
