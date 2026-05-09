@@ -3,6 +3,8 @@ import { findTarget, CDPClient } from "./cdp";
 import { EXTRACT_JS, EXTRACT_TITLE_JS, ConvNode } from "./extractor";
 import { renderNote, sessionFilename } from "./renderer";
 import { prepareVault, writeNote } from "./vault";
+import { getActiveBrainUuid } from "./utils";
+
 
 export interface SnapResult {
   outPath: string;
@@ -16,6 +18,7 @@ export async function runSnap(task: string): Promise<SnapResult> {
   const port = cfg.get<number>("port", 9222);
   const vaultPath = cfg.get<string>("vaultPath", "");
   const vaultFolder = cfg.get<string>("vaultFolder", "AgentSessions");
+  const brainPath = cfg.get<string>("brainPath", "~/.gemini/antigravity/brain");
 
   const wsFolder =
     vscode.workspace.workspaceFolders?.[0]?.uri.fsPath ?? process.cwd();
@@ -76,9 +79,13 @@ export async function runSnap(task: string): Promise<SnapResult> {
 
   // ── 3. Render and write note ───────────────────────────────────────────────
   const now = new Date();
+  const { uuid: brainUuid, fullPath: brainFullPath } = getActiveBrainUuid(brainPath);
+  
   const note = renderNote(nodes, {
     task: effectiveTask,
     workspacePath: wsFolder,
+    brainUuid: brainUuid || undefined,
+    brainFullPath: brainFullPath || undefined,
   });
 
   const filename = sessionFilename(effectiveTask, now);
@@ -97,6 +104,7 @@ export async function runDiagnose(out: vscode.OutputChannel): Promise<void> {
   const cfg = vscode.workspace.getConfiguration("agscribe");
   const port = cfg.get<number>("port", 9222);
   const vaultPath = cfg.get<string>("vaultPath", "");
+  const brainPath = cfg.get<string>("brainPath", "~/.gemini/antigravity/brain");
 
   out.clear();
   out.show(true);
@@ -117,7 +125,21 @@ export async function runDiagnose(out: vscode.OutputChannel): Promise<void> {
     info(`Launch Antigravity with --remote-debugging-port=${port}`);
   }
 
-
+  // Brain
+  const { uuid: brainUuid, fullPath: brainFullPath } = getActiveBrainUuid(brainPath);
+  const fs = require("fs");
+  if (fs.existsSync(brainFullPath)) {
+    ok(`Brain path:    ${brainFullPath}`);
+    if (brainUuid) {
+      out.appendLine(`   Active brain UUID: ${brainUuid}`);
+    } else {
+      err(`Active brain UUID: Not found`);
+      info(`No active session directory found in brain path.`);
+    }
+  } else {
+    err(`Brain path:    ${brainFullPath} (not found)`);
+    info(`Open Settings → search 'Antigravity Scribe' → set Brain Path`);
+  }
 
   // Vault
   if (vaultPath) {

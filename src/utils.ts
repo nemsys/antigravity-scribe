@@ -1,3 +1,4 @@
+import * as fs from "fs";
 import * as path from "path";
 
 /**
@@ -14,4 +15,30 @@ export function expandHome(p: string): string {
     return path.join(realHome, p.slice(1));
   }
   return p;
+}
+
+/**
+ * Find the most recently modified brain UUID directory.
+ */
+export function getActiveBrainUuid(brainPath: string): { uuid: string | null; fullPath: string } {
+  const fullPath = expandHome(brainPath);
+  try {
+    const entries = fs.readdirSync(fullPath, { withFileTypes: true });
+    let latestUuid: string | null = null;
+    let maxMtime = 0;
+
+    for (const entry of entries) {
+      if (entry.isDirectory()) {
+        const dirPath = path.join(fullPath, entry.name);
+        const stats = fs.statSync(dirPath);
+        if (stats.mtimeMs > maxMtime) {
+          maxMtime = stats.mtimeMs;
+          latestUuid = entry.name;
+        }
+      }
+    }
+    return { uuid: latestUuid, fullPath };
+  } catch (err) {
+    return { uuid: null, fullPath };
+  }
 }

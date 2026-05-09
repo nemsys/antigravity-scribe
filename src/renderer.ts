@@ -6,6 +6,8 @@ import { ConvNode } from "./extractor";
 export interface RenderOptions {
   task: string;
   workspacePath: string;
+  brainUuid?: string;
+  brainFullPath?: string;
 }
 
 // ---------------------------------------------------------------------------
@@ -179,6 +181,15 @@ export function renderNote(nodes: ConvNode[], opts: RenderOptions): string {
   lines.push(`tags:`);
   lines.push(`  - agent-session`);
   lines.push(`  - antigravity`);
+
+  if (opts.brainUuid) {
+    lines.push(`brain_uuid: ${opts.brainUuid}`);
+  }
+
+  if (opts.brainFullPath && opts.brainUuid) {
+    lines.push(`brain_full_path:`);
+    lines.push(`  - ${opts.brainFullPath}/${opts.brainUuid}`);
+  }
   lines.push("---");
   lines.push("");
 
