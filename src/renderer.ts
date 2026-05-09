@@ -179,8 +179,7 @@ export function renderNote(nodes: ConvNode[], opts: RenderOptions): string {
   lines.push(`workspace: "${opts.workspacePath}"`);
 
   lines.push(`tags:`);
-  lines.push(`  - agent-session`);
-  lines.push(`  - antigravity`);
+  lines.push(`  - antigravity-session-full-log`);
 
   if (opts.brainUuid) {
     lines.push(`brain_uuid: ${opts.brainUuid}`);
