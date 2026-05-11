@@ -36,15 +36,11 @@ src/
   snapRunner.ts
   utils.ts
   vault.ts
+.env.example
 package.json
 README.md
-tsconfig.json</directory_structure><files>This section contains the contents of the repository&apos;s files.<file path="src/utils.ts">/**
- * Expand ~ in paths.
- */
-export function expandHome(p: string): string
-⋮----
-// os.homedir() reads the HOME env var which may be overridden
-// (e.g. by Antigravity profile aliases). Read the real home from passwd instead.</file><file path="src/cdp.ts">export interface CDPTarget {
+tsconfig.json</directory_structure><files>This section contains the contents of the repository&apos;s files.<file path=".env.example"># Path to your Antigravity profile configuration directory
+ANTIGRAVITY_PROFILE_DIR=&quot;/path/to/your/profile/app_config&quot;</file><file path="src/cdp.ts">export interface CDPTarget {
   id: string;
   type: string;
   title: string;
@@ -69,15 +65,24 @@ async evalJS(js: string): Promise&lt;string | null&gt;
 ⋮----
 close(): void
 ⋮----
-function httpGetJson&lt;T&gt;(url: string): Promise&lt;T | null&gt;</file><file path="src/vault.ts">import { expandHome } from &quot;./utils&quot;;
+function httpGetJson&lt;T&gt;(url: string): Promise&lt;T | null&gt;</file><file path="src/utils.ts">/**
+ * Expand ~ in paths.
+ */
+export function expandHome(p: string): string
+⋮----
+// os.homedir() reads the HOME env var which may be overridden
+// (e.g. by Antigravity profile aliases). Read the real home from passwd instead.
+⋮----
+/**
+ * Find the most recently modified brain UUID directory.
+ */
+export function getActiveBrainUuid(brainPath: string):</file><file path="src/vault.ts">import { expandHome } from &quot;./utils&quot;;
 ⋮----
 export interface VaultPaths {
   sessionDir: string;   // &lt;vault&gt;/&lt;vaultFolder&gt;/
-  assetsDir: string;    // &lt;vault&gt;/&lt;vaultFolder&gt;/assets/
 }
 ⋮----
 sessionDir: string;   // &lt;vault&gt;/&lt;vaultFolder&gt;/
-assetsDir: string;    // &lt;vault&gt;/&lt;vaultFolder&gt;/assets/
 ⋮----
 /**
  * Resolve and create the vault output directories.
@@ -104,20 +109,29 @@ export function writeNote(sessionDir: string, filename: string, content: string)
   &quot;exclude&quot;: [&quot;node_modules&quot;, &quot;dist&quot;, &quot;standalone.ts&quot;]
 }</file><file path="scripts/reinstall.sh">#!/bin/bash
 set -e
-cd /data/projects/antigravity-scribe
 
+# Change to project root relative to script
+cd &quot;$(dirname &quot;$0&quot;)/..&quot;
+
+# Load workspace-specific environment variables if .env exists
+if [ -f .env ]; then
+  export $(grep -v &apos;^#&apos; .env | xargs)
+fi
+
+# Rebuild the extension
 npm run package
 
-HOME=&quot;/home/nemsys/Antigravity_Profiles/phoneiep/app_config&quot; \
+PROFILE_HOME=&quot;${ANTIGRAVITY_PROFILE_DIR:-$HOME}&quot;
+HOME=&quot;$PROFILE_HOME&quot; \
   antigravity \
-  --extensions-dir=&quot;/home/nemsys/Antigravity_Profiles/phoneiep/app_config/.antigravity/extensions&quot; \
-  --install-extension /data/projects/antigravity-scribe/antigravity-scribe-0.1.0.vsix
+  --extensions-dir=&quot;$PROFILE_HOME/.antigravity/extensions&quot; \
+  --install-extension ./antigravity-scribe-*.vsix
 
-echo &quot;✓ Installed — reload Antigravity window&quot;</file><file path="README.md"># Antigravity Scribe
+echo &quot;✓ Context Updated &amp; Extension Installed — reload Antigravity window&quot;</file><file path="README.md"># Antigravity Scribe
 
 &gt; **Capture agents thinking, tool calls &amp; artifacts to your Obsidian vault**
 
-Antigravity Scribe is a VS Code extension for [Google Antigravity IDE](https://antigravity.google) that captures the full content of an agent session — chat turns, thinking blocks, tool calls, task lists, implementation plans, and screenshots — and writes a single structured Markdown note directly into your Obsidian vault.
+Antigravity Scribe is a VS Code extension for [Google Antigravity IDE](https://antigravity.google) that captures the full content of an agent session — chat turns, thinking blocks, tool calls, task lists, and implementation plans — and writes a single structured Markdown note directly into your Obsidian vault.
 
 No copy-pasting. No manual logging. Run the capture when your session is done and the note appears.
 
@@ -147,9 +161,9 @@ Antigravity Scribe uses two data sources and combines them into one note:
 Connects to Antigravity&apos;s built-in Chromium process via a local debug port and extracts the full conversation from the DOM — user messages, agent responses, thinking blocks (expanded or collapsed), and tool call summaries. The CDP hack is needed because Antigravity does not expose an API for session data, and the conversation  are stored locally as .pb files, which are Protocol Buffers (a binary serialization format) that would require complex parsing and reverse engineering. The CDP approach is more flexible and future-proof, as it relies on the rendered UI rather than internal storage formats.
 
 **2. Brain directory (filesystem)**
-Antigravity writes its verifiable artifacts (`task.md`, `implementation_plan.md`, screenshots, browser recordings) to a local `brain/` directory in real-time during every session. The extension reads the most recently modified UUID folder — which is always the active session — and includes the artifact content and images in the note.
+Antigravity writes its verifiable artifacts (`task.md`, `implementation_plan.md`) to a local `brain/` directory in real-time during every session. The extension reads the most recently modified UUID folder — which is always the active session — and includes the artifact content in the note.
 
-Both sources are combined into a single Obsidian-native Markdown note with YAML frontmatter, embedded images, and linked artifacts.
+Both sources are combined into a single Obsidian-native Markdown note with YAML frontmatter and linked artifacts.
 
 ---
 
@@ -355,10 +369,7 @@ Add to `keybindings.json`:
 &lt;vault&gt;/
 └── AgentSessions/
     ├── 20260501_1430_refactor-auth.md
-    ├── 20260501_1615_session.md
-    └── assets/
-        ├── media__1776176592567.png
-        └── media__1776180012345.png
+    └── 20260501_1615_session.md
 ```
 
 ### Note structure
@@ -393,9 +404,6 @@ tags:
 1. Install `jsonwebtoken` and `@types/jsonwebtoken`
 2. Create `src/auth/jwt.ts` with sign/verify helpers
 ...
-
-### Screenshots &amp; Media
-![[assets/media__1776176592567.png]]
 
 ---
 
@@ -443,8 +451,7 @@ Antigravity writes artifact files to a local directory in real-time while the ag
     ├── task.md.resolved          ← final version, this is what we read
     ├── task.md.resolved.0        ← revision history, skipped
     ├── implementation_plan.md.resolved
-    ├── implementation_plan.md.metadata.json
-    └── media__1776176592567.png
+    └── implementation_plan.md.metadata.json
 ```
 
 The extension finds the active session by selecting the **most recently modified UUID directory**. Since Antigravity writes to this directory continuously during a session, the hottest directory is always the current one. No UUID extraction from the DOM, no timestamp window, no configuration required.
@@ -515,12 +522,6 @@ This can happen if you start a new conversation immediately before capturing the
 - Always capture before starting a new conversation
 - The `brain_uuid` in the note&apos;s frontmatter lets you verify which brain dir was used
 
-### Images are broken in Obsidian
-
-- Check that images were copied: `ls &lt;vault&gt;/AgentSessions/assets/`
-- In Obsidian go to **Settings → Files &amp; Links → New link format** → set to **Relative path to file** or **Shortest path**
-- The embed syntax used is `![[assets/filename.png]]`, relative to the note&apos;s folder
-
 ---
 
 ## Building from Source
@@ -544,6 +545,16 @@ npm run watch
 ```
 
 Then press `F5` in Antigravity / VS Code to launch an Extension Development Host with the extension loaded. Changes take effect after `Ctrl+R` in the host window.
+
+### Option D — Use the reinstall script (recommended for contributors)
+
+If you are developing the extension, use the provided script to build and install it in one go:
+
+```bash
+# Set your profile dir if different from default
+export ANTIGRAVITY_PROFILE_DIR=&quot;~/Antigravity_Profiles/myprofile/app_config&quot;
+./scripts/reinstall.sh
+```
 
 ---
 
@@ -569,141 +580,7 @@ async function captureWithTask(task: string)
 ⋮----
 function setIdle()
 ⋮----
-function setBusy()</file><file path="src/renderer.ts">import TurndownService from &quot;turndown&quot;;
-import { ConvNode } from &quot;./extractor&quot;;
-⋮----
-export interface RenderOptions {
-  task: string;
-  workspacePath: string;
-}
-⋮----
-// ---------------------------------------------------------------------------
-// Turndown instance
-// ---------------------------------------------------------------------------
-⋮----
-const toRow = (cells: any[])
-⋮----
-function htmlToMarkdown(html: string): string
-⋮----
-// ---------------------------------------------------------------------------
-// Heading depth per role
-//
-// Rendered structure mirrors the visual hierarchy in the panel:
-//   ## 👤 USER / ## 🤖 AGENT          (top-level turns)
-//   ### ⏱ Worked for 1m               (tool-use block)
-//   #### 🔍 Explored 3 files, 2 pages  (sub-step group)
-//   ##### 🧠 Thought for 3s            (thought inside explored)
-//   ##### 🔧 Actions                   (action group inside explored)
-//   #### ▶ Ran `curl ...`              (command at worked level)
-// ---------------------------------------------------------------------------
-⋮----
-user: &quot;\u{1F464}&quot;,   // 👤
-agent: &quot;\u{1F916}&quot;,   // 🤖
-worked: &quot;\u23F1&quot;,      // ⏱
-explored: &quot;\u{1F50D}&quot;,   // 🔍
-thought: &quot;\u{1F9E0}&quot;,   // 🧠
-actions: &quot;\u{1F527}&quot;,   // 🔧
-ran: &quot;\u25B6&quot;,      // ▶
-⋮----
-function h(depth: number): string
-⋮----
-// ---------------------------------------------------------------------------
-// renderNode — recursive
-// ---------------------------------------------------------------------------
-function renderNode(node: ConvNode, lines: string[]): void
-⋮----
-// &apos;action&apos; nodes only appear as list items inside &apos;actions&apos;; skip standalone
-⋮----
-// ---------------------------------------------------------------------------
-// renderNote — public entry point
-// ---------------------------------------------------------------------------
-export function renderNote(nodes: ConvNode[], opts: RenderOptions): string
-⋮----
-// ── Frontmatter ──────────────────────────────────────────────────────────
-⋮----
-// ── Session ───────────────────────────────────────────────────────────────
-⋮----
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-⋮----
-export function sessionFilename(task: string, date: Date = new Date()): string
-⋮----
-const pad = (n: number)</file><file path="src/extractor.ts">// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-⋮----
-export type NodeRole =
-  | &quot;user&quot;
-  | &quot;agent&quot;
-  | &quot;worked&quot;
-  | &quot;explored&quot;
-  | &quot;thought&quot;
-  | &quot;actions&quot;   // group container — children are individual &apos;action&apos; nodes
-  | &quot;action&quot;    // single action row: Analyzed, Created outline, Read page
-  | &quot;ran&quot;       // Ran / Edited / Created command row
-  | &quot;_no_chat&quot;;
-⋮----
-| &quot;actions&quot;   // group container — children are individual &apos;action&apos; nodes
-| &quot;action&quot;    // single action row: Analyzed, Created outline, Read page
-| &quot;ran&quot;       // Ran / Edited / Created command row
-⋮----
-export interface ConvNode {
-  role: NodeRole;
-  /** Primary text: user message, &quot;Worked for 1m&quot;, &quot;Thought for 3s&quot;, verb &quot;Analyzed&quot; … */
-  label: string;
-  /** Secondary text: chip ref &quot;llms-ctx-full.txt#L1-800&quot;, command, thought body */
-  detail: string;
-  /** Raw innerHTML for agent / thought content — converted to Markdown by renderer */
-  html: string | null;
-  children: ConvNode[];
-}
-⋮----
-/** Primary text: user message, &quot;Worked for 1m&quot;, &quot;Thought for 3s&quot;, verb &quot;Analyzed&quot; … */
-⋮----
-/** Secondary text: chip ref &quot;llms-ctx-full.txt#L1-800&quot;, command, thought body */
-⋮----
-/** Raw innerHTML for agent / thought content — converted to Markdown by renderer */
-⋮----
-// ---------------------------------------------------------------------------
-// Extract conversation title from the panel header
-// ---------------------------------------------------------------------------
-⋮----
-// ---------------------------------------------------------------------------
-// Main extraction — returns ConvNode[] as JSON string
-// ---------------------------------------------------------------------------</file><file path="src/snapRunner.ts">import { findTarget, CDPClient } from &quot;./cdp&quot;;
-import { EXTRACT_JS, EXTRACT_TITLE_JS, ConvNode } from &quot;./extractor&quot;;
-import { renderNote, sessionFilename } from &quot;./renderer&quot;;
-import { prepareVault, writeNote } from &quot;./vault&quot;;
-⋮----
-export interface SnapResult {
-  outPath: string;
-  nodeCount: number;
-  skipped?: boolean;
-}
-⋮----
-export async function runSnap(task: string): Promise&lt;SnapResult&gt;
-⋮----
-// ── 1. CDP: extract conversation tree ─────────────────────────────────────
-⋮----
-// ── 1b. Resolve effective task label ──────────────────────────────────────
-⋮----
-// ── 2. Vault: prepare dirs ─────────────────────────────────────────────────
-⋮----
-// ── 3. Render and write note ───────────────────────────────────────────────
-⋮----
-// ---------------------------------------------------------------------------
-// Diagnostic: report config state without capturing
-// ---------------------------------------------------------------------------
-export async function runDiagnose(out: vscode.OutputChannel): Promise&lt;void&gt;
-⋮----
-const ok = (msg: string) =&gt; out.appendLine(`✅ $
-const err = (msg: string) =&gt; out.appendLine(`❌ $
-const info = (msg: string) =&gt; out.appendLine(`   $
-⋮----
-// CDP
-⋮----
-// Vault</file><file path="package.json">{
+function setBusy()</file><file path="package.json">{
   &quot;name&quot;: &quot;antigravity-scribe&quot;,
   &quot;displayName&quot;: &quot;Antigravity Scribe&quot;,
   &quot;description&quot;: &quot;Capture thinking, tool calls &amp; artifacts to your Obsidian vault&quot;,
@@ -801,4 +678,192 @@ const info = (msg: string) =&gt; out.appendLine(`   $
     &quot;turndown&quot;: &quot;^7.2.0&quot;,
     &quot;ws&quot;: &quot;^8.16.0&quot;
   }
-}</file></files></repomix>
+}</file><file path="src/extractor.ts">// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+⋮----
+export type NodeRole =
+  | &quot;user&quot;
+  | &quot;agent&quot;
+  | &quot;worked&quot;
+  | &quot;explored&quot;
+  | &quot;thought&quot;
+  | &quot;actions&quot;    // group container — children are individual &apos;action&apos; nodes
+  | &quot;action&quot;     // single action row: Analyzed, Created outline, Read page
+  | &quot;ran&quot;        // Ran / Edited / Created command row
+  | &quot;artifact&quot;   // Artifact card (task.md, implementation_plan.md, etc.)
+  | &quot;files_modified&quot; // Files Modified section with child filenames
+  | &quot;_no_chat&quot;;
+⋮----
+| &quot;actions&quot;    // group container — children are individual &apos;action&apos; nodes
+| &quot;action&quot;     // single action row: Analyzed, Created outline, Read page
+| &quot;ran&quot;        // Ran / Edited / Created command row
+| &quot;artifact&quot;   // Artifact card (task.md, implementation_plan.md, etc.)
+| &quot;files_modified&quot; // Files Modified section with child filenames
+⋮----
+export interface ConvNode {
+  role: NodeRole;
+  /** Primary text: user message, &quot;Worked for 1m&quot;, &quot;Thought for 3s&quot;, verb &quot;Analyzed&quot; … */
+  label: string;
+  /** Secondary text: chip ref &quot;llms-ctx-full.txt#L1-800&quot;, command, thought body, filename */
+  detail: string;
+  /** Raw innerHTML for agent / thought content — converted to Markdown by renderer */
+  html: string | null;
+  children: ConvNode[];
+}
+⋮----
+/** Primary text: user message, &quot;Worked for 1m&quot;, &quot;Thought for 3s&quot;, verb &quot;Analyzed&quot; … */
+⋮----
+/** Secondary text: chip ref &quot;llms-ctx-full.txt#L1-800&quot;, command, thought body, filename */
+⋮----
+/** Raw innerHTML for agent / thought content — converted to Markdown by renderer */
+⋮----
+// ---------------------------------------------------------------------------
+// Extract conversation title from the panel header
+// ---------------------------------------------------------------------------
+⋮----
+// ---------------------------------------------------------------------------
+// Main extraction — returns ConvNode[] as JSON string
+//
+// Ported from scraper.py which handles:
+//   • User messages (with @mentions)
+//   • Thought blocks (collapsed &amp; expanded)
+//   • Worked-for wrappers with expanded tool-use children
+//   • Explored / Edited action groups
+//   • Analyzed rows (file / folder style)
+//   • Ran command rows
+//   • Artifact cards
+//   • Files Modified sections
+//   • Standalone agent response text
+// ---------------------------------------------------------------------------</file><file path="src/snapRunner.ts">import { findTarget, CDPClient } from &quot;./cdp&quot;;
+import { EXTRACT_JS, EXTRACT_TITLE_JS, ConvNode } from &quot;./extractor&quot;;
+import { renderNote, sessionFilename } from &quot;./renderer&quot;;
+import { prepareVault, writeNote } from &quot;./vault&quot;;
+import { getActiveBrainUuid } from &quot;./utils&quot;;
+⋮----
+export interface SnapResult {
+  outPath: string;
+  nodeCount: number;
+  skipped?: boolean;
+}
+⋮----
+export async function runSnap(task: string): Promise&lt;SnapResult&gt;
+⋮----
+// ── 1. CDP: extract conversation tree ─────────────────────────────────────
+⋮----
+// ── 1b. Resolve effective task label ──────────────────────────────────────
+⋮----
+// ── 2. Vault: prepare dirs ─────────────────────────────────────────────────
+⋮----
+// ── 3. Render and write note ───────────────────────────────────────────────
+⋮----
+// ---------------------------------------------------------------------------
+// Diagnostic: report config state without capturing
+// ---------------------------------------------------------------------------
+export async function runDiagnose(out: vscode.OutputChannel): Promise&lt;void&gt;
+⋮----
+const ok = (msg: string) =&gt; out.appendLine(`✅ $
+const err = (msg: string) =&gt; out.appendLine(`❌ $
+const info = (msg: string) =&gt; out.appendLine(`   $
+⋮----
+// CDP
+⋮----
+// Brain
+⋮----
+// Vault</file><file path="src/renderer.ts">import TurndownService from &quot;turndown&quot;;
+import { ConvNode } from &quot;./extractor&quot;;
+⋮----
+export interface RenderOptions {
+  task: string;
+  workspacePath: string;
+  brainUuid?: string;
+  brainFullPath?: string;
+}
+⋮----
+// ---------------------------------------------------------------------------
+// Turndown instance
+// ---------------------------------------------------------------------------
+⋮----
+// Ignore images since we no longer capture them
+⋮----
+const toRow = (cells: any[])
+⋮----
+function htmlToMarkdown(html: string): string
+⋮----
+// ---------------------------------------------------------------------------
+// Heading depth per role
+//
+// Rendered structure mirrors the visual hierarchy in the panel:
+//   ## 👤 USER / ## 🤖 AGENT          (top-level turns)
+//   ### ⏱ Worked for 1m               (tool-use block)
+//   #### 🔍 Explored 3 files, 2 pages  (sub-step group)
+//   ##### 🧠 Thought for 3s            (thought inside explored)
+//   ##### 🔧 Actions                   (action group inside explored)
+//   #### ▶ Ran `curl ...`              (command at worked level)
+//   #### 📄 Artifact                   (artifact card at agent level)
+//   #### 📁 Files Modified             (files modified section)
+// ---------------------------------------------------------------------------
+⋮----
+user: &quot;\u{1F464}&quot;,  // 👤
+agent: &quot;\u{1F916}&quot;,  // 🤖
+worked: &quot;\u23F1&quot;,     // ⏱
+explored: &quot;\u{1F50D}&quot;, // 🔍
+thought: &quot;\u{1F9E0}&quot;, // 🧠
+actions: &quot;\u{1F527}&quot;, // 🔧
+ran: &quot;\u25B6&quot;,    // ▶
+artifact: &quot;\u{1F4C4}&quot;, // 📄
+files_modified: &quot;\u{1F4C1}&quot;, // 📁
+⋮----
+function h(depth: number): string
+⋮----
+// ---------------------------------------------------------------------------
+// renderNode — recursive
+// ---------------------------------------------------------------------------
+⋮----
+function renderNode(node: ConvNode, lines: string[], depth = 2): void
+⋮----
+// ── User message ────────────────────────────────────────────────────────
+⋮----
+// ── Agent response ───────────────────────────────────────────────────────
+⋮----
+// ── Worked-for block ────────────────────────────────────────────────────
+⋮----
+// ── Explored / Edited group ─────────────────────────────────────────────
+⋮----
+// ── Thought block ────────────────────────────────────────────────────────
+⋮----
+// ── Actions container ────────────────────────────────────────────────────
+⋮----
+// &apos;action&apos; nodes inside &apos;actions&apos; render as list items
+⋮----
+// ── Single action (Analyzed, Read page, …) ────────────────────────────
+⋮----
+// Standalone action (not inside an &apos;actions&apos; container): list item
+⋮----
+// Sub-items (folder expansion)
+⋮----
+// ── Ran command ─────────────────────────────────────────────────────────
+⋮----
+// ── Artifact card ────────────────────────────────────────────────────────
+⋮----
+// ── Files Modified section ───────────────────────────────────────────────
+⋮----
+// ── No chat panel found ──────────────────────────────────────────────────
+⋮----
+// ---------------------------------------------------------------------------
+// renderNote — public entry point
+// ---------------------------------------------------------------------------
+⋮----
+export function renderNote(nodes: ConvNode[], opts: RenderOptions): string
+⋮----
+// ── Frontmatter ──────────────────────────────────────────────────────────
+⋮----
+// ── Session ───────────────────────────────────────────────────────────────
+⋮----
+// ---------------------------------------------------------------------------
+// Helpers
+// ---------------------------------------------------------------------------
+⋮----
+export function sessionFilename(task: string, date: Date = new Date()): string
+⋮----
+const pad = (n: number)</file></files></repomix>
