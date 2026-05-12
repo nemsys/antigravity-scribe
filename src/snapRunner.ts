@@ -1,4 +1,5 @@
 import * as vscode from "vscode";
+import * as fs from "fs";
 import { findTarget, CDPClient } from "./cdp";
 import { EXTRACT_JS, EXTRACT_TITLE_JS, ConvNode } from "./extractor";
 import { renderNote, sessionFilename } from "./renderer";
@@ -127,7 +128,6 @@ export async function runDiagnose(out: vscode.OutputChannel): Promise<void> {
 
   // Brain
   const { uuid: brainUuid, fullPath: brainFullPath } = getActiveBrainUuid(brainPath);
-  const fs = require("fs");
   if (fs.existsSync(brainFullPath)) {
     ok(`Brain path:    ${brainFullPath}`);
     if (brainUuid) {

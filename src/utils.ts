@@ -1,5 +1,7 @@
 import * as fs from "fs";
+import * as os from "os";
 import * as path from "path";
+import { execSync } from "child_process";
 
 /**
  * Expand ~ in paths.
@@ -7,11 +9,16 @@ import * as path from "path";
 export function expandHome(p: string): string {
   if (p.startsWith("~/") || p === "~") {
     // os.homedir() reads the HOME env var which may be overridden
-    // (e.g. by Antigravity profile aliases). Read the real home from passwd instead.
-    const realHome = require("child_process")
-      .execSync("getent passwd $(id -un) | cut -d: -f6")
-      .toString()
-      .trim();
+    // (e.g. by Antigravity profile aliases). We try to read the real home
+    // from passwd on Linux, but gracefully fall back to os.homedir().
+    let realHome = os.homedir();
+    try {
+      if (process.platform === "linux") {
+        realHome = execSync("getent passwd $(id -un) | cut -d: -f6").toString().trim();
+      }
+    } catch (err) {
+      // Fallback to os.homedir() on error
+    }
     return path.join(realHome, p.slice(1));
   }
   return p;

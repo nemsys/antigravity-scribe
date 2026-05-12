@@ -30,7 +30,6 @@ scraper/
   DOM-exports/
     disabling-media-asset-capture.html
     fixing-agent-interaction-export-cleaned.html
-    live_dom_1778598762488.html
     refining-media-asset-suppression.html
   output/
     disabling-media-asset-capture.md
@@ -57,364 +56,7 @@ src/
 .env.example
 package.json
 README.md
-test_live_dom.js
-tsconfig.json</directory_structure><files>This section contains the contents of the repository&apos;s files.<file path="scraper/DOM-exports/live_dom_1778598762488.html">&lt;div id=&quot;conversation&quot; class=&quot;relative flex w-full grow flex-col overflow-y-hidden overflow-x-clip pr-px&quot;&gt;&lt;div class=&quot;flex w-full grow flex-col overflow-hidden&quot;&gt;&lt;div class=&quot;h-full overflow-y-auto min-h-0 w-full relative flex w-full grow flex-col overflow-y-auto&quot;&gt;&lt;div class=&quot;mx-auto w-full&quot;&gt;&lt;div&gt;&lt;div class=&quot;relative flex flex-col gap-y-3 px-4&quot;&gt;&lt;div class=&quot;flex items-start&quot;&gt;&lt;div class=&quot;flex flex-col gap-0.5 group w-full&quot;&gt;&lt;div class=&quot;sticky top-0 z-10 mb-4 bg-agent-convo-background after:content-[&apos;&apos;] after:absolute after:left-0 after:right-0 after:top-full after:h-7 after:bg-gradient-to-b after:from-agent-convo-background after:to-transparent after:pointer-events-none&quot;&gt;&lt;div class=&quot;flex w-full flex-row&quot;&gt;&lt;div class=&quot;flex min-w-0 grow flex-col&quot;&gt;&lt;div data-testid=&quot;user-input-step&quot; class=&quot;flex flex-col w-full gap-2 group pt-4&quot;&gt;&lt;div class=&quot;relative p-px rounded-xl bg-gray-500/20&quot;&gt;&lt;div class=&quot;relative flex flex-col gap-0 p-2 rounded-[calc(theme(borderRadius.xl)-1px)] bg-input&quot;&gt;&lt;div class=&quot;flex flex-row items-end gap-2&quot;&gt;&lt;div class=&quot;flex-1 flex flex-col gap-2&quot;&gt;&lt;div class=&quot;relative&quot;&gt;&lt;div class=&quot;max-h-[20vh] overflow-hidden&quot;&gt;&lt;div class=&quot;flex flex-wrap gap-2&quot;&gt;&lt;/div&gt;&lt;div class=&quot;whitespace-pre-wrap text-sm&quot; style=&quot;word-break: break-word;&quot;&gt;Follow @/data/projects/antigravity-scribe/.agents/prompts/tasks/integrate-scraper-into-app.md&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;flex-shrink-0 pb-1&quot;&gt;&lt;div data-testid=&quot;revert-button&quot; role=&quot;button&quot; data-tooltip-id=&quot;undo-tooltip-P0-5&quot; class=&quot;cursor-pointer opacity-50 hover:opacity-100 transition-opacity&quot;&gt;&lt;span class=&quot;google-symbols w-4 h-4&quot; style=&quot;display: flex; align-items: center; justify-content: center; font-size: 16px; user-select: none;&quot;&gt;undo&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div class=&quot;relative&quot;&gt;&lt;button type=&quot;button&quot; class=&quot;group flex items-center gap-1 w-full text-left text-sm px-2 min-h-8 py-1 rounded-lg tabular-nums select-none text-ide-text-color hover:bg-gray-500/10 transition-[opacity,background-color]&quot;&gt;&lt;span class=&quot;opacity-70&quot;&gt;Worked for 9s&lt;/span&gt;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;24&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot; class=&quot;lucide lucide-chevron-right h-3.5 w-3.5 shrink-0 transition-all duration-200 text-ide-text-color/50 opacity-70 rotate-90&quot;&gt;&lt;path d=&quot;m9 18 6-6-6-6&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/button&gt;&lt;div class=&quot;relative&quot; style=&quot;opacity: 1; transform: translateY(0px); transition: opacity 150ms ease-out, transform 150ms ease-out;&quot;&gt;&lt;div class=&quot;overflow-y-auto pl-3 pt-0.5&quot;&gt;&lt;div class=&quot;flex flex-col gap-0.5&quot;&gt;&lt;div class=&quot;relative&quot;&gt;&lt;button type=&quot;button&quot; class=&quot;group flex items-center gap-1 w-full text-left text-sm px-2 min-h-8 py-1 rounded-lg tabular-nums select-none text-ide-text-color hover:bg-gray-500/10 transition-[opacity,background-color]&quot;&gt;&lt;span class=&quot;opacity-70&quot;&gt;Explored&lt;/span&gt;&lt;span&gt;1 file&lt;/span&gt;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;24&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot; class=&quot;lucide lucide-chevron-right h-3.5 w-3.5 shrink-0 transition-all duration-200 text-ide-text-color/50 opacity-70 rotate-90&quot;&gt;&lt;path d=&quot;m9 18 6-6-6-6&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/button&gt;&lt;div class=&quot;relative&quot; style=&quot;opacity: 1; transform: translateY(0px); transition: opacity 150ms ease-out, transform 150ms ease-out;&quot;&gt;&lt;div class=&quot;overflow-y-auto pl-3 pt-0.5&quot; style=&quot;max-height: 400px;&quot;&gt;&lt;div class=&quot;flex flex-col gap-0.5 py-0.5&quot;&gt;&lt;div class=&quot;flex flex-row&quot;&gt;&lt;div class=&quot;min-w-0 grow&quot;&gt;&lt;div class=&quot;flex flex-col gap-0.5&quot;&gt;&lt;div class=&quot;isolate&quot;&gt;&lt;button class=&quot;group flex w-full items-center gap-1.5 px-2 min-h-8 text-left text-sm rounded-lg text-ide-text-color opacity-70 hover:bg-gray-500/10 transition-[background-color] tabular-nums select-none&quot;&gt;&lt;span class=&quot;cursor-pointer&quot;&gt;Thought for 2s&lt;/span&gt;&lt;span class=&quot;google-symbols h-3.5 w-3.5 shrink-0 transition-all duration-200 text-ide-text-color/50 opacity-50 group-hover:opacity-70 rotate-90&quot; style=&quot;display: flex; align-items: center; justify-content: center; font-size: 16px; user-select: none;&quot;&gt;chevron_right&lt;/span&gt;&lt;/button&gt;&lt;div class=&quot;overflow-hidden transition-all duration-300 ease-in-out relative pl-3 max-h-[200px] opacity-100&quot;&gt;&lt;div class=&quot;px-2 pb-1 pt-1 overflow-y-auto max-h-[200px] relative&quot;&gt;&lt;div&gt;&lt;div class=&quot;leading-relaxed select-text text-sm flex flex-col [&amp;amp;_code:not(pre_code)]:bg-code-background [&amp;amp;_code:not(pre_code)]:text-code-foreground [&amp;amp;_code:not(pre_code)]:rounded [&amp;amp;_code:not(pre_code)]:px-1 [&amp;amp;_code:not(pre_code)]:py-0.5 [&amp;amp;_code:not(pre_code)]:text-[0.9em] [&amp;amp;_summary]:cursor-pointer [&amp;amp;_h1]:text-xl [&amp;amp;_h2]:text-lg [&amp;amp;_h3]:text-base [&amp;amp;_h4]:text-sm [&amp;amp;_h1]:font-semibold [&amp;amp;_h2]:font-semibold [&amp;amp;_h3]:font-medium [&amp;amp;_h4]:font-medium [&amp;amp;_h1]:!mb-2 [&amp;amp;_h1]:!mt-6 [&amp;amp;_h2]:!mb-2 [&amp;amp;_h2]:!mt-6 [&amp;amp;_h3]:!mb-1 [&amp;amp;_h3]:!mt-3 [&amp;amp;_h4]:!mb-1 [&amp;amp;_h4]:!mt-3 [&amp;amp;_li.task-list-item]:list-none [&amp;amp;_ul:has(li.task-list-item)]:list-none [&amp;amp;_ul]:my-2 [&amp;amp;_ol]:my-2 [&amp;amp;&amp;gt;ul.contains-task-list]:pl-0 [&amp;amp;&amp;gt;ol.contains-task-list]:pl-0 [&amp;amp;_ul]:pl-10 [&amp;amp;_ol]:pl-10 [&amp;amp;&amp;gt;ul:not(.contains-task-list)]:!pl-4 [&amp;amp;&amp;gt;ol:not(.contains-task-list)]:!pl-4 [&amp;amp;_ul]:list-disc [&amp;amp;_ol]:list-decimal [&amp;amp;_li.task-checked&amp;gt;.task-checked-content]:opacity-50 break-words [&amp;amp;_strong]:block [&amp;amp;_strong]:my-1 opacity-70&quot;&gt;&lt;style&gt;
-/* Copied from remark-github-blockquote-alert/alert.css */
-@media (prefers-color-scheme: dark) {
-.markdown-alert {
-	--color-border-default: #30363d;
-	--color-accent-fg: #58a6ff;
-	--color-accent-emphasis: #1f6feb;
-	--color-danger-fg: #f85149;
-	--color-danger-emphasis: #da3633;
-	--color-attention-fg: #d29922;
-	--color-attention-emphasis: #9e6a03;
-	--color-done-fg: #a371f7;
-	--color-done-emphasis: #8957e5;
-	--color-success-fg: #3fb950;
-	--color-success-emphasis: #238636;
-	}
-}
-
-@media (prefers-color-scheme: light) {
-.markdown-alert {
-	--color-border-default: #d0d7de;
-	--color-accent-fg: #0969da;
-	--color-accent-emphasis: #0969da;
-	--color-danger-fg: #d1242f;
-	--color-danger-emphasis: #cf222e;
-	--color-attention-fg: #9a6700;
-	--color-attention-emphasis: #9a6700;
-	--color-done-fg: #8250df;
-	--color-done-emphasis: #8250df;
-	--color-success-fg: #1a7f37;
-	--color-success-emphasis: #1f883d;
-	}
-}
-
-.markdown-alert {
-	border-left: .25em solid var(--borderColor-default, var(--color-border-default));
-	color: inherit;
-	margin-bottom: 16px;
-	padding: .5rem 1em
-}
-
-.markdown-alert&gt;:last-child {
-	margin-bottom: 0 !important
-}
-
-.markdown-alert .markdown-alert-title {
-	align-items: center;
-	display: flex;
-	font-size: 14px;
-	font-weight: 500;
-	line-height: 1
-}
-
-.markdown-alert .markdown-alert-title svg.octicon {
-	margin-right: 8px !important;
-	margin-right: var(--base-size-8, 8px) !important;
-	fill: currentColor;
-}
-
-.markdown-alert.markdown-alert-note {
-	border-left-color: var(--borderColor-accent-emphasis, var(--color-accent-emphasis))
-}
-
-.markdown-alert.markdown-alert-note .markdown-alert-title {
-	color: var(--color-accent-fg);
-	color: var(--fgColor-accent, var(--color-accent-fg))
-}
-
-.markdown-alert.markdown-alert-tip {
-	border-left-color: var(--borderColor-success-emphasis, var(--color-success-emphasis))
-}
-
-.markdown-alert.markdown-alert-tip .markdown-alert-title {
-	color: var(--color-success-fg);
-	color: var(--fgColor-success, var(--color-success-fg))
-}
-
-.markdown-alert.markdown-alert-important {
-	border-left-color: var(--borderColor-done-emphasis, var(--color-done-emphasis))
-}
-
-.markdown-alert.markdown-alert-important .markdown-alert-title {
-	color: var(--color-done-fg);
-	color: var(--fgColor-done, var(--color-done-fg))
-}
-
-.markdown-alert.markdown-alert-warning {
-	border-left-color: var(--borderColor-attention-emphasis, var(--color-attention-emphasis))
-}
-
-.markdown-alert.markdown-alert-warning .markdown-alert-title {
-	color: var(--color-attention-fg);
-	color: var(--fgColor-attention, var(--color-attention-fg))
-}
-
-.markdown-alert.markdown-alert-caution {
-	border-left-color: var(--borderColor-danger-emphasis, var(--color-danger-emphasis))
-}
-
-.markdown-alert.markdown-alert-caution .markdown-alert-title {
-	color: var(--color-danger-fg);
-	color: var(--fgColor-danger, var(--color-danger-fg))
-}
-
-div:has(&gt; table),
-table th,
-table td {
-  border-style: solid;
-  border-color: rgba(128, 128, 128, 0.2);
-}
-&lt;/style&gt;&lt;p node=&quot;[object Object]&quot;&gt;Let me start by reading the task file that the user wants me to follow.&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;flex flex-row&quot;&gt;&lt;div class=&quot;min-w-0 grow&quot;&gt;&lt;div class=&quot;flex flex-col&quot;&gt;&lt;div class=&quot;group flex w-full min-w-0 items-center min-h-8 py-1 px-2 select-none transition-[background-color]&quot;&gt;&lt;div class=&quot;flex min-w-0 items-center gap-x-1 text-sm&quot;&gt;&lt;div class=&quot;truncate&quot;&gt;&lt;div class=&quot;flex flex-row items-center gap-1 overflow-hidden whitespace-nowrap&quot;&gt;&lt;span class=&quot;shrink-0 opacity-70&quot;&gt;Analyzed&lt;/span&gt;&lt;div class=&quot;flex items-center overflow-hidden&quot;&gt;&lt;span class=&quot;inline-flex items-center gap-0.5 rounded-md align-middle text-sm font-medium transition-[opacity,background-color] cursor-pointer hover:bg-gray-500/20 select-none&quot; draggable=&quot;true&quot; style=&quot;padding: 1px 0.25rem 1px 0.125rem;&quot;&gt;&lt;div&gt;&lt;img src=&quot;/usr/share/antigravity/resources/app/extensions/theme-symbols/src/icons/files/markdown.svg&quot; width=&quot;16px&quot; height=&quot;16px&quot; style=&quot;min-width: 16px; display: inline-block; min-height: 16px; transform: translateY(-1px);&quot;&gt;&lt;/div&gt;&lt;span class=&quot;inline-flex break-all leading-tight select-text&quot;&gt;&lt;span&gt;integrate-scraper-into-app.md&lt;span class=&quot;opacity-50 ml-0.5&quot;&gt;#L1-10&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;ml-0.5 flex items-center text-sm text-gray-500/50 hidden&quot;&gt;&lt;div class=&quot;h-3 w-3 animate-spin rounded-full border-2 border-gray-400 border-t-transparent&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;flex items-center shrink-0&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;flex flex-row&quot;&gt;&lt;div class=&quot;min-w-0 grow&quot;&gt;&lt;div class=&quot;flex flex-col gap-0.5&quot;&gt;&lt;div class=&quot;px-2 py-1&quot;&gt;&lt;div class=&quot;leading-relaxed select-text text-sm flex flex-col [&amp;amp;_code:not(pre_code)]:bg-code-background [&amp;amp;_code:not(pre_code)]:text-code-foreground [&amp;amp;_code:not(pre_code)]:rounded [&amp;amp;_code:not(pre_code)]:px-1 [&amp;amp;_code:not(pre_code)]:py-0.5 [&amp;amp;_code:not(pre_code)]:text-[0.9em] [&amp;amp;_summary]:cursor-pointer [&amp;amp;_h1]:text-xl [&amp;amp;_h2]:text-lg [&amp;amp;_h3]:text-base [&amp;amp;_h4]:text-sm [&amp;amp;_h1]:font-semibold [&amp;amp;_h2]:font-semibold [&amp;amp;_h3]:font-medium [&amp;amp;_h4]:font-medium [&amp;amp;_h1]:!mb-2 [&amp;amp;_h1]:!mt-6 [&amp;amp;_h2]:!mb-2 [&amp;amp;_h2]:!mt-6 [&amp;amp;_h3]:!mb-1 [&amp;amp;_h3]:!mt-3 [&amp;amp;_h4]:!mb-1 [&amp;amp;_h4]:!mt-3 [&amp;amp;_li.task-list-item]:list-none [&amp;amp;_ul:has(li.task-list-item)]:list-none [&amp;amp;_ul]:my-2 [&amp;amp;_ol]:my-2 [&amp;amp;&amp;gt;ul.contains-task-list]:pl-0 [&amp;amp;&amp;gt;ol.contains-task-list]:pl-0 [&amp;amp;_ul]:pl-10 [&amp;amp;_ol]:pl-10 [&amp;amp;&amp;gt;ul:not(.contains-task-list)]:!pl-4 [&amp;amp;&amp;gt;ol:not(.contains-task-list)]:!pl-4 [&amp;amp;_ul]:list-disc [&amp;amp;_ol]:list-decimal [&amp;amp;_li.task-checked&amp;gt;.task-checked-content]:opacity-50 break-words&quot;&gt;&lt;style&gt;
-/* Copied from remark-github-blockquote-alert/alert.css */
-@media (prefers-color-scheme: dark) {
-.markdown-alert {
-	--color-border-default: #30363d;
-	--color-accent-fg: #58a6ff;
-	--color-accent-emphasis: #1f6feb;
-	--color-danger-fg: #f85149;
-	--color-danger-emphasis: #da3633;
-	--color-attention-fg: #d29922;
-	--color-attention-emphasis: #9e6a03;
-	--color-done-fg: #a371f7;
-	--color-done-emphasis: #8957e5;
-	--color-success-fg: #3fb950;
-	--color-success-emphasis: #238636;
-	}
-}
-
-@media (prefers-color-scheme: light) {
-.markdown-alert {
-	--color-border-default: #d0d7de;
-	--color-accent-fg: #0969da;
-	--color-accent-emphasis: #0969da;
-	--color-danger-fg: #d1242f;
-	--color-danger-emphasis: #cf222e;
-	--color-attention-fg: #9a6700;
-	--color-attention-emphasis: #9a6700;
-	--color-done-fg: #8250df;
-	--color-done-emphasis: #8250df;
-	--color-success-fg: #1a7f37;
-	--color-success-emphasis: #1f883d;
-	}
-}
-
-.markdown-alert {
-	border-left: .25em solid var(--borderColor-default, var(--color-border-default));
-	color: inherit;
-	margin-bottom: 16px;
-	padding: .5rem 1em
-}
-
-.markdown-alert&gt;:last-child {
-	margin-bottom: 0 !important
-}
-
-.markdown-alert .markdown-alert-title {
-	align-items: center;
-	display: flex;
-	font-size: 14px;
-	font-weight: 500;
-	line-height: 1
-}
-
-.markdown-alert .markdown-alert-title svg.octicon {
-	margin-right: 8px !important;
-	margin-right: var(--base-size-8, 8px) !important;
-	fill: currentColor;
-}
-
-.markdown-alert.markdown-alert-note {
-	border-left-color: var(--borderColor-accent-emphasis, var(--color-accent-emphasis))
-}
-
-.markdown-alert.markdown-alert-note .markdown-alert-title {
-	color: var(--color-accent-fg);
-	color: var(--fgColor-accent, var(--color-accent-fg))
-}
-
-.markdown-alert.markdown-alert-tip {
-	border-left-color: var(--borderColor-success-emphasis, var(--color-success-emphasis))
-}
-
-.markdown-alert.markdown-alert-tip .markdown-alert-title {
-	color: var(--color-success-fg);
-	color: var(--fgColor-success, var(--color-success-fg))
-}
-
-.markdown-alert.markdown-alert-important {
-	border-left-color: var(--borderColor-done-emphasis, var(--color-done-emphasis))
-}
-
-.markdown-alert.markdown-alert-important .markdown-alert-title {
-	color: var(--color-done-fg);
-	color: var(--fgColor-done, var(--color-done-fg))
-}
-
-.markdown-alert.markdown-alert-warning {
-	border-left-color: var(--borderColor-attention-emphasis, var(--color-attention-emphasis))
-}
-
-.markdown-alert.markdown-alert-warning .markdown-alert-title {
-	color: var(--color-attention-fg);
-	color: var(--fgColor-attention, var(--color-attention-fg))
-}
-
-.markdown-alert.markdown-alert-caution {
-	border-left-color: var(--borderColor-danger-emphasis, var(--color-danger-emphasis))
-}
-
-.markdown-alert.markdown-alert-caution .markdown-alert-title {
-	color: var(--color-danger-fg);
-	color: var(--fgColor-danger, var(--color-danger-fg))
-}
-
-div:has(&gt; table),
-table th,
-table td {
-  border-style: solid;
-  border-color: rgba(128, 128, 128, 0.2);
-}
-&lt;/style&gt;&lt;p node=&quot;[object Object]&quot;&gt;Now let me read the repomix output and the scraper file, plus the debug session file:&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;relative&quot;&gt;&lt;button type=&quot;button&quot; class=&quot;group flex items-center gap-1 w-full text-left text-sm px-2 min-h-8 py-1 rounded-lg tabular-nums select-none text-ide-text-color hover:bg-gray-500/10 transition-[opacity,background-color]&quot;&gt;&lt;span class=&quot;opacity-70&quot;&gt;Explored&lt;/span&gt;&lt;span&gt;2 files&lt;/span&gt;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;24&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot; class=&quot;lucide lucide-chevron-right h-3.5 w-3.5 shrink-0 transition-all duration-200 text-ide-text-color/50 opacity-70 rotate-90&quot;&gt;&lt;path d=&quot;m9 18 6-6-6-6&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/button&gt;&lt;div class=&quot;relative&quot; style=&quot;opacity: 1; transform: translateY(0px); transition: opacity 150ms ease-out, transform 150ms ease-out;&quot;&gt;&lt;div class=&quot;overflow-y-auto pl-3 pt-0.5&quot; style=&quot;max-height: 400px;&quot;&gt;&lt;div class=&quot;flex flex-col gap-0.5 py-0.5&quot;&gt;&lt;div class=&quot;flex flex-row&quot;&gt;&lt;div class=&quot;min-w-0 grow&quot;&gt;&lt;div class=&quot;flex flex-col&quot;&gt;&lt;div class=&quot;group flex w-full min-w-0 items-center min-h-8 py-1 px-2 select-none transition-[background-color]&quot;&gt;&lt;div class=&quot;flex min-w-0 items-center gap-x-1 text-sm&quot;&gt;&lt;div class=&quot;truncate&quot;&gt;&lt;div class=&quot;flex flex-row items-center gap-1 overflow-hidden whitespace-nowrap&quot;&gt;&lt;span class=&quot;shrink-0 opacity-70&quot;&gt;Analyzed&lt;/span&gt;&lt;div class=&quot;flex items-center overflow-hidden&quot;&gt;&lt;span class=&quot;inline-flex items-center gap-0.5 rounded-md align-middle text-sm font-medium transition-[opacity,background-color] cursor-pointer hover:bg-gray-500/20 select-none&quot; draggable=&quot;true&quot; style=&quot;padding: 1px 0.25rem 1px 0.125rem;&quot;&gt;&lt;div&gt;&lt;img src=&quot;/usr/share/antigravity/resources/app/extensions/theme-symbols/src/icons/files/python.svg&quot; width=&quot;16px&quot; height=&quot;16px&quot; style=&quot;min-width: 16px; display: inline-block; min-height: 16px; transform: translateY(-1px);&quot;&gt;&lt;/div&gt;&lt;span class=&quot;inline-flex break-all leading-tight select-text&quot;&gt;&lt;span&gt;scraper.py&lt;span class=&quot;opacity-50 ml-0.5&quot;&gt;#L1-623&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;ml-0.5 flex items-center text-sm text-gray-500/50 hidden&quot;&gt;&lt;div class=&quot;h-3 w-3 animate-spin rounded-full border-2 border-gray-400 border-t-transparent&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;flex items-center shrink-0&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;flex flex-row&quot;&gt;&lt;div class=&quot;min-w-0 grow&quot;&gt;&lt;div class=&quot;flex flex-col&quot;&gt;&lt;div class=&quot;group flex w-full min-w-0 items-center min-h-8 py-1 px-2 select-none transition-[background-color]&quot;&gt;&lt;div class=&quot;flex min-w-0 items-center gap-x-1 text-sm&quot;&gt;&lt;div class=&quot;truncate&quot;&gt;&lt;div class=&quot;flex flex-row items-center gap-1 overflow-hidden whitespace-nowrap&quot;&gt;&lt;span class=&quot;shrink-0 opacity-70&quot;&gt;Analyzed&lt;/span&gt;&lt;div class=&quot;flex items-center overflow-hidden&quot;&gt;&lt;span class=&quot;inline-flex items-center gap-0.5 rounded-md align-middle text-sm font-medium transition-[opacity,background-color] cursor-pointer hover:bg-gray-500/20 select-none&quot; draggable=&quot;true&quot; style=&quot;padding: 1px 0.25rem 1px 0.125rem;&quot;&gt;&lt;div&gt;&lt;img src=&quot;/usr/share/antigravity/resources/app/extensions/theme-symbols/src/icons/files/markdown.svg&quot; width=&quot;16px&quot; height=&quot;16px&quot; style=&quot;min-width: 16px; display: inline-block; min-height: 16px; transform: translateY(-1px);&quot;&gt;&lt;/div&gt;&lt;span class=&quot;inline-flex break-all leading-tight select-text&quot;&gt;&lt;span&gt;20260512_1438_disabling-media-asset-capture.md&lt;span class=&quot;opacity-50 ml-0.5&quot;&gt;#L1-76&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;ml-0.5 flex items-center text-sm text-gray-500/50 hidden&quot;&gt;&lt;div class=&quot;h-3 w-3 animate-spin rounded-full border-2 border-gray-400 border-t-transparent&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;flex items-center shrink-0&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;flex flex-row&quot;&gt;&lt;div class=&quot;min-w-0 grow&quot;&gt;&lt;div class=&quot;flex flex-col&quot;&gt;&lt;div class=&quot;group flex w-full min-w-0 items-center min-h-8 py-1 px-2 select-none transition-[background-color] cursor-pointer rounded-lg hover:bg-gray-500/10&quot;&gt;&lt;div class=&quot;flex min-w-0 items-center gap-x-1 text-sm&quot;&gt;&lt;div class=&quot;truncate&quot;&gt;&lt;span class=&quot;flex flex-row items-center gap-1 overflow-hidden&quot;&gt;&lt;span class=&quot;opacity-70&quot;&gt;&lt;div&gt;Error&lt;/div&gt;&lt;/span&gt;&lt;span class=&quot;truncate text-ellipsis whitespace-nowrap&quot;&gt;You have exhausted your capacity on this model. Your quota will reset after 48h46m41s.&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;ml-0.5 flex items-center text-sm text-gray-500/50 hidden&quot;&gt;&lt;div class=&quot;h-3 w-3 animate-spin rounded-full border-2 border-gray-400 border-t-transparent&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;flex items-center shrink-0&quot;&gt;&lt;span class=&quot;google-symbols ml-1 h-3.5 w-3.5 shrink-0 transition-all duration-200 opacity-50 group-hover:opacity-70&quot; style=&quot;display: flex; align-items: center; justify-content: center; font-size: 16px; user-select: none;&quot;&gt;chevron_right&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;grid transition-[grid-template-rows,opacity] duration-200&quot; style=&quot;grid-template-rows: 0fr; opacity: 0; transition-timing-function: ease-in;&quot;&gt;&lt;div class=&quot;overflow-hidden pl-3&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;flex flex-row&quot;&gt;&lt;div class=&quot;min-w-0 grow&quot;&gt;&lt;div class=&quot;flex flex-col&quot;&gt;&lt;div class=&quot;group flex w-full min-w-0 items-center min-h-8 py-1 px-2 select-none transition-[background-color] cursor-pointer rounded-lg hover:bg-gray-500/10&quot;&gt;&lt;div class=&quot;flex min-w-0 items-center gap-x-1 text-sm&quot;&gt;&lt;div class=&quot;truncate&quot;&gt;&lt;span class=&quot;flex flex-row items-center gap-1 overflow-hidden&quot;&gt;&lt;span class=&quot;opacity-70&quot;&gt;&lt;div&gt;Error&lt;/div&gt;&lt;/span&gt;&lt;span class=&quot;truncate text-ellipsis whitespace-nowrap&quot;&gt;You have exhausted your capacity on this model. Your quota will reset after 48h46m41s.&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;ml-0.5 flex items-center text-sm text-gray-500/50 hidden&quot;&gt;&lt;div class=&quot;h-3 w-3 animate-spin rounded-full border-2 border-gray-400 border-t-transparent&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;flex items-center shrink-0&quot;&gt;&lt;span class=&quot;google-symbols ml-1 h-3.5 w-3.5 shrink-0 transition-all duration-200 opacity-50 group-hover:opacity-70&quot; style=&quot;display: flex; align-items: center; justify-content: center; font-size: 16px; user-select: none;&quot;&gt;chevron_right&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;grid transition-[grid-template-rows,opacity] duration-200&quot; style=&quot;grid-template-rows: 0fr; opacity: 0; transition-timing-function: ease-in;&quot;&gt;&lt;div class=&quot;overflow-hidden pl-3&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;pt-3&quot;&gt;&lt;div&gt;&lt;div class=&quot;flex flex-col gap-2&quot;&gt;&lt;div class=&quot;flex flex-1 flex-row items-baseline justify-end gap-2 rounded-lg pl-2 pr-2&quot;&gt;&lt;span class=&quot;text-xs opacity-0 group-hover:opacity-50 transition-opacity whitespace-nowrap pt-1&quot;&gt;3:26 PM&lt;/span&gt;&lt;div class=&quot;flex-1&quot;&gt;&lt;/div&gt;&lt;div role=&quot;button&quot; tabindex=&quot;0&quot; aria-label=&quot;Copy&quot; data-tooltip-id=&quot;copy-P0-7&quot; class=&quot;flex items-center gap-1 cursor-pointer transition-[opacity,transform] duration-100 mr-1 opacity-70 hover:opacity-100&quot;&gt;&lt;span class=&quot;google-symbols h-4 w-4&quot; style=&quot;display: flex; align-items: center; justify-content: center; font-size: 16px; user-select: none;&quot;&gt;content_copy&lt;/span&gt;&lt;/div&gt;&lt;div role=&quot;button&quot; tabindex=&quot;0&quot; aria-label=&quot;Good response&quot; aria-pressed=&quot;false&quot; data-tooltip-id=&quot;up-P0-7&quot; class=&quot;flex items-center gap-1 transition-[opacity,transform] duration-100 cursor-pointer opacity-70 hover:opacity-100 opacity-30&quot;&gt;&lt;span class=&quot;google-symbols h-4 w-4&quot; style=&quot;display: flex; align-items: center; justify-content: center; font-size: 16px; user-select: none;&quot;&gt;thumb_up&lt;/span&gt;&lt;/div&gt;&lt;div role=&quot;button&quot; tabindex=&quot;0&quot; aria-label=&quot;Bad response&quot; aria-pressed=&quot;false&quot; data-tooltip-id=&quot;down-P0-7&quot; class=&quot;flex items-center gap-1 transition-[opacity,transform] duration-100 cursor-pointer opacity-70 hover:opacity-100 opacity-30&quot;&gt;&lt;span class=&quot;google-symbols h-4 w-4&quot; style=&quot;display: flex; align-items: center; justify-content: center; font-size: 16px; user-select: none;&quot;&gt;thumb_down&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;flex items-start&quot; style=&quot;min-height: 614px;&quot;&gt;&lt;div class=&quot;flex flex-col gap-0.5 group w-full&quot;&gt;&lt;div class=&quot;sticky top-0 z-10 mb-4 bg-agent-convo-background after:content-[&apos;&apos;] after:absolute after:left-0 after:right-0 after:top-full after:h-7 after:bg-gradient-to-b after:from-agent-convo-background after:to-transparent after:pointer-events-none&quot;&gt;&lt;div class=&quot;flex w-full flex-row&quot;&gt;&lt;div class=&quot;flex min-w-0 grow flex-col&quot;&gt;&lt;div data-testid=&quot;user-input-step&quot; class=&quot;flex flex-col w-full gap-2 group pt-4&quot;&gt;&lt;div class=&quot;relative p-px rounded-xl bg-gray-500/20&quot;&gt;&lt;div class=&quot;relative flex flex-col gap-0 p-2 rounded-[calc(theme(borderRadius.xl)-1px)] bg-input&quot;&gt;&lt;div class=&quot;flex flex-row items-end gap-2&quot;&gt;&lt;div class=&quot;flex-1 flex flex-col gap-2&quot;&gt;&lt;div class=&quot;relative&quot;&gt;&lt;div class=&quot;max-h-[20vh] overflow-hidden&quot;&gt;&lt;div class=&quot;flex flex-wrap gap-2&quot;&gt;&lt;/div&gt;&lt;div class=&quot;whitespace-pre-wrap text-sm&quot; style=&quot;word-break: break-word;&quot;&gt;go on&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;flex-shrink-0 pb-1&quot;&gt;&lt;div data-testid=&quot;revert-button&quot; role=&quot;button&quot; data-tooltip-id=&quot;undo-tooltip-P0-9&quot; class=&quot;cursor-pointer opacity-50 hover:opacity-100 transition-opacity&quot;&gt;&lt;span class=&quot;google-symbols w-4 h-4&quot; style=&quot;display: flex; align-items: center; justify-content: center; font-size: 16px; user-select: none;&quot;&gt;undo&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div&gt;&lt;div class=&quot;relative&quot;&gt;&lt;button type=&quot;button&quot; class=&quot;group flex items-center gap-1 w-full text-left text-sm px-2 min-h-8 py-1 rounded-lg tabular-nums select-none text-ide-text-color hover:bg-gray-500/10 transition-[opacity,background-color]&quot;&gt;&lt;span class=&quot;opacity-70&quot;&gt;Worked for 2m&lt;/span&gt;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;24&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot; class=&quot;lucide lucide-chevron-right h-3.5 w-3.5 shrink-0 transition-all duration-200 text-ide-text-color/50 opacity-50 group-hover:opacity-70&quot;&gt;&lt;path d=&quot;m9 18 6-6-6-6&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/button&gt;&lt;/div&gt;&lt;div class=&quot;px-2 py-1&quot;&gt;&lt;div class=&quot;leading-relaxed select-text text-sm flex flex-col [&amp;amp;_code:not(pre_code)]:bg-code-background [&amp;amp;_code:not(pre_code)]:text-code-foreground [&amp;amp;_code:not(pre_code)]:rounded [&amp;amp;_code:not(pre_code)]:px-1 [&amp;amp;_code:not(pre_code)]:py-0.5 [&amp;amp;_code:not(pre_code)]:text-[0.9em] [&amp;amp;_summary]:cursor-pointer [&amp;amp;_h1]:text-xl [&amp;amp;_h2]:text-lg [&amp;amp;_h3]:text-base [&amp;amp;_h4]:text-sm [&amp;amp;_h1]:font-semibold [&amp;amp;_h2]:font-semibold [&amp;amp;_h3]:font-medium [&amp;amp;_h4]:font-medium [&amp;amp;_h1]:!mb-2 [&amp;amp;_h1]:!mt-6 [&amp;amp;_h2]:!mb-2 [&amp;amp;_h2]:!mt-6 [&amp;amp;_h3]:!mb-1 [&amp;amp;_h3]:!mt-3 [&amp;amp;_h4]:!mb-1 [&amp;amp;_h4]:!mt-3 [&amp;amp;_li.task-list-item]:list-none [&amp;amp;_ul:has(li.task-list-item)]:list-none [&amp;amp;_ul]:my-2 [&amp;amp;_ol]:my-2 [&amp;amp;&amp;gt;ul.contains-task-list]:pl-0 [&amp;amp;&amp;gt;ol.contains-task-list]:pl-0 [&amp;amp;_ul]:pl-10 [&amp;amp;_ol]:pl-10 [&amp;amp;&amp;gt;ul:not(.contains-task-list)]:!pl-4 [&amp;amp;&amp;gt;ol:not(.contains-task-list)]:!pl-4 [&amp;amp;_ul]:list-disc [&amp;amp;_ol]:list-decimal [&amp;amp;_li.task-checked&amp;gt;.task-checked-content]:opacity-50 break-words&quot;&gt;&lt;style&gt;
-/* Copied from remark-github-blockquote-alert/alert.css */
-@media (prefers-color-scheme: dark) {
-.markdown-alert {
-	--color-border-default: #30363d;
-	--color-accent-fg: #58a6ff;
-	--color-accent-emphasis: #1f6feb;
-	--color-danger-fg: #f85149;
-	--color-danger-emphasis: #da3633;
-	--color-attention-fg: #d29922;
-	--color-attention-emphasis: #9e6a03;
-	--color-done-fg: #a371f7;
-	--color-done-emphasis: #8957e5;
-	--color-success-fg: #3fb950;
-	--color-success-emphasis: #238636;
-	}
-}
-
-@media (prefers-color-scheme: light) {
-.markdown-alert {
-	--color-border-default: #d0d7de;
-	--color-accent-fg: #0969da;
-	--color-accent-emphasis: #0969da;
-	--color-danger-fg: #d1242f;
-	--color-danger-emphasis: #cf222e;
-	--color-attention-fg: #9a6700;
-	--color-attention-emphasis: #9a6700;
-	--color-done-fg: #8250df;
-	--color-done-emphasis: #8250df;
-	--color-success-fg: #1a7f37;
-	--color-success-emphasis: #1f883d;
-	}
-}
-
-.markdown-alert {
-	border-left: .25em solid var(--borderColor-default, var(--color-border-default));
-	color: inherit;
-	margin-bottom: 16px;
-	padding: .5rem 1em
-}
-
-.markdown-alert&gt;:last-child {
-	margin-bottom: 0 !important
-}
-
-.markdown-alert .markdown-alert-title {
-	align-items: center;
-	display: flex;
-	font-size: 14px;
-	font-weight: 500;
-	line-height: 1
-}
-
-.markdown-alert .markdown-alert-title svg.octicon {
-	margin-right: 8px !important;
-	margin-right: var(--base-size-8, 8px) !important;
-	fill: currentColor;
-}
-
-.markdown-alert.markdown-alert-note {
-	border-left-color: var(--borderColor-accent-emphasis, var(--color-accent-emphasis))
-}
-
-.markdown-alert.markdown-alert-note .markdown-alert-title {
-	color: var(--color-accent-fg);
-	color: var(--fgColor-accent, var(--color-accent-fg))
-}
-
-.markdown-alert.markdown-alert-tip {
-	border-left-color: var(--borderColor-success-emphasis, var(--color-success-emphasis))
-}
-
-.markdown-alert.markdown-alert-tip .markdown-alert-title {
-	color: var(--color-success-fg);
-	color: var(--fgColor-success, var(--color-success-fg))
-}
-
-.markdown-alert.markdown-alert-important {
-	border-left-color: var(--borderColor-done-emphasis, var(--color-done-emphasis))
-}
-
-.markdown-alert.markdown-alert-important .markdown-alert-title {
-	color: var(--color-done-fg);
-	color: var(--fgColor-done, var(--color-done-fg))
-}
-
-.markdown-alert.markdown-alert-warning {
-	border-left-color: var(--borderColor-attention-emphasis, var(--color-attention-emphasis))
-}
-
-.markdown-alert.markdown-alert-warning .markdown-alert-title {
-	color: var(--color-attention-fg);
-	color: var(--fgColor-attention, var(--color-attention-fg))
-}
-
-.markdown-alert.markdown-alert-caution {
-	border-left-color: var(--borderColor-danger-emphasis, var(--color-danger-emphasis))
-}
-
-.markdown-alert.markdown-alert-caution .markdown-alert-title {
-	color: var(--color-danger-fg);
-	color: var(--fgColor-danger, var(--color-danger-fg))
-}
-
-div:has(&gt; table),
-table th,
-table td {
-  border-style: solid;
-  border-color: rgba(128, 128, 128, 0.2);
-}
-&lt;/style&gt;&lt;p node=&quot;[object Object]&quot;&gt;I&apos;ve implemented the filtering logic from your &lt;code node=&quot;[object Object]&quot; class=&quot;whitespace-pre-wrap&quot; style=&quot;word-break: break-word;&quot;&gt;scraper.py&lt;/code&gt; script directly into the VS Code extension&apos;s extraction and rendering pipelines.&lt;/p&gt;
-&lt;h3 id=&quot;user-content-what-i-did&quot;&gt;What I did:&lt;/h3&gt;
-&lt;ol&gt;
-&lt;li node=&quot;[object Object]&quot;&gt;&lt;strong&gt;&lt;code node=&quot;[object Object]&quot; class=&quot;whitespace-pre-wrap&quot; style=&quot;word-break: break-word;&quot;&gt;src/extractor.ts&lt;/code&gt;&lt;/strong&gt;: Introduced a &lt;code node=&quot;[object Object]&quot; class=&quot;whitespace-pre-wrap&quot; style=&quot;word-break: break-word;&quot;&gt;getCleanHTML(el)&lt;/code&gt; helper within the injected &lt;code node=&quot;[object Object]&quot; class=&quot;whitespace-pre-wrap&quot; style=&quot;word-break: break-word;&quot;&gt;EXTRACT_JS&lt;/code&gt; script. This function mirrors your Python logic by cloning the node and programmatically stripping out &lt;code node=&quot;[object Object]&quot; class=&quot;whitespace-pre-wrap&quot; style=&quot;word-break: break-word;&quot;&gt;&amp;lt;style&amp;gt;&lt;/code&gt;, &lt;code node=&quot;[object Object]&quot; class=&quot;whitespace-pre-wrap&quot; style=&quot;word-break: break-word;&quot;&gt;&amp;lt;script&amp;gt;&lt;/code&gt;, &lt;code node=&quot;[object Object]&quot; class=&quot;whitespace-pre-wrap&quot; style=&quot;word-break: break-word;&quot;&gt;&amp;lt;svg&amp;gt;&lt;/code&gt;, spinners (&lt;code node=&quot;[object Object]&quot; class=&quot;whitespace-pre-wrap&quot; style=&quot;word-break: break-word;&quot;&gt;.animate-spin&lt;/code&gt;), and visually hidden elements (&lt;code node=&quot;[object Object]&quot; class=&quot;whitespace-pre-wrap&quot; style=&quot;word-break: break-word;&quot;&gt;display: none&lt;/code&gt;, &lt;code node=&quot;[object Object]&quot; class=&quot;whitespace-pre-wrap&quot; style=&quot;word-break: break-word;&quot;&gt;visibility: hidden&lt;/code&gt;, &lt;code node=&quot;[object Object]&quot; class=&quot;whitespace-pre-wrap&quot; style=&quot;word-break: break-word;&quot;&gt;.hidden&lt;/code&gt; except &lt;code node=&quot;[object Object]&quot; class=&quot;whitespace-pre-wrap&quot; style=&quot;word-break: break-word;&quot;&gt;group-hover:&lt;/code&gt;).&lt;/li&gt;
-&lt;li node=&quot;[object Object]&quot;&gt;&lt;strong&gt;Replaced &lt;code node=&quot;[object Object]&quot; class=&quot;whitespace-pre-wrap&quot; style=&quot;word-break: break-word;&quot;&gt;md.innerHTML&lt;/code&gt; with &lt;code node=&quot;[object Object]&quot; class=&quot;whitespace-pre-wrap&quot; style=&quot;word-break: break-word;&quot;&gt;getCleanHTML(md)&lt;/code&gt;&lt;/strong&gt;: The extension will no longer pick up the raw CSS text blocks when pulling the agent responses and thought contents.&lt;/li&gt;
-&lt;li node=&quot;[object Object]&quot;&gt;&lt;strong&gt;&lt;code node=&quot;[object Object]&quot; class=&quot;whitespace-pre-wrap&quot; style=&quot;word-break: break-word;&quot;&gt;src/renderer.ts&lt;/code&gt;&lt;/strong&gt;: As a secondary failsafe, I configured the &lt;code node=&quot;[object Object]&quot; class=&quot;whitespace-pre-wrap&quot; style=&quot;word-break: break-word;&quot;&gt;TurndownService&lt;/code&gt; instance with &lt;code node=&quot;[object Object]&quot; class=&quot;whitespace-pre-wrap&quot; style=&quot;word-break: break-word;&quot;&gt;td.remove([&quot;style&quot;, &quot;script&quot;, &quot;noscript&quot;, &quot;svg&quot;]);&lt;/code&gt; to ensure none of these elements can ever leak into your Markdown export.&lt;/li&gt;
-&lt;/ol&gt;
-&lt;p node=&quot;[object Object]&quot;&gt;You can now rebuild the extension (e.g., using &lt;code node=&quot;[object Object]&quot; class=&quot;whitespace-pre-wrap&quot; style=&quot;word-break: break-word;&quot;&gt;scripts/reinstall.sh&lt;/code&gt;) and try capturing a session again!&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;flex flex-col gap-1.5 pt-4 select-none&quot;&gt;&lt;div class=&quot;flex items-center gap-1.5 pl-2&quot;&gt;&lt;span class=&quot;text-sm opacity-70&quot;&gt;Files Modified&lt;/span&gt;&lt;span class=&quot;text-[10px] opacity-50 bg-white/10 rounded-full px-1.5 py-0.5 leading-none&quot;&gt;2&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;flex items-center px-1&quot;&gt;&lt;div class=&quot;relative min-w-0 flex-1&quot;&gt;&lt;div class=&quot;flex gap-1.5 overflow-x-auto items-center&quot; style=&quot;scrollbar-width: none;&quot;&gt;&lt;span class=&quot;inline-flex items-center gap-0.5 rounded-md align-middle text-sm font-medium transition-[opacity,background-color] cursor-pointer hover:bg-gray-500/20 select-none rounded-md gap-1 shrink-0 border border-gray-500/10 hover:border-gray-500/20 !select-none&quot; draggable=&quot;true&quot; style=&quot;padding: 1px 0.25rem 1px 0.125rem;&quot;&gt;&lt;div&gt;&lt;img src=&quot;/usr/share/antigravity/resources/app/extensions/theme-symbols/src/icons/files/ts.svg&quot; width=&quot;16px&quot; height=&quot;16px&quot; style=&quot;min-width: 16px; display: inline-block; min-height: 16px; transform: translateY(-1px);&quot;&gt;&lt;/div&gt;&lt;span class=&quot;inline-flex break-all leading-tight select-text&quot;&gt;&lt;span class=&quot;flex items-center gap-1&quot;&gt;&lt;span&gt;extractor.ts&lt;/span&gt;&lt;span class=&quot;flex items-center space-x-0.5 font-mono text-[11px]&quot;&gt;&lt;span class=&quot;text-green-500&quot;&gt;+37&lt;/span&gt;&lt;span class=&quot;text-red-500&quot;&gt;-5&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span class=&quot;inline-flex items-center gap-0.5 rounded-md align-middle text-sm font-medium transition-[opacity,background-color] cursor-pointer hover:bg-gray-500/20 select-none rounded-md gap-1 shrink-0 border border-gray-500/10 hover:border-gray-500/20 !select-none&quot; draggable=&quot;true&quot; style=&quot;padding: 1px 0.25rem 1px 0.125rem;&quot;&gt;&lt;div&gt;&lt;img src=&quot;/usr/share/antigravity/resources/app/extensions/theme-symbols/src/icons/files/ts.svg&quot; width=&quot;16px&quot; height=&quot;16px&quot; style=&quot;min-width: 16px; display: inline-block; min-height: 16px; transform: translateY(-1px);&quot;&gt;&lt;/div&gt;&lt;span class=&quot;inline-flex break-all leading-tight select-text&quot;&gt;&lt;span class=&quot;flex items-center gap-1&quot;&gt;&lt;span&gt;renderer.ts&lt;/span&gt;&lt;span class=&quot;flex items-center space-x-0.5 font-mono text-[11px]&quot;&gt;&lt;span class=&quot;text-green-500&quot;&gt;+3&lt;/span&gt;&lt;span class=&quot;text-red-500&quot;&gt;-0&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;/div&gt;&lt;div class=&quot;absolute top-0 bottom-0 left-0 w-10 bg-gradient-to-r from-agent-convo-background to-transparent flex items-center justify-start transition-opacity cursor-pointer opacity-0 pointer-events-none&quot;&gt;&lt;div class=&quot;w-7 justify-start flex items-center h-full bg-gradient-to-r from-agent-convo-background to-transparent&quot;&gt;&lt;span class=&quot;google-symbols h-3.5 w-3.5 opacity-70&quot; style=&quot;display: flex; align-items: center; justify-content: center; font-size: 16px; user-select: none;&quot;&gt;chevron_left&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;absolute top-0 bottom-0 right-0 w-8 bg-gradient-to-l from-agent-convo-background to-transparent flex items-center justify-end transition-opacity cursor-pointer opacity-0 pointer-events-none&quot;&gt;&lt;div class=&quot;w-7 justify-end flex items-center h-full bg-gradient-to-l from-agent-convo-background to-transparent&quot;&gt;&lt;span class=&quot;google-symbols h-3.5 w-3.5 opacity-70&quot; style=&quot;display: flex; align-items: center; justify-content: center; font-size: 16px; user-select: none;&quot;&gt;chevron_right&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;pt-3&quot;&gt;&lt;div&gt;&lt;div class=&quot;flex flex-col gap-2&quot;&gt;&lt;div class=&quot;flex flex-1 flex-row items-baseline justify-end gap-2 rounded-lg pl-2 pr-2&quot;&gt;&lt;span class=&quot;text-xs opacity-0 group-hover:opacity-50 transition-opacity whitespace-nowrap pt-1&quot;&gt;3:27 PM&lt;/span&gt;&lt;div class=&quot;flex-1&quot;&gt;&lt;/div&gt;&lt;div role=&quot;button&quot; tabindex=&quot;0&quot; aria-label=&quot;Copy&quot; data-tooltip-id=&quot;copy-P0-10&quot; class=&quot;flex items-center gap-1 cursor-pointer transition-[opacity,transform] duration-100 mr-1 opacity-70 hover:opacity-100&quot;&gt;&lt;span class=&quot;google-symbols h-4 w-4&quot; style=&quot;display: flex; align-items: center; justify-content: center; font-size: 16px; user-select: none;&quot;&gt;content_copy&lt;/span&gt;&lt;/div&gt;&lt;div role=&quot;button&quot; tabindex=&quot;0&quot; aria-label=&quot;Good response&quot; aria-pressed=&quot;false&quot; data-tooltip-id=&quot;up-P0-10&quot; class=&quot;flex items-center gap-1 transition-[opacity,transform] duration-100 cursor-pointer opacity-70 hover:opacity-100 opacity-30&quot;&gt;&lt;span class=&quot;google-symbols h-4 w-4&quot; style=&quot;display: flex; align-items: center; justify-content: center; font-size: 16px; user-select: none;&quot;&gt;thumb_up&lt;/span&gt;&lt;/div&gt;&lt;div role=&quot;button&quot; tabindex=&quot;0&quot; aria-label=&quot;Bad response&quot; aria-pressed=&quot;false&quot; data-tooltip-id=&quot;down-P0-10&quot; class=&quot;flex items-center gap-1 transition-[opacity,transform] duration-100 cursor-pointer opacity-70 hover:opacity-100 opacity-30&quot;&gt;&lt;span class=&quot;google-symbols h-4 w-4&quot; style=&quot;display: flex; align-items: center; justify-content: center; font-size: 16px; user-select: none;&quot;&gt;thumb_down&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;whitespace-nowrap transition-opacity py-1 opacity-0 duration-0 pointer-events-none pl-2&quot;&gt;&lt;span class=&quot;block max-w-full overflow-hidden text-ellipsis text-sm&quot;&gt;&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;transition-all duration-150 ease-in-out&quot; style=&quot;min-height: 48px;&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;relative flex flex-col gap-8 text-ide-message-block-bot-color px-2&quot;&gt;&lt;div class=&quot;flex grow flex-col justify-start gap-8&quot;&gt;&lt;div class=&quot;relative flex flex-col mb-2&quot;&gt;&lt;div class=&quot;px-2&quot;&gt;&lt;div class=&quot;outline-solid relative z-20 flex min-h-[1.8rem] justify-between px-1 py-1 outline-1 outline-gray-500/10 rounded-lg&quot;&gt;&lt;div class=&quot;flex min-w-0 gap-x-2 overflow-hidden&quot;&gt;&lt;div class=&quot;flex-none&quot;&gt;&lt;div class=&quot;rounded-xs flex flex-row items-center&quot;&gt;&lt;div class=&quot;grid transition-[grid-template-columns] duration-150 ease-in-out&quot; style=&quot;grid-template-columns: 0fr;&quot;&gt;&lt;div class=&quot;min-w-0 overflow-hidden&quot;&gt;&lt;div class=&quot;w-fit&quot;&gt;&lt;div class=&quot;flex flex-row items-center gap-1&quot;&gt;&lt;div class=&quot;translate-x-[0.07rem] transform opacity-50 transition-transform group-hover:-translate-x-[0.01rem]&quot;&gt;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;16&quot; height=&quot;16&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot; class=&quot;lucide lucide-arrow-left stroke-1&quot;&gt;&lt;path d=&quot;m12 19-7-7 7-7&quot;&gt;&lt;/path&gt;&lt;path d=&quot;M19 12H5&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;flex flex-row items-center transition-[gap] duration-150 gap-1&quot;&gt;&lt;div class=&quot;grid transition-[grid-template-columns] duration-150 ease-in-out&quot; style=&quot;grid-template-columns: 1fr;&quot;&gt;&lt;div class=&quot;min-w-0 overflow-hidden&quot;&gt;&lt;div class=&quot;w-fit&quot;&gt;&lt;div data-tooltip-id=&quot;tooltip-changesOverview&quot; class=&quot;rounded-xs cursor-pointer p-[2px] hover:bg-gray-500/25&quot;&gt;&lt;div class=&quot;relative&quot;&gt;&lt;div class=&quot;absolute -bottom-0 -right-0 z-10 origin-center rounded-full bg-gray-500 transition-all duration-200 ease-out scale-0 opacity-0 h-2 w-2&quot;&gt;&lt;/div&gt;&lt;div class=&quot;absolute -bottom-0 -right-0 z-20 origin-center rounded-full transition-all duration-200 ease-out bg-ide-button-background scale-0 opacity-0 h-2 w-2&quot;&gt;&lt;/div&gt;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;24&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot; class=&quot;lucide lucide-file h-4 w-4 stroke-1 opacity-60&quot;&gt;&lt;path d=&quot;M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z&quot;&gt;&lt;/path&gt;&lt;path d=&quot;M14 2v5a1 1 0 0 0 1 1h5&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;grid transition-[grid-template-columns] duration-150 ease-in-out&quot; style=&quot;grid-template-columns: 1fr;&quot;&gt;&lt;div class=&quot;min-w-0 overflow-hidden&quot;&gt;&lt;div class=&quot;w-fit&quot;&gt;&lt;div data-tooltip-id=&quot;tooltip-terminal&quot; class=&quot;rounded-xs cursor-pointer p-[2px] hover:bg-gray-500/25&quot;&gt;&lt;div class=&quot;relative&quot;&gt;&lt;div class=&quot;absolute -bottom-0 -right-0 z-10 origin-center rounded-full bg-gray-500 transition-all duration-200 ease-out scale-0 opacity-0 h-2 w-2&quot;&gt;&lt;/div&gt;&lt;div class=&quot;absolute -bottom-0 -right-0 z-20 origin-center rounded-full transition-all duration-200 ease-out bg-ide-button-background scale-0 opacity-0 h-2 w-2&quot;&gt;&lt;/div&gt;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;24&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot; class=&quot;lucide lucide-square-terminal h-4 w-4 stroke-1 opacity-60&quot;&gt;&lt;path d=&quot;m7 11 2-2-2-2&quot;&gt;&lt;/path&gt;&lt;path d=&quot;M11 13h4&quot;&gt;&lt;/path&gt;&lt;rect width=&quot;18&quot; height=&quot;18&quot; x=&quot;3&quot; y=&quot;3&quot; rx=&quot;2&quot; ry=&quot;2&quot;&gt;&lt;/rect&gt;&lt;/svg&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;grid transition-[grid-template-columns] duration-150 ease-in-out&quot; style=&quot;grid-template-columns: 1fr;&quot;&gt;&lt;div class=&quot;min-w-0 overflow-hidden&quot;&gt;&lt;div class=&quot;w-fit&quot;&gt;&lt;div data-tooltip-id=&quot;tooltip-artifacts&quot; class=&quot;rounded-xs cursor-pointer p-[2px] hover:bg-gray-500/25&quot;&gt;&lt;div class=&quot;relative&quot;&gt;&lt;div class=&quot;absolute -bottom-0 -right-0 z-10 origin-center rounded-full bg-gray-500 transition-all duration-200 ease-out scale-0 opacity-0 h-2 w-2&quot;&gt;&lt;/div&gt;&lt;div class=&quot;absolute -bottom-0 -right-0 z-20 origin-center rounded-full transition-all duration-200 ease-out bg-ide-button-background scale-0 opacity-0 h-2 w-2&quot;&gt;&lt;/div&gt;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; fill=&quot;none&quot; viewBox=&quot;0 0 24 24&quot; stroke-width=&quot;1.5&quot; stroke=&quot;currentColor&quot; aria-hidden=&quot;true&quot; data-slot=&quot;icon&quot; class=&quot;h-4 w-4 stroke-1 opacity-60&quot;&gt;&lt;path stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; d=&quot;m7.875 14.25 1.214 1.942a2.25 2.25 0 0 0 1.908 1.058h2.006c.776 0 1.497-.4 1.908-1.058l1.214-1.942M2.41 9h4.636a2.25 2.25 0 0 1 1.872 1.002l.164.246a2.25 2.25 0 0 0 1.872 1.002h2.092a2.25 2.25 0 0 0 1.872-1.002l.164-.246A2.25 2.25 0 0 1 16.954 9h4.636M2.41 9a2.25 2.25 0 0 0-.16.832V12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 12V9.832c0-.287-.055-.57-.16-.832M2.41 9a2.25 2.25 0 0 1 .382-.632l3.285-3.832a2.25 2.25 0 0 1 1.708-.786h8.43c.657 0 1.281.287 1.709.786l3.284 3.832c.163.19.291.404.382.632M4.5 20.25h15A2.25 2.25 0 0 0 21.75 18v-2.625c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125V18a2.25 2.25 0 0 0 2.25 2.25Z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;grid transition-[grid-template-columns] duration-150 ease-in-out&quot; style=&quot;grid-template-columns: 1fr;&quot;&gt;&lt;div class=&quot;min-w-0 overflow-hidden&quot;&gt;&lt;div class=&quot;w-fit&quot;&gt;&lt;div data-tooltip-id=&quot;tooltip-browser&quot; class=&quot;rounded-xs cursor-pointer p-[2px] hover:bg-gray-500/25&quot;&gt;&lt;div class=&quot;relative&quot;&gt;&lt;div class=&quot;absolute -bottom-0 -right-0 z-10 origin-center rounded-full bg-gray-500 transition-all duration-200 ease-out scale-100 opacity-100 h-2 w-2&quot;&gt;&lt;/div&gt;&lt;div class=&quot;absolute -bottom-0 -right-0 z-20 origin-center rounded-full transition-all duration-200 ease-out bg-ide-button-background scale-100 opacity-100 h-2 w-2&quot;&gt;&lt;/div&gt;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;24&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot; class=&quot;lucide lucide-chromium h-4 w-4 stroke-1 opacity-60&quot;&gt;&lt;path d=&quot;M10.88 21.94 15.46 14&quot;&gt;&lt;/path&gt;&lt;path d=&quot;M21.17 8H12&quot;&gt;&lt;/path&gt;&lt;path d=&quot;M3.95 6.06 8.54 14&quot;&gt;&lt;/path&gt;&lt;circle cx=&quot;12&quot; cy=&quot;12&quot; r=&quot;10&quot;&gt;&lt;/circle&gt;&lt;circle cx=&quot;12&quot; cy=&quot;12&quot; r=&quot;4&quot;&gt;&lt;/circle&gt;&lt;/svg&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;flex min-w-0 shrink items-center overflow-hidden&quot;&gt;&lt;div class=&quot;flex min-w-0 shrink items-center overflow-hidden&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;flex flex-none items-center gap-1&quot;&gt;&lt;div class=&quot;flex items-center&quot;&gt;&lt;div class=&quot;mx-1 flex cursor-pointer items-center justify-center gap-0.5 rounded-md bg-gray-500/10 px-1 opacity-60 hover:bg-gray-500/25&quot;&gt;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;24&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot; class=&quot;lucide lucide-list-checks h-4 w-4 stroke-1&quot;&gt;&lt;path d=&quot;M13 5h8&quot;&gt;&lt;/path&gt;&lt;path d=&quot;M13 12h8&quot;&gt;&lt;/path&gt;&lt;path d=&quot;M13 19h8&quot;&gt;&lt;/path&gt;&lt;path d=&quot;m3 17 2 2 4-4&quot;&gt;&lt;/path&gt;&lt;path d=&quot;m3 7 2 2 4-4&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;button class=&quot;rounded px-1 py-0.5 text-xs font-medium&quot;&gt;Review Changes&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;grid transition-[grid-template-columns] duration-150 ease-in-out&quot; style=&quot;grid-template-columns: 0fr;&quot;&gt;&lt;div class=&quot;min-w-0 overflow-hidden&quot;&gt;&lt;div class=&quot;w-fit&quot;&gt;&lt;div class=&quot;flex cursor-pointer items-center justify-center opacity-70&quot;&gt;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;18&quot; height=&quot;18&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot; class=&quot;lucide lucide-chevron-up&quot;&gt;&lt;path d=&quot;m18 15-6-6-6 6&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;pointer-events-none absolute bottom-full -left-px w-[calc(100%+2px)]&quot; style=&quot;mask-image: linear-gradient(white, white);&quot;&gt;&lt;div class=&quot;pointer-events-auto w-full overflow-hidden rounded-md bg-ide-editor-background transition-all duration-150 ease-in-out translate-y-full&quot;&gt;&lt;div class=&quot;max-h-80 overflow-y-auto rounded-md border border border-gray-500/25 bg-gray-500/10&quot;&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;w-full flex flex-col items-stretch gap-2 box-border&quot;&gt;&lt;div id=&quot;antigravity.agentSidePanelInputBox&quot; class=&quot;relative flex flex-col p-px rounded-2xl bg-gray-500/20&quot;&gt;&lt;div class=&quot;relative flex flex-col gap-0 p-1 rounded-[calc(theme(borderRadius.2xl)-1px)] bg-input&quot;&gt;&lt;div class=&quot;absolute bottom-full inset-x-0 z-30 flex flex-col gap-1&quot;&gt;&lt;/div&gt;&lt;div class=&quot;relative w-full&quot;&gt;&lt;div class=&quot;w-full rounded-lg transition-all duration-10&quot;&gt;&lt;div class=&quot;relative w-full&quot;&gt;&lt;div aria-label=&quot;Message input&quot; contenteditable=&quot;true&quot; role=&quot;textbox&quot; autocorrect=&quot;off&quot; autocomplete=&quot;off&quot; class=&quot;max-h-[300px] rounded cursor-text overflow-y-auto text-md p-2 outline-none transition-all duration-100 text-sm&quot; data-lexical-editor=&quot;true&quot; style=&quot;user-select: text; white-space: pre-wrap; word-break: break-word;&quot;&gt;&lt;/div&gt;&lt;p class=&quot;pointer-events-none absolute left-2 right-2 top-2 z-0 select-none overflow-hidden text-ellipsis whitespace-nowrap text-sm text-ide-input-color opacity-40&quot;&gt;Ask anything, @ to mention, / for workflows&lt;/p&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;flex w-full items-center justify-between gap-1 p-0.5&quot;&gt;&lt;div class=&quot;flex min-w-0 flex-1 items-center gap-px&quot;&gt;&lt;button aria-label=&quot;Add context&quot; aria-haspopup=&quot;dialog&quot; aria-expanded=&quot;false&quot; class=&quot;p-1.5 rounded-full hover:bg-gray-500/20 cursor-pointer&quot;&gt;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;24&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot; class=&quot;lucide lucide-plus opacity-70 w-4 h-4&quot;&gt;&lt;path d=&quot;M5 12h14&quot;&gt;&lt;/path&gt;&lt;path d=&quot;M12 5v14&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/button&gt;&lt;input type=&quot;file&quot; accept=&quot;.png,.jpg,.jpeg,.gif,image/png,image/jpeg,image/gif,video/webm,.mp4,video/mp4&quot; multiple=&quot;&quot; class=&quot;hidden&quot;&gt;&lt;div class=&quot;flex items-center gap-1&quot;&gt;&lt;div class=&quot;min-w-0&quot;&gt;&lt;div&gt;&lt;div role=&quot;button&quot; aria-haspopup=&quot;dialog&quot; aria-expanded=&quot;false&quot;&gt;&lt;button type=&quot;button&quot; aria-label=&quot;Select model, current: Gemini 3.1 Pro (High)&quot; class=&quot;flex min-w-0 max-w-full cursor-pointer items-center h-7 gap-1 rounded-lg pr-1 pl-2 text-xs outline-none hover:bg-gray-500/20 focus-visible:ring-1 focus-visible:ring-gray-500/70&quot;&gt;&lt;span class=&quot;min-w-0 select-none overflow-hidden text-ellipsis whitespace-nowrap text-xs opacity-70&quot;&gt;Gemini 3.1 Pro (High)&lt;/span&gt;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;24&quot; height=&quot;24&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;2&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot; class=&quot;lucide lucide-chevron-up size-4 shrink-0 stroke-1 opacity-70&quot;&gt;&lt;path d=&quot;m18 15-6-6-6 6&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div data-tooltip-id=&quot;P0-1&quot; class=&quot;flex items-center pr-2 h-7 rounded-lg hover:bg-gray-500/20 text-xs group transition-colors&quot;&gt;&lt;button class=&quot;px-1 h-6 cursor-pointer&quot;&gt;&lt;span class=&quot;group-hover:hidden flex items-center opacity-70&quot;&gt;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;14&quot; height=&quot;14&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot; class=&quot;lucide lucide-list-todo&quot;&gt;&lt;path d=&quot;M13 5h8&quot;&gt;&lt;/path&gt;&lt;path d=&quot;M13 12h8&quot;&gt;&lt;/path&gt;&lt;path d=&quot;M13 19h8&quot;&gt;&lt;/path&gt;&lt;path d=&quot;m3 17 2 2 4-4&quot;&gt;&lt;/path&gt;&lt;rect x=&quot;3&quot; y=&quot;4&quot; width=&quot;6&quot; height=&quot;6&quot; rx=&quot;1&quot;&gt;&lt;/rect&gt;&lt;/svg&gt;&lt;/span&gt;&lt;span class=&quot;opacity-70 hidden group-hover:flex items-center&quot;&gt;&lt;svg xmlns=&quot;http://www.w3.org/2000/svg&quot; width=&quot;14&quot; height=&quot;14&quot; viewBox=&quot;0 0 24 24&quot; fill=&quot;none&quot; stroke=&quot;currentColor&quot; stroke-width=&quot;1.5&quot; stroke-linecap=&quot;round&quot; stroke-linejoin=&quot;round&quot; aria-hidden=&quot;true&quot; class=&quot;lucide lucide-x&quot;&gt;&lt;path d=&quot;M18 6 6 18&quot;&gt;&lt;/path&gt;&lt;path d=&quot;m6 6 12 12&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/span&gt;&lt;/button&gt;&lt;span class=&quot;opacity-70 select-none&quot;&gt;Plan&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;div class=&quot;shrink-0 flex items-center gap-1&quot;&gt;&lt;button type=&quot;button&quot; aria-label=&quot;Record voice memo&quot; data-testid=&quot;send-button&quot; data-tooltip-id=&quot;input-send-button-send-tooltip&quot; class=&quot;flex items-center p-1.5 rounded-full transition-all duration-150 hover:bg-gray-500/60 cursor-pointer bg-gray-500/40 opacity-70&quot;&gt;&lt;span class=&quot;text-xs font-medium text-white overflow-hidden transition-all duration-150 max-w-0 max-h-0 whitespace-nowrap opacity-0&quot;&gt;Send&lt;/span&gt;&lt;span class=&quot;google-symbols w-4 h-4 text-white translate-y-px&quot; style=&quot;display: flex; align-items: center; justify-content: center; font-size: 18px; user-select: none;&quot;&gt;mic&lt;/span&gt;&lt;/button&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</file><file path="scripts/dump_dom.js">function httpGetJson(url)
-⋮----
-async function findTarget(port)
-⋮----
-class CDPClient
-⋮----
-async connect(wsUrl)
-⋮----
-// ignore
-⋮----
-send(method, params =
-⋮----
-resolve: (v) =&gt;
-reject: (e) =&gt;
-⋮----
-async evalJS(js)
-⋮----
-close()
-⋮----
-async function main()</file><file path="test_live_dom.js"></file><file path="scraper/DOM-exports/fixing-agent-interaction-export-cleaned.html">&lt;div class=&quot;antigravity-agent-side-panel&quot;
+tsconfig.json</directory_structure><files>This section contains the contents of the repository&apos;s files.<file path="scraper/DOM-exports/fixing-agent-interaction-export-cleaned.html">&lt;div class=&quot;antigravity-agent-side-panel&quot;
 	style=&quot;position: absolute; left: 1130px; top: 42px; width: 712.997px; height: 972.994px; display: block;&quot;&gt;
 	&lt;div role=&quot;dialog&quot; aria-modal=&quot;true&quot;
 		class=&quot;w-max border-gray-500/20 bg-ide-chat-background bg-editor-background text-editor-foreground origin-bottom outline-hidden z-50 w-72 rounded-lg border shadow-md transition-[opacity,transform] duration-100 opacity-0 pointer-events-none -translate-y-3&quot;
@@ -8623,7 +8265,26 @@ inp = Path(sys.argv[1])
 html_content = inp.read_text(encoding=&quot;utf-8&quot;)
 markdown = scrape(html_content)
 ⋮----
-out = Path(sys.argv[2])</file><file path=".env.example"># Path to your Antigravity profile configuration directory
+out = Path(sys.argv[2])</file><file path="scripts/dump_dom.js">function httpGetJson(url)
+⋮----
+async function findTarget(port)
+⋮----
+class CDPClient
+⋮----
+async connect(wsUrl)
+⋮----
+// ignore
+⋮----
+send(method, params =
+⋮----
+resolve: (v) =&gt;
+reject: (e) =&gt;
+⋮----
+async evalJS(js)
+⋮----
+close()
+⋮----
+async function main()</file><file path=".env.example"># Path to your Antigravity profile configuration directory
 ANTIGRAVITY_PROFILE_DIR=&quot;/path/to/your/profile/app_config&quot;</file><file path="scraper/DOM-exports/disabling-media-asset-capture.html">&lt;div class=&quot;antigravity-agent-side-panel&quot;
     style=&quot;position: absolute; left: 957px; top: 35px; width: 579px; height: 807px; display: block;&quot;&gt;
     &lt;div role=&quot;dialog&quot; aria-modal=&quot;true&quot;
@@ -11819,38 +11480,18 @@ ANTIGRAVITY_PROFILE_DIR=&quot;/path/to/your/profile/app_config&quot;</file><file
             &lt;/div&gt;
         &lt;/div&gt;
     &lt;/div&gt;
-&lt;/div&gt;</file><file path="src/cdp.ts">export interface CDPTarget {
-  id: string;
-  type: string;
-  title: string;
-  url: string;
-  webSocketDebuggerUrl: string;
-}
+&lt;/div&gt;</file><file path="src/utils.ts">import { execSync } from &quot;child_process&quot;;
 ⋮----
 /**
- * Fetch CDP targets from /json and return the best page target.
- */
-export async function findTarget(port: number): Promise&lt;CDPTarget | null&gt;
-⋮----
-export class CDPClient
-⋮----
-async connect(wsUrl: string): Promise&lt;void&gt;
-⋮----
-// ignore malformed frames
-⋮----
-send(method: string, params: Record&lt;string, unknown&gt; =
-⋮----
-async evalJS(js: string): Promise&lt;string | null&gt;
-⋮----
-close(): void
-⋮----
-function httpGetJson&lt;T&gt;(url: string): Promise&lt;T | null&gt;</file><file path="src/utils.ts">/**
  * Expand ~ in paths.
  */
 export function expandHome(p: string): string
 ⋮----
 // os.homedir() reads the HOME env var which may be overridden
-// (e.g. by Antigravity profile aliases). Read the real home from passwd instead.
+// (e.g. by Antigravity profile aliases). We try to read the real home
+// from passwd on Linux, but gracefully fall back to os.homedir().
+⋮----
+// Fallback to os.homedir() on error
 ⋮----
 /**
  * Find the most recently modified brain UUID directory.
@@ -11954,7 +11595,32 @@ I&apos;ve analyzed the codebase and identified the parts responsible for the `as
 📄 **Implementation Plan**
 &gt; Remove assets/media capture functionality and generalize the reinstall script.
 
-*3:52 PM, 5/9/2026*</file><file path="src/vault.ts">import { expandHome } from &quot;./utils&quot;;
+*3:52 PM, 5/9/2026*</file><file path="src/cdp.ts">export interface CDPTarget {
+  id: string;
+  type: string;
+  title: string;
+  url: string;
+  webSocketDebuggerUrl: string;
+}
+⋮----
+/**
+ * Fetch CDP targets from /json and return the best page target.
+ */
+export async function findTarget(port: number): Promise&lt;CDPTarget | null&gt;
+⋮----
+export class CDPClient
+⋮----
+async connect(wsUrl: string): Promise&lt;void&gt;
+⋮----
+// ignore malformed frames
+⋮----
+send(method: string, params: Record&lt;string, unknown&gt; =
+⋮----
+async evalJS(js: string): Promise&lt;string | null&gt;
+⋮----
+close(): void
+⋮----
+function httpGetJson&lt;T&gt;(url: string): Promise&lt;T | null&gt;</file><file path="src/vault.ts">import { expandHome } from &quot;./utils&quot;;
 ⋮----
 export interface VaultPaths {
   sessionDir: string;   // &lt;vault&gt;/&lt;vaultFolder&gt;/
@@ -12442,6 +12108,7 @@ HOME=&quot;$PROFILE_HOME&quot; \
 repomix
 
 echo &quot;✓ Context Updated &amp; Extension Installed — reload Antigravity window&quot;</file><file path="src/extension.ts">import { runSnap, runDiagnose } from &quot;./snapRunner&quot;;
+import { expandHome } from &quot;./utils&quot;;
 ⋮----
 export function activate(ctx: vscode.ExtensionContext)
 ⋮----

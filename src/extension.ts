@@ -1,6 +1,7 @@
 import * as path from "path";
 import * as vscode from "vscode";
 import { runSnap, runDiagnose } from "./snapRunner";
+import { expandHome } from "./utils";
 
 let statusBar: vscode.StatusBarItem;
 let outputChannel: vscode.OutputChannel;
@@ -49,8 +50,7 @@ export function activate(ctx: vscode.ExtensionContext) {
         return;
       }
 
-      const { expandHome } = await import("./utils");
-      const fullPath = require("path").join(expandHome(vaultPath), vaultFolder);
+      const fullPath = path.join(expandHome(vaultPath), vaultFolder);
       await vscode.commands.executeCommand("revealInExplorer", vscode.Uri.file(fullPath));
     })
   );
