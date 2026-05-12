@@ -1,7 +1,7 @@
 # project: Antigravity Scribe
 
 A VS Code extension that captures Antigravity IDE agent sessions
-(via CDP + brain filesystem) into Obsidian-native Markdown notes.
+(via CDP) into Obsidian-native Markdown notes.
 
 ## Tech stack
 
@@ -11,18 +11,6 @@ A VS Code extension that captures Antigravity IDE agent sessions
 - WebSocket: ws package for CDP communication
 - No test framework yet
 
-## Non-obvious constraints
-
-- `expandHome()` reads passwd, not $HOME — Antigravity profile aliases override $HOME
-- Brain UUID selection by most-recently-modified dir — no DOM extraction, no config
-- `.resolved` files only — skip `*.resolved.N` revision history
-- Image embeds must use `![[assets/filename.png]]` Obsidian wikilink syntax
-- `strict: true` TS — no implicit any
-
-## What must not break
-
-- Heading hierarchy in rendered notes mirrors the visual panel hierarchy (see renderer.ts comments)
-- CDP extraction JS runs in browser context — no Node.js APIs
 
 ## Working rules
 
