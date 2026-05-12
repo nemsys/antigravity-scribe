@@ -194,6 +194,10 @@ function renderNode(node: ConvNode, lines: string[], depth = 2): void {
     // ── No chat panel found ──────────────────────────────────────────────────
     case "_no_chat":
       lines.push(`> ⚠️ ${node.label}`);
+      if (node.detail) {
+        lines.push("");
+        lines.push(`\`\`\`html\n${node.detail}\n\`\`\``);
+      }
       lines.push("");
       break;
   }

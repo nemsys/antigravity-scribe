@@ -476,7 +476,7 @@ export const EXTRACT_JS = `(function () {
           workedNode.children = workedChildren;
           
           if (workedChildren.length === 0) {
-             workedNode.children.push({ role: "_no_chat", label: "DEBUG", detail: getCleanHTML(workedBtnContainer), html: null, children: [] });
+             workedNode.children.push({ role: "_no_chat", label: "DEBUG", detail: getCleanHTML(child), html: null, children: [] });
           }
         }
 
