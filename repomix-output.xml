@@ -11646,6 +11646,9 @@ HOME=&quot;$PROFILE_HOME&quot; \
   --extensions-dir=&quot;$PROFILE_HOME/.antigravity/extensions&quot; \
   --install-extension ./antigravity-scribe-*.vsix
 
+# Run repomix - rebuild context
+repomix
+
 echo &quot;✓ Context Updated &amp; Extension Installed — reload Antigravity window&quot;</file><file path="README.md"># Antigravity Scribe
 
 &gt; **Capture agents thinking, tool calls &amp; artifacts to your Obsidian vault**
@@ -12304,6 +12307,8 @@ export interface RenderOptions {
 // ---------------------------------------------------------------------------
 ⋮----
 // Ignore images since we no longer capture them
+⋮----
+// Explicitly remove styling and script elements just in case any slip through
 ⋮----
 const toRow = (cells: any[])
 ⋮----

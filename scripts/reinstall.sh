@@ -18,4 +18,7 @@ HOME="$PROFILE_HOME" \
   --extensions-dir="$PROFILE_HOME/.antigravity/extensions" \
   --install-extension ./antigravity-scribe-*.vsix
 
+# Run repomix - rebuild context
+repomix
+
 echo "✓ Context Updated & Extension Installed — reload Antigravity window"
