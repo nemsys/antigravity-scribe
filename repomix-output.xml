@@ -11626,30 +11626,7 @@ export function writeNote(sessionDir: string, filename: string, content: string)
   },
   &quot;include&quot;: [&quot;src/**/*&quot;],
   &quot;exclude&quot;: [&quot;node_modules&quot;, &quot;dist&quot;, &quot;standalone.ts&quot;]
-}</file><file path="scripts/reinstall.sh">#!/bin/bash
-set -e
-
-# Change to project root relative to script
-cd &quot;$(dirname &quot;$0&quot;)/..&quot;
-
-# Load workspace-specific environment variables if .env exists
-if [ -f .env ]; then
-  export $(grep -v &apos;^#&apos; .env | xargs)
-fi
-
-# Rebuild the extension
-npm run package
-
-PROFILE_HOME=&quot;${ANTIGRAVITY_PROFILE_DIR:-$HOME}&quot;
-HOME=&quot;$PROFILE_HOME&quot; \
-  antigravity \
-  --extensions-dir=&quot;$PROFILE_HOME/.antigravity/extensions&quot; \
-  --install-extension ./antigravity-scribe-*.vsix
-
-# Run repomix - rebuild context
-repomix
-
-echo &quot;✓ Context Updated &amp; Extension Installed — reload Antigravity window&quot;</file><file path="README.md"># Antigravity Scribe
+}</file><file path="README.md"># Antigravity Scribe
 
 &gt; **Capture agents thinking, tool calls &amp; artifacts to your Obsidian vault**
 
@@ -12082,7 +12059,30 @@ export ANTIGRAVITY_PROFILE_DIR=&quot;~/Antigravity_Profiles/myprofile/app_config
 
 ## License
 
-MIT © [Sciscend ЕООД](https://sciscend.com)</file><file path="src/extension.ts">import { runSnap, runDiagnose } from &quot;./snapRunner&quot;;
+MIT © [Sciscend ЕООД](https://sciscend.com)</file><file path="scripts/reinstall.sh">#!/bin/bash
+set -e
+
+# Change to project root relative to script
+cd &quot;$(dirname &quot;$0&quot;)/..&quot;
+
+# Load workspace-specific environment variables if .env exists
+if [ -f .env ]; then
+  export $(grep -v &apos;^#&apos; .env | xargs)
+fi
+
+# Rebuild the extension
+npm run package
+
+PROFILE_HOME=&quot;${ANTIGRAVITY_PROFILE_DIR:-$HOME}&quot;
+HOME=&quot;$PROFILE_HOME&quot; \
+  antigravity \
+  --extensions-dir=&quot;$PROFILE_HOME/.antigravity/extensions&quot; \
+  --install-extension ./antigravity-scribe-*.vsix
+
+# Run repomix - rebuild context
+repomix
+
+echo &quot;✓ Context Updated &amp; Extension Installed — reload Antigravity window&quot;</file><file path="src/extension.ts">import { runSnap, runDiagnose } from &quot;./snapRunner&quot;;
 ⋮----
 export function activate(ctx: vscode.ExtensionContext)
 ⋮----
@@ -12235,64 +12235,7 @@ const info = (msg: string) =&gt; out.appendLine(`   $
 ⋮----
 // Brain
 ⋮----
-// Vault</file><file path="src/extractor.ts">// ---------------------------------------------------------------------------
-// Types
-// ---------------------------------------------------------------------------
-⋮----
-export type NodeRole =
-  | &quot;user&quot;
-  | &quot;agent&quot;
-  | &quot;worked&quot;
-  | &quot;explored&quot;
-  | &quot;thought&quot;
-  | &quot;actions&quot;    // group container — children are individual &apos;action&apos; nodes
-  | &quot;action&quot;     // single action row: Analyzed, Created outline, Read page
-  | &quot;ran&quot;        // Ran / Edited / Created command row
-  | &quot;artifact&quot;   // Artifact card (task.md, implementation_plan.md, etc.)
-  | &quot;files_modified&quot; // Files Modified section with child filenames
-  | &quot;_no_chat&quot;;
-⋮----
-| &quot;actions&quot;    // group container — children are individual &apos;action&apos; nodes
-| &quot;action&quot;     // single action row: Analyzed, Created outline, Read page
-| &quot;ran&quot;        // Ran / Edited / Created command row
-| &quot;artifact&quot;   // Artifact card (task.md, implementation_plan.md, etc.)
-| &quot;files_modified&quot; // Files Modified section with child filenames
-⋮----
-export interface ConvNode {
-  role: NodeRole;
-  /** Primary text: user message, &quot;Worked for 1m&quot;, &quot;Thought for 3s&quot;, verb &quot;Analyzed&quot; … */
-  label: string;
-  /** Secondary text: chip ref &quot;llms-ctx-full.txt#L1-800&quot;, command, thought body, filename */
-  detail: string;
-  /** Raw innerHTML for agent / thought content — converted to Markdown by renderer */
-  html: string | null;
-  children: ConvNode[];
-}
-⋮----
-/** Primary text: user message, &quot;Worked for 1m&quot;, &quot;Thought for 3s&quot;, verb &quot;Analyzed&quot; … */
-⋮----
-/** Secondary text: chip ref &quot;llms-ctx-full.txt#L1-800&quot;, command, thought body, filename */
-⋮----
-/** Raw innerHTML for agent / thought content — converted to Markdown by renderer */
-⋮----
-// ---------------------------------------------------------------------------
-// Extract conversation title from the panel header
-// ---------------------------------------------------------------------------
-⋮----
-// ---------------------------------------------------------------------------
-// Main extraction — returns ConvNode[] as JSON string
-//
-// Ported from scraper.py which handles:
-//   • User messages (with @mentions)
-//   • Thought blocks (collapsed &amp; expanded)
-//   • Worked-for wrappers with expanded tool-use children
-//   • Explored / Edited action groups
-//   • Analyzed rows (file / folder style)
-//   • Ran command rows
-//   • Artifact cards
-//   • Files Modified sections
-//   • Standalone agent response text
-// ---------------------------------------------------------------------------</file><file path="src/renderer.ts">import TurndownService from &quot;turndown&quot;;
+// Vault</file><file path="src/renderer.ts">import TurndownService from &quot;turndown&quot;;
 import { ConvNode } from &quot;./extractor&quot;;
 ⋮----
 export interface RenderOptions {
@@ -12390,4 +12333,61 @@ export function renderNote(nodes: ConvNode[], opts: RenderOptions): string
 ⋮----
 export function sessionFilename(task: string, date: Date = new Date()): string
 ⋮----
-const pad = (n: number)</file></files></repomix>
+const pad = (n: number)</file><file path="src/extractor.ts">// ---------------------------------------------------------------------------
+// Types
+// ---------------------------------------------------------------------------
+⋮----
+export type NodeRole =
+  | &quot;user&quot;
+  | &quot;agent&quot;
+  | &quot;worked&quot;
+  | &quot;explored&quot;
+  | &quot;thought&quot;
+  | &quot;actions&quot;    // group container — children are individual &apos;action&apos; nodes
+  | &quot;action&quot;     // single action row: Analyzed, Created outline, Read page
+  | &quot;ran&quot;        // Ran / Edited / Created command row
+  | &quot;artifact&quot;   // Artifact card (task.md, implementation_plan.md, etc.)
+  | &quot;files_modified&quot; // Files Modified section with child filenames
+  | &quot;_no_chat&quot;;
+⋮----
+| &quot;actions&quot;    // group container — children are individual &apos;action&apos; nodes
+| &quot;action&quot;     // single action row: Analyzed, Created outline, Read page
+| &quot;ran&quot;        // Ran / Edited / Created command row
+| &quot;artifact&quot;   // Artifact card (task.md, implementation_plan.md, etc.)
+| &quot;files_modified&quot; // Files Modified section with child filenames
+⋮----
+export interface ConvNode {
+  role: NodeRole;
+  /** Primary text: user message, &quot;Worked for 1m&quot;, &quot;Thought for 3s&quot;, verb &quot;Analyzed&quot; … */
+  label: string;
+  /** Secondary text: chip ref &quot;llms-ctx-full.txt#L1-800&quot;, command, thought body, filename */
+  detail: string;
+  /** Raw innerHTML for agent / thought content — converted to Markdown by renderer */
+  html: string | null;
+  children: ConvNode[];
+}
+⋮----
+/** Primary text: user message, &quot;Worked for 1m&quot;, &quot;Thought for 3s&quot;, verb &quot;Analyzed&quot; … */
+⋮----
+/** Secondary text: chip ref &quot;llms-ctx-full.txt#L1-800&quot;, command, thought body, filename */
+⋮----
+/** Raw innerHTML for agent / thought content — converted to Markdown by renderer */
+⋮----
+// ---------------------------------------------------------------------------
+// Extract conversation title from the panel header
+// ---------------------------------------------------------------------------
+⋮----
+// ---------------------------------------------------------------------------
+// Main extraction — returns ConvNode[] as JSON string
+//
+// Ported from scraper.py which handles:
+//   • User messages (with @mentions)
+//   • Thought blocks (collapsed &amp; expanded)
+//   • Worked-for wrappers with expanded tool-use children
+//   • Explored / Edited action groups
+//   • Analyzed rows (file / folder style)
+//   • Ran command rows
+//   • Artifact cards
+//   • Files Modified sections
+//   • Standalone agent response text
+// ---------------------------------------------------------------------------</file></files></repomix>
