@@ -52,7 +52,40 @@ export const EXTRACT_TITLE_JS = `(function () {
 //   • Standalone agent response text
 // ---------------------------------------------------------------------------
 
-export const EXTRACT_JS = `(function () {
+export const EXTRACT_JS = `(async function () {
+
+  // ── Auto-expand logic ──────────────────────────────────────────────────────
+  // The UI is a React app. When blocks (Worked for, Explored) are collapsed,
+  // their children are unmounted. We must click them to mount the children.
+  
+  let expandedSomething = true;
+  let iterations = 0;
+  while (expandedSomething && iterations < 10) {
+    expandedSomething = false;
+    iterations++;
+    
+    const btns = document.querySelectorAll("#conversation button");
+    for (const btn of btns) {
+      // 1. Tool blocks (Worked for, Explored) use lucide-chevron-right SVG
+      const svg = btn.querySelector("svg.lucide-chevron-right");
+      if (svg && !svg.classList.contains("rotate-90")) {
+        btn.click();
+        expandedSomething = true;
+        continue;
+      }
+      
+      // 2. Thought blocks use google-symbols chevron_right span
+      const gs = btn.querySelector("span.google-symbols");
+      if (gs && gs.textContent === "chevron_right" && !gs.classList.contains("rotate-90")) {
+        btn.click();
+        expandedSomething = true;
+      }
+    }
+    
+    if (expandedSomething) {
+      await new Promise(r => setTimeout(r, 250)); // Wait for React to render new children
+    }
+  }
 
   // ── Helpers ────────────────────────────────────────────────────────────────
 

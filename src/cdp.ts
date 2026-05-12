@@ -91,7 +91,7 @@ export class CDPClient {
     const result = await this.send("Runtime.evaluate", {
       expression: js,
       returnByValue: true,
-      awaitPromise: false,
+      awaitPromise: true,
     });
     return result?.result?.result?.value ?? null;
   }
