@@ -80,7 +80,7 @@ export const EXTRACT_JS = `(function () {
         parts.push(child.textContent);
       } else if (child.nodeType === 1) {
         const tag = child.tagName.toLowerCase();
-        if (tag === "svg") continue;
+        if (tag === "svg" || tag === "style" || tag === "script") continue;
         const style = child.getAttribute("style") || "";
         if (style.includes("visibility: hidden") || style.includes("display: none")) continue;
         const cls = cs(child);
@@ -194,6 +194,38 @@ export const EXTRACT_JS = `(function () {
     return { role: "files_modified", label: "Files Modified", detail: "", html: null, children };
   }
 
+  // ── Searched / generic action row ──────────────────────────────────────────
+
+  /**
+   * Parses "Searched", "Analyzed", and other generic action rows that have
+   * a span.opacity-70 verb but aren't "Ran". Mirrors scraper.py _parse_search_item().
+   *
+   * DOM shape (inside an Explored expanded block):
+   *   <div class="flex flex-row">
+   *     ...deep nesting...
+   *       <div class="flex items-center gap-1 ...">
+   *         <span class="opacity-70">Searched</span>
+   *         <span class="overflow-hidden text-ellipsis ...">asset</span>
+   *         <span class="shrink-0 rounded-full ...">4 results</span>
+   *
+   * Returns a ConvNode with: label = verb, detail = "query (count)"
+   */
+  function parseSearchItem(row) {
+    const spans = row.querySelectorAll("span");
+    let action = "", query = "", count = "";
+    for (const sp of spans) {
+      const cls = cs(sp);
+      const t = clean(sp.textContent);
+      if (!t) continue;
+      if (cls.includes("google-symbols")) continue;
+      if (!action && cls.includes("opacity-70")) { action = t; continue; }
+      if (!count && cls.includes("rounded-full")) { count = t; continue; }
+      if (!query) { query = t; }
+    }
+    const detail = [query ? \`\\\`\${query}\\\`\` : "", count].filter(Boolean).join(" ");
+    return { role: "action", label: action, detail, html: null, children: [] };
+  }
+
   // ── Recursive content walker ────────────────────────────────────────────────
 
   /**
@@ -243,7 +275,15 @@ export const EXTRACT_JS = `(function () {
           continue;
         }
 
-        // Standard analyzed row
+        // Searched / Analyzed / other action items:
+        // span.opacity-70 exists but verb isn't "Ran" (e.g. "Searched", "Analyzed")
+        if (ranSp) {
+          const node = parseSearchItem(child);
+          if (node.label || node.detail) items.push(node);
+          continue;
+        }
+
+        // Legacy analyzed row (span with both shrink-0 and opacity-70)
         const al = child.querySelector("span.shrink-0.opacity-70");
         if (al) {
           const node = parseAnalyzed(child);
