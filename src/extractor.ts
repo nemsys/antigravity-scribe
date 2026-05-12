@@ -285,7 +285,8 @@ export const EXTRACT_JS = `(function () {
     const items = [];
     if (!container) return items;
 
-    for (const child of container.children) {
+    for (let i = 0; i < container.children.length; i++) {
+      const child = container.children[i];
       const cls = cs(child);
       const classes = cls.split(" ");
 
@@ -305,11 +306,23 @@ export const EXTRACT_JS = `(function () {
           const [v, d] = btnParts(btn);
           if (v === "Explored" || v === "Edited") {
             const children = [];
+            
+            // 1. Check inside the block (offline HTML case)
             for (const c2 of child.children) {
               if (c2.tagName !== "BUTTON") {
                 children.push(...walk(c2));
               }
             }
+            
+            // 2. Check next sibling (live DOM case)
+            if (children.length === 0 && i + 1 < container.children.length) {
+              const nextSib = container.children[i + 1];
+              if (nextSib && nextSib.tagName === "DIV" && !nextSib.querySelector(":scope > button")) {
+                children.push(...walk(nextSib));
+                i++; // Skip the sibling so it doesn't get processed again
+              }
+            }
+            
             items.push({ role: "explored", label: v, detail: d, html: null, children });
           }
         } else {
@@ -464,19 +477,10 @@ export const EXTRACT_JS = `(function () {
         // Expanded tool-use steps live in the div[style*='opacity: 1'] sibling
         let workedChildren = [];
         
+        // 1. Check inside workedBtnContainer (offline HTML export case)
         for (const c2 of workedBtnContainer.children) {
           if (c2.tagName !== "BUTTON") {
             workedChildren.push(...walk(c2));
-          }
-        }
-
-        // Attach children to the worked node we just pushed
-        const workedNode = nodes[nodes.length - 1];
-        if (workedNode && workedNode.role === "worked") {
-          workedNode.children = workedChildren;
-          
-          if (workedChildren.length === 0) {
-             workedNode.children.push({ role: "_no_chat", label: "DEBUG", detail: getCleanHTML(child), html: null, children: [] });
           }
         }
 
@@ -486,14 +490,18 @@ export const EXTRACT_JS = `(function () {
           directChildContainingWorked = directChildContainingWorked.parentElement;
         }
 
-        // Collect any response text that follows the worked block
-        // (siblings of directChildContainingWorked inside this child)
+        // Attach reference to the worked node before we process siblings
+        const workedNode = nodes[nodes.length - 1];
+
+        // 2. Find siblings in the live DOM
         let passedWorked = false;
         for (const sib of child.children) {
           if (sib === directChildContainingWorked) { passedWorked = true; continue; }
           if (!passedWorked) continue;
+          
           const sibCls = cs(sib);
           if (sibCls.includes("px-2") && sibCls.includes("py-1")) {
+            // It's the final response text block! Push to nodes at root level.
             const md = sib.querySelector("div.leading-relaxed");
             if (md) {
               const t = clean(md.textContent);
@@ -501,7 +509,15 @@ export const EXTRACT_JS = `(function () {
                 nodes.push({ role: "agent", label: "", detail: "", html: getCleanHTML(md), children: [] });
               }
             }
+          } else {
+            // It's a tool container block sibling (live DOM case)
+            workedChildren.push(...walk(sib));
           }
+        }
+
+        // 3. Attach all collected children
+        if (workedNode && workedNode.role === "worked") {
+          workedNode.children = workedChildren;
         }
         continue;
       }
