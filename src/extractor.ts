@@ -103,13 +103,15 @@ export const EXTRACT_JS = `(function () {
   function getCleanHTML(el) {
     if (!el) return null;
     const clone = el.cloneNode(true);
+    
+    // Remove scripts, styles, svgs completely
+    const toRemove = clone.querySelectorAll("svg, style, script");
+    for (const child of toRemove) {
+      child.remove();
+    }
+
     const elements = clone.querySelectorAll("*");
     for (const child of elements) {
-      const tag = child.tagName.toLowerCase();
-      if (tag === "svg" || tag === "style" || tag === "script") {
-        child.remove();
-        continue;
-      }
       const style = child.getAttribute("style") || "";
       if (style.includes("visibility: hidden") || style.includes("display: none")) {
         child.remove();
@@ -156,21 +158,36 @@ export const EXTRACT_JS = `(function () {
   // ── User message ────────────────────────────────────────────────────────────
 
   function parseUser(step) {
-    const td = step.querySelector("div.whitespace-pre-wrap.text-sm");
-    if (!td) return "";
     const parts = [];
-    for (const ch of td.childNodes) {
-      if (ch.nodeType === 3) {
-        parts.push(ch.textContent);
-      } else if (ch.nodeType === 1) {
-        if (cs(ch).includes("context-scope-mention")) {
-          parts.push("@[" + clean(ch.textContent) + "]");
-        } else {
-          parts.push(ch.textContent);
+    const imgs = step.querySelectorAll("img");
+    for (const img of imgs) {
+      const alt = img.getAttribute("alt") || "image";
+      const src = img.getAttribute("src") || "";
+      const w = img.getAttribute("width") || "";
+      if (w && !isNaN(parseInt(w.replace("px", ""))) && parseInt(w.replace("px", "")) <= 16) {
+        continue;
+      }
+      const finalSrc = src.startsWith("data:") ? "embedded-image" : src;
+      parts.push("![" + alt + "](" + finalSrc + ")\\n");
+    }
+
+    const td = step.querySelector("div.whitespace-pre-wrap.text-sm");
+    if (td) {
+      const tdParts = [];
+      for (const ch of td.childNodes) {
+        if (ch.nodeType === 3) {
+          tdParts.push(ch.textContent);
+        } else if (ch.nodeType === 1) {
+          if (cs(ch).includes("context-scope-mention")) {
+            tdParts.push("@[" + clean(ch.textContent) + "]");
+          } else {
+            tdParts.push(ch.textContent);
+          }
         }
       }
+      parts.push(clean(tdParts.join("")));
     }
-    return clean(parts.join(""));
+    return parts.join("").trim();
   }
 
   // ── Thought block ───────────────────────────────────────────────────────────
@@ -441,8 +458,17 @@ export const EXTRACT_JS = `(function () {
 
       if (workedBtnContainer) {
         // Expanded tool-use steps live in the div[style*='opacity: 1'] sibling
+        let workedChildren = [];
         const exp = workedBtnContainer.querySelector(":scope > div[style*='opacity: 1']");
-        const workedChildren = exp ? walk(exp) : [];
+        if (exp) {
+          workedChildren = walk(exp);
+        } else {
+          for (const c2 of workedBtnContainer.children) {
+            if (c2.tagName !== "BUTTON") {
+              workedChildren.push(...walk(c2));
+            }
+          }
+        }
 
         // Attach children to the worked node we just pushed
         const workedNode = nodes[nodes.length - 1];
@@ -450,11 +476,17 @@ export const EXTRACT_JS = `(function () {
           workedNode.children = workedChildren;
         }
 
+        // Find the direct child of 'child' that contains the workedBtnContainer
+        let directChildContainingWorked = workedBtnContainer;
+        while (directChildContainingWorked && directChildContainingWorked.parentElement !== child) {
+          directChildContainingWorked = directChildContainingWorked.parentElement;
+        }
+
         // Collect any response text that follows the worked block
-        // (siblings of workedBtnContainer inside this child)
+        // (siblings of directChildContainingWorked inside this child)
         let passedWorked = false;
         for (const sib of child.children) {
-          if (sib === workedBtnContainer) { passedWorked = true; continue; }
+          if (sib === directChildContainingWorked) { passedWorked = true; continue; }
           if (!passedWorked) continue;
           const sibCls = cs(sib);
           if (sibCls.includes("px-2") && sibCls.includes("py-1")) {
