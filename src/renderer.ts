@@ -24,6 +24,9 @@ td.addRule("ignoreImages", {
   replacement: () => "",
 });
 
+// Explicitly remove styling and script elements just in case any slip through
+td.remove(["style", "script", "noscript", "svg"]);
+
 const toRow = (cells: any[]) =>
   "| " + cells.map(c => String(c ?? "").replace(/\|/g, "\\|")).join(" | ") + " |";
 

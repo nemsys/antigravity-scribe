@@ -96,6 +96,38 @@ export const EXTRACT_JS = `(function () {
     return el ? clean(walkText(el)) : "";
   }
 
+  /**
+   * Clone the element and remove styles, scripts, SVGs, hidden elements, and spinners
+   * so they don't pollute the extracted Markdown.
+   */
+  function getCleanHTML(el) {
+    if (!el) return null;
+    const clone = el.cloneNode(true);
+    const elements = clone.querySelectorAll("*");
+    for (const child of elements) {
+      const tag = child.tagName.toLowerCase();
+      if (tag === "svg" || tag === "style" || tag === "script") {
+        child.remove();
+        continue;
+      }
+      const style = child.getAttribute("style") || "";
+      if (style.includes("visibility: hidden") || style.includes("display: none")) {
+        child.remove();
+        continue;
+      }
+      const cls = cs(child);
+      if (cls.split(" ").includes("hidden") && !cls.includes("group-hover:")) {
+        child.remove();
+        continue;
+      }
+      if (cls.includes("animate-spin")) {
+        child.remove();
+        continue;
+      }
+    }
+    return clone.innerHTML;
+  }
+
   // ── Button verb + detail ───────────────────────────────────────────────────
 
   /**
@@ -152,7 +184,7 @@ export const EXTRACT_JS = `(function () {
     let contentHTML = null;
     if (cdiv) {
       const md = cdiv.querySelector("div.leading-relaxed");
-      if (md) contentHTML = md.innerHTML;
+      if (md) contentHTML = getCleanHTML(md);
     }
     return { role: "thought", label: header, detail: "", html: contentHTML, children: [] };
   }
@@ -317,7 +349,7 @@ export const EXTRACT_JS = `(function () {
         if (md) {
           const t = clean(md.textContent);
           if (t && t.length > 3) {
-            items.push({ role: "agent", label: "", detail: "", html: md.innerHTML, children: [] });
+            items.push({ role: "agent", label: "", detail: "", html: getCleanHTML(md), children: [] });
           }
         }
         continue;
@@ -430,7 +462,7 @@ export const EXTRACT_JS = `(function () {
             if (md) {
               const t = clean(md.textContent);
               if (t && t.length > 3) {
-                nodes.push({ role: "agent", label: "", detail: "", html: md.innerHTML, children: [] });
+                nodes.push({ role: "agent", label: "", detail: "", html: getCleanHTML(md), children: [] });
               }
             }
           }
@@ -450,7 +482,7 @@ export const EXTRACT_JS = `(function () {
             if (md) {
               const t = clean(md.textContent);
               if (t && t.length > 3) {
-                nodes.push({ role: "agent", label: "", detail: "", html: md.innerHTML, children: [] });
+                nodes.push({ role: "agent", label: "", detail: "", html: getCleanHTML(md), children: [] });
               }
             }
           }
@@ -471,7 +503,7 @@ export const EXTRACT_JS = `(function () {
         if (skip) continue;
         const t = clean(md.textContent);
         if (t && t.length > 3) {
-          nodes.push({ role: "agent", label: "", detail: "", html: md.innerHTML, children: [] });
+          nodes.push({ role: "agent", label: "", detail: "", html: getCleanHTML(md), children: [] });
         }
       }
     }
