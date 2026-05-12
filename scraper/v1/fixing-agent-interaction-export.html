@@ -1,0 +1,1827 @@
+<div class="antigravity-agent-side-panel"
+	style="position: absolute; left: 978px; top: 35px; width: 558px; height: 807px; display: block;">
+	<div role="dialog" aria-modal="true"
+		class="w-max border-gray-500/20 bg-ide-chat-background bg-editor-background text-editor-foreground origin-bottom outline-hidden z-50 w-72 rounded-lg border shadow-md transition-[opacity,transform] duration-100 opacity-0 pointer-events-none -translate-y-3"
+		style="position: fixed; visibility: hidden;">
+		<div class="rounded-bg py-1">
+			<div class="px-2 py-1 cursor-pointer text-xs hover:bg-gray-500/10 whitespace-nowrap">
+				<div class="font-xs">Customization</div>
+			</div>
+			<div class="px-2 py-1 cursor-pointer text-xs hover:bg-gray-500/10 whitespace-nowrap">
+				<div class="font-xs">MCP Servers</div>
+			</div>
+			<div class="px-2 py-1 cursor-pointer text-xs hover:bg-gray-500/10 whitespace-nowrap">
+				<div class="font-xs">Export</div>
+			</div>
+		</div>
+	</div>
+	<div tabindex="-1" class="w-full h-full flex flex-col box-border focus:!outline-none">
+		<div class="flex items-center justify-between gap-2 px-2 py-[5.5px] !border-b !border-gray-500/20">
+			<div class="flex min-w-0 items-center overflow-hidden text-ellipsis whitespace-nowrap gap-1">Fixing Agent
+				Interaction Export</div>
+			<div class="flex items-center gap-2 px-0.5"><a data-tooltip-id="new-conversation-tooltip"
+					class="group relative text-sm text-ide-text-color font-medium !hover:text-ide-icon-color flex w-4 items-center justify-center !text-ide-icon-color !opacity-100 opacity-100 cursor-pointer"><svg
+						xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+						stroke="currentColor" aria-hidden="true" data-slot="icon" class="h-4 w-4">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15"></path>
+					</svg>
+					<div
+						class="absolute -bottom-1 -left-1 -right-1 -top-1 rounded-sm bg-gray-500 opacity-0 group-hover:opacity-20">
+					</div>
+				</a><a data-tooltip-id="history-tooltip" data-past-conversations-toggle="true"
+					class="group relative text-sm text-ide-text-color font-medium !hover:text-ide-icon-color flex w-4 items-center justify-center !text-ide-icon-color opacity-100 cursor-pointer"><svg
+						xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+						stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+						aria-hidden="true" class="lucide lucide-history h-4 w-4 stroke-[1.5px]">
+						<path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+						<path d="M3 3v5h5"></path>
+						<path d="M12 7v5l4 2"></path>
+					</svg>
+					<div
+						class="absolute -bottom-1 -left-1 -right-1 -top-1 rounded-sm bg-gray-500 opacity-0 group-hover:opacity-20">
+					</div>
+				</a>
+				<div role="button" aria-haspopup="dialog" aria-expanded="false"><a
+						data-tooltip-id="177f39ef-16ee-40e8-a956-955ecc7a274a"
+						class="group relative text-sm text-ide-text-color font-medium !hover:text-ide-icon-color flex w-4 items-center justify-center !text-ide-icon-color opacity-100 cursor-pointer"><svg
+							xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+							stroke="currentColor" aria-hidden="true" data-slot="icon" class="h-4 w-4">
+							<path stroke-linecap="round" stroke-linejoin="round"
+								d="M6.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM12.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0ZM18.75 12a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z">
+							</path>
+						</svg>
+						<div
+							class="absolute -bottom-1 -left-1 -right-1 -top-1 rounded-sm bg-gray-500 opacity-0 group-hover:opacity-20">
+						</div>
+					</a></div><a data-tooltip-id="769ac601-99de-4ab6-833e-ef3ed64f03aa"
+					class="group relative text-sm text-ide-text-color font-medium !hover:text-ide-icon-color flex w-4 items-center justify-center !text-ide-icon-color opacity-100 cursor-pointer"><svg
+						xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
+						stroke="currentColor" aria-hidden="true" data-slot="icon" class="h-4 w-4">
+						<path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12"></path>
+					</svg>
+					<div
+						class="absolute -bottom-1 -left-1 -right-1 -top-1 rounded-sm bg-gray-500 opacity-0 group-hover:opacity-20">
+					</div>
+				</a>
+			</div>
+		</div>
+		<div id="conversation" class="relative flex w-full grow flex-col overflow-y-hidden overflow-x-clip pr-px">
+			<div class="flex w-full grow flex-col overflow-hidden">
+				<div class="h-full overflow-y-auto min-h-0 w-full relative flex w-full grow flex-col overflow-y-auto">
+					<div class="mx-auto w-full">
+						<div>
+							<div class="relative flex flex-col gap-y-3 px-4">
+								<div class="flex items-start" style="">
+									<div class="flex flex-col gap-0.5 group w-full">
+										<div
+											class="sticky top-0 z-10 mb-4 bg-agent-convo-background after:content-[''] after:absolute after:left-0 after:right-0 after:top-full after:h-7 after:bg-gradient-to-b after:from-agent-convo-background after:to-transparent after:pointer-events-none">
+											<div class="flex w-full flex-row">
+												<div class="flex min-w-0 grow flex-col">
+													<div data-testid="user-input-step"
+														class="flex flex-col w-full gap-2 group pt-4">
+														<div class="relative p-px rounded-xl bg-gray-500/20">
+															<div
+																class="relative flex flex-col gap-0 p-2 rounded-[calc(theme(borderRadius.xl)-1px)] bg-input">
+																<div class="flex flex-row items-end gap-2">
+																	<div class="flex-1 flex flex-col gap-2">
+																		<div class="relative cursor-pointer">
+																			<div class="max-h-[20vh] overflow-hidden"
+																				style="mask-image: linear-gradient(black 85%, transparent 100%);">
+																				<div
+																					class="relative flex flex-wrap gap-2 mb-2">
+																					<div
+																						class="relative inline-block cursor-pointer overflow-hidden rounded-md border border-gray-500/25 transition-opacity hover:opacity-50">
+																						<img src="data:image/png;base64,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"
+																							alt="User uploaded media 1"
+																							class="h-16 w-16 object-cover">
+																					</div>
+																				</div>
+																				<div class="flex flex-wrap gap-2"></div>
+																				<div class="whitespace-pre-wrap text-sm"
+																					style="word-break: break-word;">Look
+																					at agent side pannel: . The export
+																					is in <span
+																						class="context-scope-mention"><span
+																							class="inline-flex items-center gap-0.5 rounded-md align-middle text-sm font-medium transition-[opacity,background-color] cursor-pointer hover:bg-gray-500/20 select-none translate-y-[-1px]"
+																							draggable="true"
+																							style="padding: 1px 0.25rem 1px 0.125rem;">
+																							<div><img
+																									src="/usr/share/antigravity/resources/app/extensions/theme-symbols/src/icons/files/markdown.svg"
+																									width="16px"
+																									height="16px"
+																									style="min-width: 16px; display: inline-block; min-height: 16px; transform: translateY(-1px);">
+																							</div><span
+																								class="inline-flex break-all leading-tight select-text"><span>20260507_1725_reviewing-system-documentation-formatting.md</span></span>
+																						</span></span>.
+																					But the code did not capture the
+																					agent thouts and other details
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="flex-shrink-0 pb-1">
+																		<div data-testid="revert-button" role="button"
+																			data-tooltip-id="undo-tooltip-P0-44"
+																			class="cursor-pointer opacity-50 hover:opacity-100 transition-opacity">
+																			<span class="google-symbols w-4 h-4"
+																				style="display: flex; align-items: center; justify-content: center; font-size: 16px; user-select: none;">undo</span>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div>
+											<div class="flex flex-col gap-0.5"></div>
+										</div>
+										<div class="pt-3">
+											<div>
+												<div class="flex flex-col gap-2">
+													<div
+														class="flex flex-1 flex-row items-baseline justify-end gap-2 rounded-lg pl-2 pr-2">
+														<span
+															class="text-xs opacity-0 group-hover:opacity-50 transition-opacity whitespace-nowrap pt-1">5:38
+															PM, 5/7/2026</span>
+														<div class="flex-1"></div>
+														<div role="button" tabindex="0" aria-label="Copy"
+															data-tooltip-id="copy-P0-45"
+															class="flex items-center gap-1 cursor-pointer transition-[opacity,transform] duration-100 mr-1 opacity-70 hover:opacity-100">
+															<span class="google-symbols h-4 w-4"
+																style="display: flex; align-items: center; justify-content: center; font-size: 16px; user-select: none;">content_copy</span>
+														</div>
+														<div role="button" tabindex="0" aria-label="Good response"
+															aria-pressed="false" data-tooltip-id="up-P0-45"
+															class="flex items-center gap-1 transition-[opacity,transform] duration-100 cursor-pointer opacity-70 hover:opacity-100 opacity-30">
+															<span class="google-symbols h-4 w-4"
+																style="display: flex; align-items: center; justify-content: center; font-size: 16px; user-select: none;">thumb_up</span>
+														</div>
+														<div role="button" tabindex="0" aria-label="Bad response"
+															aria-pressed="false" data-tooltip-id="down-P0-45"
+															class="flex items-center gap-1 transition-[opacity,transform] duration-100 cursor-pointer opacity-70 hover:opacity-100 opacity-30">
+															<span class="google-symbols h-4 w-4"
+																style="display: flex; align-items: center; justify-content: center; font-size: 16px; user-select: none;">thumb_down</span>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="flex items-start">
+									<div class="flex flex-col gap-0.5 group w-full">
+										<div
+											class="sticky top-0 z-10 mb-4 bg-agent-convo-background after:content-[''] after:absolute after:left-0 after:right-0 after:top-full after:h-7 after:bg-gradient-to-b after:from-agent-convo-background after:to-transparent after:pointer-events-none">
+											<div class="flex w-full flex-row">
+												<div class="flex min-w-0 grow flex-col">
+													<div data-testid="user-input-step"
+														class="flex flex-col w-full gap-2 group pt-4">
+														<div class="relative p-px rounded-xl bg-gray-500/20">
+															<div
+																class="relative flex flex-col gap-0 p-2 rounded-[calc(theme(borderRadius.xl)-1px)] bg-input">
+																<div class="flex flex-row items-end gap-2">
+																	<div class="flex-1 flex flex-col gap-2">
+																		<div class="relative">
+																			<div class="max-h-[20vh] overflow-hidden">
+																				<div class="flex flex-wrap gap-2"></div>
+																				<div class="whitespace-pre-wrap text-sm"
+																					style="word-break: break-word;">go
+																					on</div>
+																			</div>
+																		</div>
+																	</div>
+																	<div class="flex-shrink-0 pb-1">
+																		<div data-testid="revert-button" role="button"
+																			data-tooltip-id="undo-tooltip-P0-38"
+																			class="cursor-pointer opacity-50 hover:opacity-100 transition-opacity">
+																			<span class="google-symbols w-4 h-4"
+																				style="display: flex; align-items: center; justify-content: center; font-size: 16px; user-select: none;">undo</span>
+																		</div>
+																	</div>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+										<div>
+											<div class="relative"><button type="button"
+													class="group flex items-center gap-1 w-full text-left text-sm px-2 min-h-8 py-1 rounded-lg tabular-nums select-none text-ide-text-color hover:bg-gray-500/10 transition-[opacity,background-color]"><span
+														class="opacity-70">Worked for 1m</span><svg
+														xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+														viewBox="0 0 24 24" fill="none" stroke="currentColor"
+														stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+														aria-hidden="true"
+														class="lucide lucide-chevron-right h-3.5 w-3.5 shrink-0 transition-all duration-200 text-ide-text-color/50 opacity-70 rotate-90">
+														<path d="m9 18 6-6-6-6"></path>
+													</svg></button>
+												<div class="relative"
+													style="opacity: 1; transform: translateY(0px); transition: opacity 150ms ease-out, transform 150ms ease-out;">
+													<div class="overflow-y-auto pl-3 pt-0.5">
+														<div class="flex flex-col gap-0.5">
+															<div class="flex flex-row">
+																<div class="min-w-0 grow">
+																	<div class="flex flex-col gap-0.5">
+																		<div class="isolate"><button
+																				class="group flex w-full items-center gap-1.5 px-2 min-h-8 text-left text-sm rounded-lg text-ide-text-color opacity-70 hover:bg-gray-500/10 transition-[background-color] tabular-nums select-none"><span
+																					class="cursor-pointer">Thought for
+																					4s</span><span
+																					class="google-symbols h-3.5 w-3.5 shrink-0 transition-all duration-200 text-ide-text-color/50 opacity-50 group-hover:opacity-70 rotate-90"
+																					style="display: flex; align-items: center; justify-content: center; font-size: 16px; user-select: none;">chevron_right</span></button>
+																			<div
+																				class="overflow-hidden transition-all duration-300 ease-in-out relative pl-3 max-h-[200px] opacity-100">
+																				<div
+																					class="px-2 pb-1 pt-1 overflow-y-auto max-h-[200px] relative">
+																					<div>
+																						<div
+																							class="leading-relaxed select-text text-sm flex flex-col [&amp;_code:not(pre_code)]:bg-code-background [&amp;_code:not(pre_code)]:text-code-foreground [&amp;_code:not(pre_code)]:rounded [&amp;_code:not(pre_code)]:px-1 [&amp;_code:not(pre_code)]:py-0.5 [&amp;_code:not(pre_code)]:text-[0.9em] [&amp;_summary]:cursor-pointer [&amp;_h1]:text-xl [&amp;_h2]:text-lg [&amp;_h3]:text-base [&amp;_h4]:text-sm [&amp;_h1]:font-semibold [&amp;_h2]:font-semibold [&amp;_h3]:font-medium [&amp;_h4]:font-medium [&amp;_h1]:!mb-2 [&amp;_h1]:!mt-6 [&amp;_h2]:!mb-2 [&amp;_h2]:!mt-6 [&amp;_h3]:!mb-1 [&amp;_h3]:!mt-3 [&amp;_h4]:!mb-1 [&amp;_h4]:!mt-3 [&amp;_li.task-list-item]:list-none [&amp;_ul:has(li.task-list-item)]:list-none [&amp;_ul]:my-2 [&amp;_ol]:my-2 [&amp;&gt;ul.contains-task-list]:pl-0 [&amp;&gt;ol.contains-task-list]:pl-0 [&amp;_ul]:pl-10 [&amp;_ol]:pl-10 [&amp;&gt;ul:not(.contains-task-list)]:!pl-4 [&amp;&gt;ol:not(.contains-task-list)]:!pl-4 [&amp;_ul]:list-disc [&amp;_ol]:list-decimal [&amp;_li.task-checked&gt;.task-checked-content]:opacity-50 break-words [&amp;_strong]:block [&amp;_strong]:my-1 opacity-70">
+																							<style>
+																								/* Copied from remark-github-blockquote-alert/alert.css */
+																								@media (prefers-color-scheme: dark) {
+																									.markdown-alert {
+																										--color-border-default: #30363d;
+																										--color-accent-fg: #58a6ff;
+																										--color-accent-emphasis: #1f6feb;
+																										--color-danger-fg: #f85149;
+																										--color-danger-emphasis: #da3633;
+																										--color-attention-fg: #d29922;
+																										--color-attention-emphasis: #9e6a03;
+																										--color-done-fg: #a371f7;
+																										--color-done-emphasis: #8957e5;
+																										--color-success-fg: #3fb950;
+																										--color-success-emphasis: #238636;
+																									}
+																								}
+
+																								@media (prefers-color-scheme: light) {
+																									.markdown-alert {
+																										--color-border-default: #d0d7de;
+																										--color-accent-fg: #0969da;
+																										--color-accent-emphasis: #0969da;
+																										--color-danger-fg: #d1242f;
+																										--color-danger-emphasis: #cf222e;
+																										--color-attention-fg: #9a6700;
+																										--color-attention-emphasis: #9a6700;
+																										--color-done-fg: #8250df;
+																										--color-done-emphasis: #8250df;
+																										--color-success-fg: #1a7f37;
+																										--color-success-emphasis: #1f883d;
+																									}
+																								}
+
+																								.markdown-alert {
+																									border-left: .25em solid var(--borderColor-default, var(--color-border-default));
+																									color: inherit;
+																									margin-bottom: 16px;
+																									padding: .5rem 1em
+																								}
+
+																								.markdown-alert>:last-child {
+																									margin-bottom: 0 !important
+																								}
+
+																								.markdown-alert .markdown-alert-title {
+																									align-items: center;
+																									display: flex;
+																									font-size: 14px;
+																									font-weight: 500;
+																									line-height: 1
+																								}
+
+																								.markdown-alert .markdown-alert-title svg.octicon {
+																									margin-right: 8px !important;
+																									margin-right: var(--base-size-8, 8px) !important;
+																									fill: currentColor;
+																								}
+
+																								.markdown-alert.markdown-alert-note {
+																									border-left-color: var(--borderColor-accent-emphasis, var(--color-accent-emphasis))
+																								}
+
+																								.markdown-alert.markdown-alert-note .markdown-alert-title {
+																									color: var(--color-accent-fg);
+																									color: var(--fgColor-accent, var(--color-accent-fg))
+																								}
+
+																								.markdown-alert.markdown-alert-tip {
+																									border-left-color: var(--borderColor-success-emphasis, var(--color-success-emphasis))
+																								}
+
+																								.markdown-alert.markdown-alert-tip .markdown-alert-title {
+																									color: var(--color-success-fg);
+																									color: var(--fgColor-success, var(--color-success-fg))
+																								}
+
+																								.markdown-alert.markdown-alert-important {
+																									border-left-color: var(--borderColor-done-emphasis, var(--color-done-emphasis))
+																								}
+
+																								.markdown-alert.markdown-alert-important .markdown-alert-title {
+																									color: var(--color-done-fg);
+																									color: var(--fgColor-done, var(--color-done-fg))
+																								}
+
+																								.markdown-alert.markdown-alert-warning {
+																									border-left-color: var(--borderColor-attention-emphasis, var(--color-attention-emphasis))
+																								}
+
+																								.markdown-alert.markdown-alert-warning .markdown-alert-title {
+																									color: var(--color-attention-fg);
+																									color: var(--fgColor-attention, var(--color-attention-fg))
+																								}
+
+																								.markdown-alert.markdown-alert-caution {
+																									border-left-color: var(--borderColor-danger-emphasis, var(--color-danger-emphasis))
+																								}
+
+																								.markdown-alert.markdown-alert-caution .markdown-alert-title {
+																									color: var(--color-danger-fg);
+																									color: var(--fgColor-danger, var(--color-danger-fg))
+																								}
+
+																								div:has(> table),
+																								table th,
+																								table td {
+																									border-style: solid;
+																									border-color: rgba(128, 128, 128, 0.2);
+																								}
+																							</style>
+																							<p node="[object Object]">
+																								The user is asking me to
+																								investigate why the
+																								Antigravity Scribe
+																								extension isn't
+																								capturing agent thoughts
+																								and other details from
+																								the agent side panel.
+																								They've shown a
+																								screenshot of an agent
+																								session and pointed to
+																								the exported markdown
+																								file. Let me start by
+																								understanding the
+																								current state:</p>
+																							<ol>
+																								<li
+																									node="[object Object]">
+																									Look at the exported
+																									markdown to see
+																									what's missing</li>
+																								<li
+																									node="[object Object]">
+																									Look at the DOM
+																									export HTML to see
+																									what's available in
+																									the DOM</li>
+																								<li
+																									node="[object Object]">
+																									Look at the
+																									renderer/extractor
+																									code to understand
+																									what's being
+																									captured</li>
+																							</ol>
+																							<p node="[object Object]">
+																								Let me start by
+																								examining the relevant
+																								files.</p>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																		<div class="px-2 py-1">
+																			<div
+																				class="leading-relaxed select-text text-sm flex flex-col [&amp;_code:not(pre_code)]:bg-code-background [&amp;_code:not(pre_code)]:text-code-foreground [&amp;_code:not(pre_code)]:rounded [&amp;_code:not(pre_code)]:px-1 [&amp;_code:not(pre_code)]:py-0.5 [&amp;_code:not(pre_code)]:text-[0.9em] [&amp;_summary]:cursor-pointer [&amp;_h1]:text-xl [&amp;_h2]:text-lg [&amp;_h3]:text-base [&amp;_h4]:text-sm [&amp;_h1]:font-semibold [&amp;_h2]:font-semibold [&amp;_h3]:font-medium [&amp;_h4]:font-medium [&amp;_h1]:!mb-2 [&amp;_h1]:!mt-6 [&amp;_h2]:!mb-2 [&amp;_h2]:!mt-6 [&amp;_h3]:!mb-1 [&amp;_h3]:!mt-3 [&amp;_h4]:!mb-1 [&amp;_h4]:!mt-3 [&amp;_li.task-list-item]:list-none [&amp;_ul:has(li.task-list-item)]:list-none [&amp;_ul]:my-2 [&amp;_ol]:my-2 [&amp;&gt;ul.contains-task-list]:pl-0 [&amp;&gt;ol.contains-task-list]:pl-0 [&amp;_ul]:pl-10 [&amp;_ol]:pl-10 [&amp;&gt;ul:not(.contains-task-list)]:!pl-4 [&amp;&gt;ol:not(.contains-task-list)]:!pl-4 [&amp;_ul]:list-disc [&amp;_ol]:list-decimal [&amp;_li.task-checked&gt;.task-checked-content]:opacity-50 break-words">
+																				<style>
+																					/* Copied from remark-github-blockquote-alert/alert.css */
+																					@media (prefers-color-scheme: dark) {
+																						.markdown-alert {
+																							--color-border-default: #30363d;
+																							--color-accent-fg: #58a6ff;
+																							--color-accent-emphasis: #1f6feb;
+																							--color-danger-fg: #f85149;
+																							--color-danger-emphasis: #da3633;
+																							--color-attention-fg: #d29922;
+																							--color-attention-emphasis: #9e6a03;
+																							--color-done-fg: #a371f7;
+																							--color-done-emphasis: #8957e5;
+																							--color-success-fg: #3fb950;
+																							--color-success-emphasis: #238636;
+																						}
+																					}
+
+																					@media (prefers-color-scheme: light) {
+																						.markdown-alert {
+																							--color-border-default: #d0d7de;
+																							--color-accent-fg: #0969da;
+																							--color-accent-emphasis: #0969da;
+																							--color-danger-fg: #d1242f;
+																							--color-danger-emphasis: #cf222e;
+																							--color-attention-fg: #9a6700;
+																							--color-attention-emphasis: #9a6700;
+																							--color-done-fg: #8250df;
+																							--color-done-emphasis: #8250df;
+																							--color-success-fg: #1a7f37;
+																							--color-success-emphasis: #1f883d;
+																						}
+																					}
+
+																					.markdown-alert {
+																						border-left: .25em solid var(--borderColor-default, var(--color-border-default));
+																						color: inherit;
+																						margin-bottom: 16px;
+																						padding: .5rem 1em
+																					}
+
+																					.markdown-alert>:last-child {
+																						margin-bottom: 0 !important
+																					}
+
+																					.markdown-alert .markdown-alert-title {
+																						align-items: center;
+																						display: flex;
+																						font-size: 14px;
+																						font-weight: 500;
+																						line-height: 1
+																					}
+
+																					.markdown-alert .markdown-alert-title svg.octicon {
+																						margin-right: 8px !important;
+																						margin-right: var(--base-size-8, 8px) !important;
+																						fill: currentColor;
+																					}
+
+																					.markdown-alert.markdown-alert-note {
+																						border-left-color: var(--borderColor-accent-emphasis, var(--color-accent-emphasis))
+																					}
+
+																					.markdown-alert.markdown-alert-note .markdown-alert-title {
+																						color: var(--color-accent-fg);
+																						color: var(--fgColor-accent, var(--color-accent-fg))
+																					}
+
+																					.markdown-alert.markdown-alert-tip {
+																						border-left-color: var(--borderColor-success-emphasis, var(--color-success-emphasis))
+																					}
+
+																					.markdown-alert.markdown-alert-tip .markdown-alert-title {
+																						color: var(--color-success-fg);
+																						color: var(--fgColor-success, var(--color-success-fg))
+																					}
+
+																					.markdown-alert.markdown-alert-important {
+																						border-left-color: var(--borderColor-done-emphasis, var(--color-done-emphasis))
+																					}
+
+																					.markdown-alert.markdown-alert-important .markdown-alert-title {
+																						color: var(--color-done-fg);
+																						color: var(--fgColor-done, var(--color-done-fg))
+																					}
+
+																					.markdown-alert.markdown-alert-warning {
+																						border-left-color: var(--borderColor-attention-emphasis, var(--color-attention-emphasis))
+																					}
+
+																					.markdown-alert.markdown-alert-warning .markdown-alert-title {
+																						color: var(--color-attention-fg);
+																						color: var(--fgColor-attention, var(--color-attention-fg))
+																					}
+
+																					.markdown-alert.markdown-alert-caution {
+																						border-left-color: var(--borderColor-danger-emphasis, var(--color-danger-emphasis))
+																					}
+
+																					.markdown-alert.markdown-alert-caution .markdown-alert-title {
+																						color: var(--color-danger-fg);
+																						color: var(--fgColor-danger, var(--color-danger-fg))
+																					}
+
+																					div:has(> table),
+																					table th,
+																					table td {
+																						border-style: solid;
+																						border-color: rgba(128, 128, 128, 0.2);
+																					}
+																				</style>
+																				<p node="[object Object]">Let me
+																					investigate what's being captured
+																					vs. what's available in the DOM and
+																					the renderer code.</p>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="relative"><button type="button"
+																	class="group flex items-center gap-1 w-full text-left text-sm px-2 min-h-8 py-1 rounded-lg tabular-nums select-none text-ide-text-color hover:bg-gray-500/10 transition-[opacity,background-color]"><span
+																		class="opacity-70">Explored</span><span>2 files,
+																		1 folder</span><svg
+																		xmlns="http://www.w3.org/2000/svg" width="24"
+																		height="24" viewBox="0 0 24 24" fill="none"
+																		stroke="currentColor" stroke-width="2"
+																		stroke-linecap="round" stroke-linejoin="round"
+																		aria-hidden="true"
+																		class="lucide lucide-chevron-right h-3.5 w-3.5 shrink-0 transition-all duration-200 text-ide-text-color/50 opacity-70 rotate-90">
+																		<path d="m9 18 6-6-6-6"></path>
+																	</svg></button>
+																<div class="relative"
+																	style="opacity: 1; transform: translateY(0px); transition: opacity 150ms ease-out, transform 150ms ease-out;">
+																	<div class="overflow-y-auto pl-3 pt-0.5"
+																		style="max-height: 400px;">
+																		<div class="flex flex-col gap-0.5 py-0.5">
+																			<div class="flex flex-row">
+																				<div class="min-w-0 grow">
+																					<div class="flex flex-col">
+																						<div
+																							class="group flex w-full min-w-0 items-center min-h-8 py-1 px-2 select-none transition-[background-color]">
+																							<div
+																								class="flex min-w-0 items-center gap-x-1 text-sm">
+																								<div class="truncate">
+																									<div
+																										class="flex flex-row items-center gap-1 overflow-hidden whitespace-nowrap">
+																										<span
+																											class="shrink-0 opacity-70">Analyzed</span>
+																										<div
+																											class="flex items-center overflow-hidden">
+																											<span
+																												class="inline-flex items-center gap-0.5 rounded-md align-middle text-sm font-medium transition-[opacity,background-color] cursor-pointer hover:bg-gray-500/20 select-none"
+																												draggable="true"
+																												style="padding: 1px 0.25rem 1px 0.125rem;">
+																												<div>
+																													<img src="/usr/share/antigravity/resources/app/extensions/theme-symbols/src/icons/files/markdown.svg"
+																														width="16px"
+																														height="16px"
+																														style="min-width: 16px; display: inline-block; min-height: 16px; transform: translateY(-1px);">
+																												</div>
+																												<span
+																													class="inline-flex break-all leading-tight select-text"><span>20260507_1725_reviewing-system-documentation-formatting.md<span
+																															class="opacity-50 ml-0.5">#L1-62</span></span></span>
+																											</span>
+																										</div>
+																									</div>
+																								</div>
+																								<div
+																									class="ml-0.5 flex items-center text-sm text-gray-500/50 hidden">
+																									<div
+																										class="h-3 w-3 animate-spin rounded-full border-2 border-gray-400 border-t-transparent">
+																									</div>
+																								</div>
+																							</div>
+																							<div
+																								class="flex items-center shrink-0">
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																			<div class="flex flex-row">
+																				<div class="min-w-0 grow">
+																					<div class="flex flex-col">
+																						<div
+																							class="group flex w-full min-w-0 items-center min-h-8 py-1 px-2 select-none transition-[background-color]">
+																							<div
+																								class="flex min-w-0 items-center gap-x-1 text-sm">
+																								<div class="truncate">
+																									<div
+																										class="flex flex-row items-center gap-1 overflow-hidden whitespace-nowrap">
+																										<span
+																											class="shrink-0 opacity-70">Analyzed</span>
+																										<div
+																											class="flex items-center overflow-hidden">
+																											<span
+																												class="inline-flex items-center gap-0.5 rounded-md align-middle text-sm font-medium transition-[opacity,background-color] cursor-pointer hover:bg-gray-500/20 select-none"
+																												draggable="true"
+																												style="padding: 1px 0.25rem 1px 0.125rem;">
+																												<div>
+																													<img src="/usr/share/antigravity/resources/app/extensions/theme-symbols/src/icons/files/code-orange.svg"
+																														width="16px"
+																														height="16px"
+																														style="min-width: 16px; display: inline-block; min-height: 16px; transform: translateY(-1px);">
+																												</div>
+																												<span
+																													class="inline-flex break-all leading-tight select-text"><span>DOM-export.html<span
+																															class="opacity-50 ml-0.5">#L1-800</span></span></span>
+																											</span>
+																										</div>
+																									</div>
+																								</div>
+																								<div
+																									class="ml-0.5 flex items-center text-sm text-gray-500/50 hidden">
+																									<div
+																										class="h-3 w-3 animate-spin rounded-full border-2 border-gray-400 border-t-transparent">
+																									</div>
+																								</div>
+																							</div>
+																							<div
+																								class="flex items-center shrink-0">
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																			<div class="flex flex-row">
+																				<div class="min-w-0 grow">
+																					<div class="flex flex-col">
+																						<div
+																							class="group flex w-full min-w-0 items-center min-h-8 py-1 px-2 select-none transition-[background-color] cursor-pointer rounded-lg hover:bg-gray-500/10">
+																							<div
+																								class="flex min-w-0 items-center gap-x-1 text-sm">
+																								<div class="truncate">
+																									<div
+																										class="flex flex-row items-center gap-1">
+																										<span
+																											class="shrink-0 opacity-70">Analyzed</span><span
+																											class="inline-flex items-center gap-0.5 rounded-md align-middle text-sm font-medium transition-[opacity,background-color] cursor-pointer hover:bg-gray-500/20 select-none pointer-events-none"
+																											draggable="true"
+																											style="padding: 1px 0.25rem 1px 0.125rem;">
+																											<div><img
+																													src="/usr/share/antigravity/resources/app/extensions/theme-symbols/src/icons/folders/folder-orange-code.svg"
+																													width="16px"
+																													height="16px"
+																													style="min-width: 16px; display: inline-block; min-height: 16px; transform: translateY(-1px);">
+																											</div><span
+																												class="inline-flex break-all leading-tight select-text">src</span>
+																										</span></div>
+																								</div>
+																								<div
+																									class="ml-0.5 flex items-center text-sm text-gray-500/50 hidden">
+																									<div
+																										class="h-3 w-3 animate-spin rounded-full border-2 border-gray-400 border-t-transparent">
+																									</div>
+																								</div>
+																							</div>
+																							<div
+																								class="flex items-center shrink-0">
+																								<span
+																									class="google-symbols ml-1 h-3.5 w-3.5 shrink-0 transition-all duration-200 opacity-50 group-hover:opacity-70"
+																									style="display: flex; align-items: center; justify-content: center; font-size: 16px; user-select: none;">chevron_right</span>
+																							</div>
+																						</div>
+																						<div class="grid transition-[grid-template-rows,opacity] duration-200"
+																							style="grid-template-rows: 0fr; opacity: 0; transition-timing-function: ease-in;">
+																							<div
+																								class="overflow-hidden pl-3">
+																							</div>
+																						</div>
+																					</div>
+																				</div>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="flex flex-row">
+																<div class="min-w-0 grow">
+																	<div class="flex flex-col gap-0.5">
+																		<div class="px-2 py-1">
+																			<div
+																				class="leading-relaxed select-text text-sm flex flex-col [&amp;_code:not(pre_code)]:bg-code-background [&amp;_code:not(pre_code)]:text-code-foreground [&amp;_code:not(pre_code)]:rounded [&amp;_code:not(pre_code)]:px-1 [&amp;_code:not(pre_code)]:py-0.5 [&amp;_code:not(pre_code)]:text-[0.9em] [&amp;_summary]:cursor-pointer [&amp;_h1]:text-xl [&amp;_h2]:text-lg [&amp;_h3]:text-base [&amp;_h4]:text-sm [&amp;_h1]:font-semibold [&amp;_h2]:font-semibold [&amp;_h3]:font-medium [&amp;_h4]:font-medium [&amp;_h1]:!mb-2 [&amp;_h1]:!mt-6 [&amp;_h2]:!mb-2 [&amp;_h2]:!mt-6 [&amp;_h3]:!mb-1 [&amp;_h3]:!mt-3 [&amp;_h4]:!mb-1 [&amp;_h4]:!mt-3 [&amp;_li.task-list-item]:list-none [&amp;_ul:has(li.task-list-item)]:list-none [&amp;_ul]:my-2 [&amp;_ol]:my-2 [&amp;&gt;ul.contains-task-list]:pl-0 [&amp;&gt;ol.contains-task-list]:pl-0 [&amp;_ul]:pl-10 [&amp;_ol]:pl-10 [&amp;&gt;ul:not(.contains-task-list)]:!pl-4 [&amp;&gt;ol:not(.contains-task-list)]:!pl-4 [&amp;_ul]:list-disc [&amp;_ol]:list-decimal [&amp;_li.task-checked&gt;.task-checked-content]:opacity-50 break-words">
+																				<style>
+																					/* Copied from remark-github-blockquote-alert/alert.css */
+																					@media (prefers-color-scheme: dark) {
+																						.markdown-alert {
+																							--color-border-default: #30363d;
+																							--color-accent-fg: #58a6ff;
+																							--color-accent-emphasis: #1f6feb;
+																							--color-danger-fg: #f85149;
+																							--color-danger-emphasis: #da3633;
+																							--color-attention-fg: #d29922;
+																							--color-attention-emphasis: #9e6a03;
+																							--color-done-fg: #a371f7;
+																							--color-done-emphasis: #8957e5;
+																							--color-success-fg: #3fb950;
+																							--color-success-emphasis: #238636;
+																						}
+																					}
+
+																					@media (prefers-color-scheme: light) {
+																						.markdown-alert {
+																							--color-border-default: #d0d7de;
+																							--color-accent-fg: #0969da;
+																							--color-accent-emphasis: #0969da;
+																							--color-danger-fg: #d1242f;
+																							--color-danger-emphasis: #cf222e;
+																							--color-attention-fg: #9a6700;
+																							--color-attention-emphasis: #9a6700;
+																							--color-done-fg: #8250df;
+																							--color-done-emphasis: #8250df;
+																							--color-success-fg: #1a7f37;
+																							--color-success-emphasis: #1f883d;
+																						}
+																					}
+
+																					.markdown-alert {
+																						border-left: .25em solid var(--borderColor-default, var(--color-border-default));
+																						color: inherit;
+																						margin-bottom: 16px;
+																						padding: .5rem 1em
+																					}
+
+																					.markdown-alert>:last-child {
+																						margin-bottom: 0 !important
+																					}
+
+																					.markdown-alert .markdown-alert-title {
+																						align-items: center;
+																						display: flex;
+																						font-size: 14px;
+																						font-weight: 500;
+																						line-height: 1
+																					}
+
+																					.markdown-alert .markdown-alert-title svg.octicon {
+																						margin-right: 8px !important;
+																						margin-right: var(--base-size-8, 8px) !important;
+																						fill: currentColor;
+																					}
+
+																					.markdown-alert.markdown-alert-note {
+																						border-left-color: var(--borderColor-accent-emphasis, var(--color-accent-emphasis))
+																					}
+
+																					.markdown-alert.markdown-alert-note .markdown-alert-title {
+																						color: var(--color-accent-fg);
+																						color: var(--fgColor-accent, var(--color-accent-fg))
+																					}
+
+																					.markdown-alert.markdown-alert-tip {
+																						border-left-color: var(--borderColor-success-emphasis, var(--color-success-emphasis))
+																					}
+
+																					.markdown-alert.markdown-alert-tip .markdown-alert-title {
+																						color: var(--color-success-fg);
+																						color: var(--fgColor-success, var(--color-success-fg))
+																					}
+
+																					.markdown-alert.markdown-alert-important {
+																						border-left-color: var(--borderColor-done-emphasis, var(--color-done-emphasis))
+																					}
+
+																					.markdown-alert.markdown-alert-important .markdown-alert-title {
+																						color: var(--color-done-fg);
+																						color: var(--fgColor-done, var(--color-done-fg))
+																					}
+
+																					.markdown-alert.markdown-alert-warning {
+																						border-left-color: var(--borderColor-attention-emphasis, var(--color-attention-emphasis))
+																					}
+
+																					.markdown-alert.markdown-alert-warning .markdown-alert-title {
+																						color: var(--color-attention-fg);
+																						color: var(--fgColor-attention, var(--color-attention-fg))
+																					}
+
+																					.markdown-alert.markdown-alert-caution {
+																						border-left-color: var(--borderColor-danger-emphasis, var(--color-danger-emphasis))
+																					}
+
+																					.markdown-alert.markdown-alert-caution .markdown-alert-title {
+																						color: var(--color-danger-fg);
+																						color: var(--fgColor-danger, var(--color-danger-fg))
+																					}
+
+																					div:has(> table),
+																					table th,
+																					table td {
+																						border-style: solid;
+																						border-color: rgba(128, 128, 128, 0.2);
+																					}
+																				</style>
+																				<p node="[object Object]">Now let me
+																					look at the extractor and renderer
+																					code, plus the rest of the DOM to
+																					understand all the step types
+																					present:</p>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="relative"><button type="button"
+																	class="group flex items-center gap-1 w-full text-left text-sm px-2 min-h-8 py-1 rounded-lg tabular-nums select-none text-ide-text-color hover:bg-gray-500/10 transition-[opacity,background-color]"><span
+																		class="opacity-70">Explored</span><span>3
+																		files</span><svg
+																		xmlns="http://www.w3.org/2000/svg" width="24"
+																		height="24" viewBox="0 0 24 24" fill="none"
+																		stroke="currentColor" stroke-width="2"
+																		stroke-linecap="round" stroke-linejoin="round"
+																		aria-hidden="true"
+																		class="lucide lucide-chevron-right h-3.5 w-3.5 shrink-0 transition-all duration-200 text-ide-text-color/50 opacity-50 group-hover:opacity-70">
+																		<path d="m9 18 6-6-6-6"></path>
+																	</svg></button></div>
+															<div class="flex flex-row">
+																<div class="min-w-0 grow">
+																	<div class="flex flex-col gap-0.5">
+																		<div class="px-2 py-1">
+																			<div
+																				class="leading-relaxed select-text text-sm flex flex-col [&amp;_code:not(pre_code)]:bg-code-background [&amp;_code:not(pre_code)]:text-code-foreground [&amp;_code:not(pre_code)]:rounded [&amp;_code:not(pre_code)]:px-1 [&amp;_code:not(pre_code)]:py-0.5 [&amp;_code:not(pre_code)]:text-[0.9em] [&amp;_summary]:cursor-pointer [&amp;_h1]:text-xl [&amp;_h2]:text-lg [&amp;_h3]:text-base [&amp;_h4]:text-sm [&amp;_h1]:font-semibold [&amp;_h2]:font-semibold [&amp;_h3]:font-medium [&amp;_h4]:font-medium [&amp;_h1]:!mb-2 [&amp;_h1]:!mt-6 [&amp;_h2]:!mb-2 [&amp;_h2]:!mt-6 [&amp;_h3]:!mb-1 [&amp;_h3]:!mt-3 [&amp;_h4]:!mb-1 [&amp;_h4]:!mt-3 [&amp;_li.task-list-item]:list-none [&amp;_ul:has(li.task-list-item)]:list-none [&amp;_ul]:my-2 [&amp;_ol]:my-2 [&amp;&gt;ul.contains-task-list]:pl-0 [&amp;&gt;ol.contains-task-list]:pl-0 [&amp;_ul]:pl-10 [&amp;_ol]:pl-10 [&amp;&gt;ul:not(.contains-task-list)]:!pl-4 [&amp;&gt;ol:not(.contains-task-list)]:!pl-4 [&amp;_ul]:list-disc [&amp;_ol]:list-decimal [&amp;_li.task-checked&gt;.task-checked-content]:opacity-50 break-words">
+																				<style>
+																					/* Copied from remark-github-blockquote-alert/alert.css */
+																					@media (prefers-color-scheme: dark) {
+																						.markdown-alert {
+																							--color-border-default: #30363d;
+																							--color-accent-fg: #58a6ff;
+																							--color-accent-emphasis: #1f6feb;
+																							--color-danger-fg: #f85149;
+																							--color-danger-emphasis: #da3633;
+																							--color-attention-fg: #d29922;
+																							--color-attention-emphasis: #9e6a03;
+																							--color-done-fg: #a371f7;
+																							--color-done-emphasis: #8957e5;
+																							--color-success-fg: #3fb950;
+																							--color-success-emphasis: #238636;
+																						}
+																					}
+
+																					@media (prefers-color-scheme: light) {
+																						.markdown-alert {
+																							--color-border-default: #d0d7de;
+																							--color-accent-fg: #0969da;
+																							--color-accent-emphasis: #0969da;
+																							--color-danger-fg: #d1242f;
+																							--color-danger-emphasis: #cf222e;
+																							--color-attention-fg: #9a6700;
+																							--color-attention-emphasis: #9a6700;
+																							--color-done-fg: #8250df;
+																							--color-done-emphasis: #8250df;
+																							--color-success-fg: #1a7f37;
+																							--color-success-emphasis: #1f883d;
+																						}
+																					}
+
+																					.markdown-alert {
+																						border-left: .25em solid var(--borderColor-default, var(--color-border-default));
+																						color: inherit;
+																						margin-bottom: 16px;
+																						padding: .5rem 1em
+																					}
+
+																					.markdown-alert>:last-child {
+																						margin-bottom: 0 !important
+																					}
+
+																					.markdown-alert .markdown-alert-title {
+																						align-items: center;
+																						display: flex;
+																						font-size: 14px;
+																						font-weight: 500;
+																						line-height: 1
+																					}
+
+																					.markdown-alert .markdown-alert-title svg.octicon {
+																						margin-right: 8px !important;
+																						margin-right: var(--base-size-8, 8px) !important;
+																						fill: currentColor;
+																					}
+
+																					.markdown-alert.markdown-alert-note {
+																						border-left-color: var(--borderColor-accent-emphasis, var(--color-accent-emphasis))
+																					}
+
+																					.markdown-alert.markdown-alert-note .markdown-alert-title {
+																						color: var(--color-accent-fg);
+																						color: var(--fgColor-accent, var(--color-accent-fg))
+																					}
+
+																					.markdown-alert.markdown-alert-tip {
+																						border-left-color: var(--borderColor-success-emphasis, var(--color-success-emphasis))
+																					}
+
+																					.markdown-alert.markdown-alert-tip .markdown-alert-title {
+																						color: var(--color-success-fg);
+																						color: var(--fgColor-success, var(--color-success-fg))
+																					}
+
+																					.markdown-alert.markdown-alert-important {
+																						border-left-color: var(--borderColor-done-emphasis, var(--color-done-emphasis))
+																					}
+
+																					.markdown-alert.markdown-alert-important .markdown-alert-title {
+																						color: var(--color-done-fg);
+																						color: var(--fgColor-done, var(--color-done-fg))
+																					}
+
+																					.markdown-alert.markdown-alert-warning {
+																						border-left-color: var(--borderColor-attention-emphasis, var(--color-attention-emphasis))
+																					}
+
+																					.markdown-alert.markdown-alert-warning .markdown-alert-title {
+																						color: var(--color-attention-fg);
+																						color: var(--fgColor-attention, var(--color-attention-fg))
+																					}
+
+																					.markdown-alert.markdown-alert-caution {
+																						border-left-color: var(--borderColor-danger-emphasis, var(--color-danger-emphasis))
+																					}
+
+																					.markdown-alert.markdown-alert-caution .markdown-alert-title {
+																						color: var(--color-danger-fg);
+																						color: var(--fgColor-danger, var(--color-danger-fg))
+																					}
+
+																					div:has(> table),
+																					table th,
+																					table td {
+																						border-style: solid;
+																						border-color: rgba(128, 128, 128, 0.2);
+																					}
+																				</style>
+																				<p node="[object Object]">Let me see the
+																					rest of the DOM to understand all
+																					the patterns, plus check the
+																					remaining step types (Edited,
+																					Explored at worked-level):</p>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="relative"><button type="button"
+																	class="group flex items-center gap-1 w-full text-left text-sm px-2 min-h-8 py-1 rounded-lg tabular-nums select-none text-ide-text-color hover:bg-gray-500/10 transition-[opacity,background-color]"><span
+																		class="opacity-70">Explored</span><span>1
+																		file</span><svg
+																		xmlns="http://www.w3.org/2000/svg" width="24"
+																		height="24" viewBox="0 0 24 24" fill="none"
+																		stroke="currentColor" stroke-width="2"
+																		stroke-linecap="round" stroke-linejoin="round"
+																		aria-hidden="true"
+																		class="lucide lucide-chevron-right h-3.5 w-3.5 shrink-0 transition-all duration-200 text-ide-text-color/50 opacity-50 group-hover:opacity-70">
+																		<path d="m9 18 6-6-6-6"></path>
+																	</svg></button></div>
+															<div class="flex flex-row">
+																<div class="min-w-0 grow">
+																	<div class="flex flex-col gap-0.5">
+																		<div class="px-2 py-1">
+																			<div
+																				class="leading-relaxed select-text text-sm flex flex-col [&amp;_code:not(pre_code)]:bg-code-background [&amp;_code:not(pre_code)]:text-code-foreground [&amp;_code:not(pre_code)]:rounded [&amp;_code:not(pre_code)]:px-1 [&amp;_code:not(pre_code)]:py-0.5 [&amp;_code:not(pre_code)]:text-[0.9em] [&amp;_summary]:cursor-pointer [&amp;_h1]:text-xl [&amp;_h2]:text-lg [&amp;_h3]:text-base [&amp;_h4]:text-sm [&amp;_h1]:font-semibold [&amp;_h2]:font-semibold [&amp;_h3]:font-medium [&amp;_h4]:font-medium [&amp;_h1]:!mb-2 [&amp;_h1]:!mt-6 [&amp;_h2]:!mb-2 [&amp;_h2]:!mt-6 [&amp;_h3]:!mb-1 [&amp;_h3]:!mt-3 [&amp;_h4]:!mb-1 [&amp;_h4]:!mt-3 [&amp;_li.task-list-item]:list-none [&amp;_ul:has(li.task-list-item)]:list-none [&amp;_ul]:my-2 [&amp;_ol]:my-2 [&amp;&gt;ul.contains-task-list]:pl-0 [&amp;&gt;ol.contains-task-list]:pl-0 [&amp;_ul]:pl-10 [&amp;_ol]:pl-10 [&amp;&gt;ul:not(.contains-task-list)]:!pl-4 [&amp;&gt;ol:not(.contains-task-list)]:!pl-4 [&amp;_ul]:list-disc [&amp;_ol]:list-decimal [&amp;_li.task-checked&gt;.task-checked-content]:opacity-50 break-words">
+																				<style>
+																					/* Copied from remark-github-blockquote-alert/alert.css */
+																					@media (prefers-color-scheme: dark) {
+																						.markdown-alert {
+																							--color-border-default: #30363d;
+																							--color-accent-fg: #58a6ff;
+																							--color-accent-emphasis: #1f6feb;
+																							--color-danger-fg: #f85149;
+																							--color-danger-emphasis: #da3633;
+																							--color-attention-fg: #d29922;
+																							--color-attention-emphasis: #9e6a03;
+																							--color-done-fg: #a371f7;
+																							--color-done-emphasis: #8957e5;
+																							--color-success-fg: #3fb950;
+																							--color-success-emphasis: #238636;
+																						}
+																					}
+
+																					@media (prefers-color-scheme: light) {
+																						.markdown-alert {
+																							--color-border-default: #d0d7de;
+																							--color-accent-fg: #0969da;
+																							--color-accent-emphasis: #0969da;
+																							--color-danger-fg: #d1242f;
+																							--color-danger-emphasis: #cf222e;
+																							--color-attention-fg: #9a6700;
+																							--color-attention-emphasis: #9a6700;
+																							--color-done-fg: #8250df;
+																							--color-done-emphasis: #8250df;
+																							--color-success-fg: #1a7f37;
+																							--color-success-emphasis: #1f883d;
+																						}
+																					}
+
+																					.markdown-alert {
+																						border-left: .25em solid var(--borderColor-default, var(--color-border-default));
+																						color: inherit;
+																						margin-bottom: 16px;
+																						padding: .5rem 1em
+																					}
+
+																					.markdown-alert>:last-child {
+																						margin-bottom: 0 !important
+																					}
+
+																					.markdown-alert .markdown-alert-title {
+																						align-items: center;
+																						display: flex;
+																						font-size: 14px;
+																						font-weight: 500;
+																						line-height: 1
+																					}
+
+																					.markdown-alert .markdown-alert-title svg.octicon {
+																						margin-right: 8px !important;
+																						margin-right: var(--base-size-8, 8px) !important;
+																						fill: currentColor;
+																					}
+
+																					.markdown-alert.markdown-alert-note {
+																						border-left-color: var(--borderColor-accent-emphasis, var(--color-accent-emphasis))
+																					}
+
+																					.markdown-alert.markdown-alert-note .markdown-alert-title {
+																						color: var(--color-accent-fg);
+																						color: var(--fgColor-accent, var(--color-accent-fg))
+																					}
+
+																					.markdown-alert.markdown-alert-tip {
+																						border-left-color: var(--borderColor-success-emphasis, var(--color-success-emphasis))
+																					}
+
+																					.markdown-alert.markdown-alert-tip .markdown-alert-title {
+																						color: var(--color-success-fg);
+																						color: var(--fgColor-success, var(--color-success-fg))
+																					}
+
+																					.markdown-alert.markdown-alert-important {
+																						border-left-color: var(--borderColor-done-emphasis, var(--color-done-emphasis))
+																					}
+
+																					.markdown-alert.markdown-alert-important .markdown-alert-title {
+																						color: var(--color-done-fg);
+																						color: var(--fgColor-done, var(--color-done-fg))
+																					}
+
+																					.markdown-alert.markdown-alert-warning {
+																						border-left-color: var(--borderColor-attention-emphasis, var(--color-attention-emphasis))
+																					}
+
+																					.markdown-alert.markdown-alert-warning .markdown-alert-title {
+																						color: var(--color-attention-fg);
+																						color: var(--fgColor-attention, var(--color-attention-fg))
+																					}
+
+																					.markdown-alert.markdown-alert-caution {
+																						border-left-color: var(--borderColor-danger-emphasis, var(--color-danger-emphasis))
+																					}
+
+																					.markdown-alert.markdown-alert-caution .markdown-alert-title {
+																						color: var(--color-danger-fg);
+																						color: var(--fgColor-danger, var(--color-danger-fg))
+																					}
+
+																					div:has(> table),
+																					table th,
+																					table td {
+																						border-style: solid;
+																						border-color: rgba(128, 128, 128, 0.2);
+																					}
+																				</style>
+																				<p node="[object Object]">Now I have a
+																					thorough understanding of the
+																					problem. Let me create the
+																					implementation plan.</p>
+																				<p node="[object Object]">Here's what I
+																					found by comparing the DOM with the
+																					exported note:</p>
+																				<p node="[object Object]"><strong>What's
+																						in the DOM but missing from the
+																						export:</strong></p>
+																				<ol>
+																					<li node="[object Object]">
+																						<strong>Thoughts</strong> —
+																						"Thought for 3s", "Thought for
+																						1s", "Thought for 5s" with rich
+																						HTML content (e.g., "Analyzing
+																						File Redundancy", "Refining
+																						Project Context", etc.) — all
+																						completely absent from the
+																						export</li>
+																					<li node="[object Object]">
+																						<strong>Explored</strong>
+																						sections at the worked level —
+																						"Explored 3 files, 2 folders"
+																						with child items (Analyzed
+																						files, Thought blocks) — absent
+																					</li>
+																					<li node="[object Object]">
+																						<strong>Edited</strong> sections
+																						— "Edited 1 file" — absent</li>
+																					<li node="[object Object]">
+																						<strong>Ran</strong> commands —
+																						<code node="[object Object]"
+																							class="whitespace-pre-wrap"
+																							style="word-break: break-word;">sed -i ...</code>,
+																						<code node="[object Object]"
+																							class="whitespace-pre-wrap"
+																							style="word-break: break-word;">cp ...</code>
+																						— absent</li>
+																					<li node="[object Object]">
+																						<strong>Individual action
+																							items</strong> — Analyzed
+																						<code node="[object Object]"
+																							class="whitespace-pre-wrap"
+																							style="word-break: break-word;">dev-context.md</code>,
+																						Analyzed <code
+																							node="[object Object]"
+																							class="whitespace-pre-wrap"
+																							style="word-break: break-word;">AGENTS.md</code>,
+																						etc. — absent</li>
+																				</ol>
+																				<p node="[object Object]"><strong>Root
+																						cause:</strong> Looking at the
+																					DOM structure, the <code
+																						node="[object Object]"
+																						class="whitespace-pre-wrap"
+																						style="word-break: break-word;">parseWorkedContent()</code>
+																					function in <code
+																						node="[object Object]"
+																						class="whitespace-pre-wrap"
+																						style="word-break: break-word;">extractor.ts</code>
+																					expects the "Worked for" button's
+																					<code node="[object Object]"
+																						class="whitespace-pre-wrap"
+																						style="word-break: break-word;">nextElementSibling</code>
+																					to contain the expanded content. But
+																					in the DOM (lines 1878-1888), the
+																					second "Worked for 26s" button's
+																					<code node="[object Object]"
+																						class="whitespace-pre-wrap"
+																						style="word-break: break-word;">nextElementSibling</code>
+																					is NOT a <code
+																						node="[object Object]"
+																						class="whitespace-pre-wrap"
+																						style="word-break: break-word;">div.relative</code>
+																					with the expanded content — it's
+																					just a <code node="[object Object]"
+																						class="whitespace-pre-wrap"
+																						style="word-break: break-word;">&lt;/div&gt;</code>
+																					closure. The "Worked for" button
+																					doesn't seem to have expanded
+																					children in the DOM dump.</p>
+																				<p node="[object Object]">More
+																					critically, looking at the first
+																					"Worked for 1m" block: the button
+																					(line 124-133) has <code
+																						node="[object Object]"
+																						class="whitespace-pre-wrap"
+																						style="word-break: break-word;">nextElementSibling</code>
+																					as <code node="[object Object]"
+																						class="whitespace-pre-wrap"
+																						style="word-break: break-word;">div.relative</code>
+																					(line 134), and inside that is the
+																					full expanded content tree.
+																					<strong>But the first worked block
+																						is completely collapsed in the
+																						DOM for unexpanded case</strong>
+																					— wait, actually it IS expanded
+																					(rotate-90 class on the chevron).
+																					Let me re-examine why the extractor
+																					fails.</p>
+																				<p node="[object Object]">Actually,
+																					looking more carefully at the
+																					structure, the issue is that many
+																					child elements at the "Worked" level
+																					are <code node="[object Object]"
+																						class="whitespace-pre-wrap"
+																						style="word-break: break-word;">div.relative</code>
+																					wrappers (for "Edited 1 file",
+																					"Explored 1 file" buttons) that
+																					DON'T have an <code
+																						node="[object Object]"
+																						class="whitespace-pre-wrap"
+																						style="word-break: break-word;">Explored</code>
+																					verb — they use different patterns
+																					like "Edited". The <code
+																						node="[object Object]"
+																						class="whitespace-pre-wrap"
+																						style="word-break: break-word;">parseWorkedContent()</code>
+																					function only handles <code
+																						node="[object Object]"
+																						class="whitespace-pre-wrap"
+																						style="word-break: break-word;">div.relative</code>
+																					children that match the "Explored"
+																					pattern and <code
+																						node="[object Object]"
+																						class="whitespace-pre-wrap"
+																						style="word-break: break-word;">div.flex.flex-row</code>
+																					children for Ran commands.
+																					<strong>"Edited" buttons are <code
+																							node="[object Object]"
+																							class="whitespace-pre-wrap"
+																							style="word-break: break-word;">div.relative</code>
+																						wrappers too, but they don't
+																						have <code
+																							node="[object Object]"
+																							class="whitespace-pre-wrap"
+																							style="word-break: break-word;">opacity-70</code>
+																						in a regular span — they are
+																						structured differently.</strong>
+																				</p>
+																				<p node="[object Object]">Let me create
+																					the plan:</p>
+																			</div>
+																		</div>
+																	</div>
+																</div>
+															</div>
+															<div class="relative"><button type="button"
+																	class="group flex items-center gap-1 w-full text-left text-sm px-2 min-h-8 py-1 rounded-lg tabular-nums select-none text-ide-text-color hover:bg-gray-500/10 transition-[opacity,background-color]"><span
+																		class="opacity-70">Edited</span><span>1
+																		file</span><svg
+																		xmlns="http://www.w3.org/2000/svg" width="24"
+																		height="24" viewBox="0 0 24 24" fill="none"
+																		stroke="currentColor" stroke-width="2"
+																		stroke-linecap="round" stroke-linejoin="round"
+																		aria-hidden="true"
+																		class="lucide lucide-chevron-right h-3.5 w-3.5 shrink-0 transition-all duration-200 text-ide-text-color/50 opacity-50 group-hover:opacity-70">
+																		<path d="m9 18 6-6-6-6"></path>
+																	</svg></button></div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="px-2 py-1">
+												<div
+													class="leading-relaxed select-text text-sm flex flex-col [&amp;_code:not(pre_code)]:bg-code-background [&amp;_code:not(pre_code)]:text-code-foreground [&amp;_code:not(pre_code)]:rounded [&amp;_code:not(pre_code)]:px-1 [&amp;_code:not(pre_code)]:py-0.5 [&amp;_code:not(pre_code)]:text-[0.9em] [&amp;_summary]:cursor-pointer [&amp;_h1]:text-xl [&amp;_h2]:text-lg [&amp;_h3]:text-base [&amp;_h4]:text-sm [&amp;_h1]:font-semibold [&amp;_h2]:font-semibold [&amp;_h3]:font-medium [&amp;_h4]:font-medium [&amp;_h1]:!mb-2 [&amp;_h1]:!mt-6 [&amp;_h2]:!mb-2 [&amp;_h2]:!mt-6 [&amp;_h3]:!mb-1 [&amp;_h3]:!mt-3 [&amp;_h4]:!mb-1 [&amp;_h4]:!mt-3 [&amp;_li.task-list-item]:list-none [&amp;_ul:has(li.task-list-item)]:list-none [&amp;_ul]:my-2 [&amp;_ol]:my-2 [&amp;&gt;ul.contains-task-list]:pl-0 [&amp;&gt;ol.contains-task-list]:pl-0 [&amp;_ul]:pl-10 [&amp;_ol]:pl-10 [&amp;&gt;ul:not(.contains-task-list)]:!pl-4 [&amp;&gt;ol:not(.contains-task-list)]:!pl-4 [&amp;_ul]:list-disc [&amp;_ol]:list-decimal [&amp;_li.task-checked&gt;.task-checked-content]:opacity-50 break-words">
+													<style>
+														/* Copied from remark-github-blockquote-alert/alert.css */
+														@media (prefers-color-scheme: dark) {
+															.markdown-alert {
+																--color-border-default: #30363d;
+																--color-accent-fg: #58a6ff;
+																--color-accent-emphasis: #1f6feb;
+																--color-danger-fg: #f85149;
+																--color-danger-emphasis: #da3633;
+																--color-attention-fg: #d29922;
+																--color-attention-emphasis: #9e6a03;
+																--color-done-fg: #a371f7;
+																--color-done-emphasis: #8957e5;
+																--color-success-fg: #3fb950;
+																--color-success-emphasis: #238636;
+															}
+														}
+
+														@media (prefers-color-scheme: light) {
+															.markdown-alert {
+																--color-border-default: #d0d7de;
+																--color-accent-fg: #0969da;
+																--color-accent-emphasis: #0969da;
+																--color-danger-fg: #d1242f;
+																--color-danger-emphasis: #cf222e;
+																--color-attention-fg: #9a6700;
+																--color-attention-emphasis: #9a6700;
+																--color-done-fg: #8250df;
+																--color-done-emphasis: #8250df;
+																--color-success-fg: #1a7f37;
+																--color-success-emphasis: #1f883d;
+															}
+														}
+
+														.markdown-alert {
+															border-left: .25em solid var(--borderColor-default, var(--color-border-default));
+															color: inherit;
+															margin-bottom: 16px;
+															padding: .5rem 1em
+														}
+
+														.markdown-alert>:last-child {
+															margin-bottom: 0 !important
+														}
+
+														.markdown-alert .markdown-alert-title {
+															align-items: center;
+															display: flex;
+															font-size: 14px;
+															font-weight: 500;
+															line-height: 1
+														}
+
+														.markdown-alert .markdown-alert-title svg.octicon {
+															margin-right: 8px !important;
+															margin-right: var(--base-size-8, 8px) !important;
+															fill: currentColor;
+														}
+
+														.markdown-alert.markdown-alert-note {
+															border-left-color: var(--borderColor-accent-emphasis, var(--color-accent-emphasis))
+														}
+
+														.markdown-alert.markdown-alert-note .markdown-alert-title {
+															color: var(--color-accent-fg);
+															color: var(--fgColor-accent, var(--color-accent-fg))
+														}
+
+														.markdown-alert.markdown-alert-tip {
+															border-left-color: var(--borderColor-success-emphasis, var(--color-success-emphasis))
+														}
+
+														.markdown-alert.markdown-alert-tip .markdown-alert-title {
+															color: var(--color-success-fg);
+															color: var(--fgColor-success, var(--color-success-fg))
+														}
+
+														.markdown-alert.markdown-alert-important {
+															border-left-color: var(--borderColor-done-emphasis, var(--color-done-emphasis))
+														}
+
+														.markdown-alert.markdown-alert-important .markdown-alert-title {
+															color: var(--color-done-fg);
+															color: var(--fgColor-done, var(--color-done-fg))
+														}
+
+														.markdown-alert.markdown-alert-warning {
+															border-left-color: var(--borderColor-attention-emphasis, var(--color-attention-emphasis))
+														}
+
+														.markdown-alert.markdown-alert-warning .markdown-alert-title {
+															color: var(--color-attention-fg);
+															color: var(--fgColor-attention, var(--color-attention-fg))
+														}
+
+														.markdown-alert.markdown-alert-caution {
+															border-left-color: var(--borderColor-danger-emphasis, var(--color-danger-emphasis))
+														}
+
+														.markdown-alert.markdown-alert-caution .markdown-alert-title {
+															color: var(--color-danger-fg);
+															color: var(--fgColor-danger, var(--color-danger-fg))
+														}
+
+														div:has(> table),
+														table th,
+														table td {
+															border-style: solid;
+															border-color: rgba(128, 128, 128, 0.2);
+														}
+													</style>
+													<p node="[object Object]">The plan identifies <strong>3
+															bugs</strong> in <code node="[object Object]"
+															class="whitespace-pre-wrap"
+															style="word-break: break-word;">extractor.ts</code> → <code
+															node="[object Object]" class="whitespace-pre-wrap"
+															style="word-break: break-word;">parseWorkedContent()</code>
+														that cause all intermediate steps (thoughts, explored files,
+														edited files, ran commands) to be silently dropped. The fixes
+														are targeted edits to the extractor and a small renderer
+														addition for the new <code node="[object Object]"
+															class="whitespace-pre-wrap"
+															style="word-break: break-word;">"edited"</code> role.</p>
+													<p node="[object Object]">Please review and let me know if you'd
+														like to proceed or want any changes.</p>
+												</div>
+											</div>
+										</div>
+										<div class="flex flex-col gap-1.5 py-1">
+											<div
+												class="border border-gray-500/20 p-2 my-0.5 rounded-lg transition-colors flex flex-col gap-1 items-start select-none">
+												<span
+													class="inline-flex items-center gap-0.5 rounded-md align-middle text-sm font-medium transition-[opacity,background-color] cursor-pointer hover:bg-gray-500/20 select-none -translate-x-px flex gap-1"
+													draggable="true" style="padding: 1px 0.25rem 1px 0.125rem;"><svg
+														xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+														viewBox="0 0 24 24" fill="none" stroke="currentColor"
+														stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+														aria-hidden="true"
+														class="lucide lucide-file-text h-3.5 w-3.5 stroke-1">
+														<path
+															d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z">
+														</path>
+														<path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+														<path d="M10 9H8"></path>
+														<path d="M16 13H8"></path>
+														<path d="M16 17H8"></path>
+													</svg><span
+														class="inline-flex break-all leading-tight select-text">Implementation
+														Plan</span></span><span
+													class="text-sm opacity-70 line-clamp-3">Plan to fix the extractor
+													and renderer to capture agent thoughts, explored sections, edited
+													files, and ran commands that are currently missing from the exported
+													Obsidian notes. Covers three DOM patterns that the current code
+													fails to handle, plus a new 'edited' node role.</span>
+												<div class="flex gap-2 mt-1"><button disabled=""
+														class="text-xs px-2 py-1 font-medium cursor-pointer rounded hover:bg-ide-button-hover-background bg-ide-button-background text-ide-button-color opacity-50 cursor-not-allowed">Proceed</button><button
+														class="text-xs px-2 py-1 font-medium cursor-pointer rounded hover:bg-ide-button-secondary-hover-background bg-ide-button-secondary-background text-ide-button-secondary-color">Open</button>
+												</div>
+											</div>
+										</div>
+										<div class="pt-3">
+											<div>
+												<div class="flex flex-col gap-2">
+													<div
+														class="flex flex-1 flex-row items-baseline justify-end gap-2 rounded-lg pl-2 pr-2">
+														<span
+															class="text-xs opacity-0 group-hover:opacity-50 transition-opacity whitespace-nowrap pt-1">5:38
+															PM, 5/7/2026</span>
+														<div class="flex-1"></div>
+														<div role="button" tabindex="0" aria-label="Copy"
+															data-tooltip-id="copy-P0-39"
+															class="flex items-center gap-1 cursor-pointer transition-[opacity,transform] duration-100 mr-1 opacity-70 hover:opacity-100">
+															<span class="google-symbols h-4 w-4"
+																style="display: flex; align-items: center; justify-content: center; font-size: 16px; user-select: none;">content_copy</span>
+														</div>
+														<div role="button" tabindex="0" aria-label="Good response"
+															aria-pressed="false" data-tooltip-id="up-P0-39"
+															class="flex items-center gap-1 transition-[opacity,transform] duration-100 cursor-pointer opacity-70 hover:opacity-100 opacity-30">
+															<span class="google-symbols h-4 w-4"
+																style="display: flex; align-items: center; justify-content: center; font-size: 16px; user-select: none;">thumb_up</span>
+														</div>
+														<div role="button" tabindex="0" aria-label="Bad response"
+															aria-pressed="false" data-tooltip-id="down-P0-39"
+															class="flex items-center gap-1 transition-[opacity,transform] duration-100 cursor-pointer opacity-70 hover:opacity-100 opacity-30">
+															<span class="google-symbols h-4 w-4"
+																style="display: flex; align-items: center; justify-content: center; font-size: 16px; user-select: none;">thumb_down</span>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div style="min-height: 824.406px; height: 824.406px;"></div>
+							</div>
+							<div class="transition-all duration-150 ease-in-out" style="min-height: 48px;"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="relative flex flex-col gap-8 text-ide-message-block-bot-color px-2">
+				<div class="flex grow flex-col justify-start gap-8">
+					<div class="relative flex flex-col mb-2">
+						<div class="px-2">
+							<div
+								class="outline-solid relative z-20 flex min-h-[1.8rem] justify-between px-1 py-1 outline-1 outline-gray-500/10 rounded-lg">
+								<div class="flex min-w-0 gap-x-2 overflow-hidden">
+									<div class="flex-none">
+										<div class="rounded-xs flex flex-row items-center">
+											<div class="grid transition-[grid-template-columns] duration-150 ease-in-out"
+												style="grid-template-columns: 0fr;">
+												<div class="min-w-0 overflow-hidden">
+													<div class="w-fit">
+														<div class="flex flex-row items-center gap-1">
+															<div
+																class="translate-x-[0.07rem] transform opacity-50 transition-transform group-hover:-translate-x-[0.01rem]">
+																<svg xmlns="http://www.w3.org/2000/svg" width="16"
+																	height="16" viewBox="0 0 24 24" fill="none"
+																	stroke="currentColor" stroke-width="2"
+																	stroke-linecap="round" stroke-linejoin="round"
+																	aria-hidden="true"
+																	class="lucide lucide-arrow-left stroke-1">
+																	<path d="m12 19-7-7 7-7"></path>
+																	<path d="M19 12H5"></path>
+																</svg></div>
+														</div>
+													</div>
+												</div>
+											</div>
+											<div class="flex flex-row items-center transition-[gap] duration-150 gap-1">
+												<div class="grid transition-[grid-template-columns] duration-150 ease-in-out"
+													style="grid-template-columns: 1fr;">
+													<div class="min-w-0 overflow-hidden">
+														<div class="w-fit">
+															<div data-tooltip-id="tooltip-changesOverview"
+																class="rounded-xs cursor-pointer p-[2px] hover:bg-gray-500/25">
+																<div class="relative">
+																	<div
+																		class="absolute -bottom-0 -right-0 z-10 origin-center rounded-full bg-gray-500 transition-all duration-200 ease-out scale-0 opacity-0 h-2 w-2">
+																	</div>
+																	<div
+																		class="absolute -bottom-0 -right-0 z-20 origin-center rounded-full transition-all duration-200 ease-out bg-ide-button-background scale-0 opacity-0 h-2 w-2">
+																	</div><svg xmlns="http://www.w3.org/2000/svg"
+																		width="24" height="24" viewBox="0 0 24 24"
+																		fill="none" stroke="currentColor"
+																		stroke-width="2" stroke-linecap="round"
+																		stroke-linejoin="round" aria-hidden="true"
+																		class="lucide lucide-file h-4 w-4 stroke-1 opacity-60">
+																		<path
+																			d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z">
+																		</path>
+																		<path d="M14 2v5a1 1 0 0 0 1 1h5"></path>
+																	</svg>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="grid transition-[grid-template-columns] duration-150 ease-in-out"
+													style="grid-template-columns: 1fr;">
+													<div class="min-w-0 overflow-hidden">
+														<div class="w-fit">
+															<div data-tooltip-id="tooltip-terminal"
+																class="rounded-xs cursor-pointer p-[2px] hover:bg-gray-500/25">
+																<div class="relative">
+																	<div
+																		class="absolute -bottom-0 -right-0 z-10 origin-center rounded-full bg-gray-500 transition-all duration-200 ease-out scale-0 opacity-0 h-2 w-2">
+																	</div>
+																	<div
+																		class="absolute -bottom-0 -right-0 z-20 origin-center rounded-full transition-all duration-200 ease-out bg-ide-button-background scale-0 opacity-0 h-2 w-2">
+																	</div><svg xmlns="http://www.w3.org/2000/svg"
+																		width="24" height="24" viewBox="0 0 24 24"
+																		fill="none" stroke="currentColor"
+																		stroke-width="2" stroke-linecap="round"
+																		stroke-linejoin="round" aria-hidden="true"
+																		class="lucide lucide-square-terminal h-4 w-4 stroke-1 opacity-60">
+																		<path d="m7 11 2-2-2-2"></path>
+																		<path d="M11 13h4"></path>
+																		<rect width="18" height="18" x="3" y="3" rx="2"
+																			ry="2"></rect>
+																	</svg>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="grid transition-[grid-template-columns] duration-150 ease-in-out"
+													style="grid-template-columns: 1fr;">
+													<div class="min-w-0 overflow-hidden">
+														<div class="w-fit">
+															<div data-tooltip-id="tooltip-artifacts"
+																class="rounded-xs cursor-pointer p-[2px] hover:bg-gray-500/25">
+																<div class="relative">
+																	<div
+																		class="absolute -bottom-0 -right-0 z-10 origin-center rounded-full bg-gray-500 transition-all duration-200 ease-out scale-100 opacity-100 h-2 w-2">
+																	</div>
+																	<div
+																		class="absolute -bottom-0 -right-0 z-20 origin-center rounded-full transition-all duration-200 ease-out bg-ide-button-background scale-100 opacity-100 h-2 w-2">
+																	</div><svg xmlns="http://www.w3.org/2000/svg"
+																		fill="none" viewBox="0 0 24 24"
+																		stroke-width="1.5" stroke="currentColor"
+																		aria-hidden="true" data-slot="icon"
+																		class="h-4 w-4 stroke-1 opacity-60">
+																		<path stroke-linecap="round"
+																			stroke-linejoin="round"
+																			d="m7.875 14.25 1.214 1.942a2.25 2.25 0 0 0 1.908 1.058h2.006c.776 0 1.497-.4 1.908-1.058l1.214-1.942M2.41 9h4.636a2.25 2.25 0 0 1 1.872 1.002l.164.246a2.25 2.25 0 0 0 1.872 1.002h2.092a2.25 2.25 0 0 0 1.872-1.002l.164-.246A2.25 2.25 0 0 1 16.954 9h4.636M2.41 9a2.25 2.25 0 0 0-.16.832V12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 12V9.832c0-.287-.055-.57-.16-.832M2.41 9a2.25 2.25 0 0 1 .382-.632l3.285-3.832a2.25 2.25 0 0 1 1.708-.786h8.43c.657 0 1.281.287 1.709.786l3.284 3.832c.163.19.291.404.382.632M4.5 20.25h15A2.25 2.25 0 0 0 21.75 18v-2.625c0-.621-.504-1.125-1.125-1.125H3.375c-.621 0-1.125.504-1.125 1.125V18a2.25 2.25 0 0 0 2.25 2.25Z">
+																		</path>
+																	</svg>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+												<div class="grid transition-[grid-template-columns] duration-150 ease-in-out"
+													style="grid-template-columns: 1fr;">
+													<div class="min-w-0 overflow-hidden">
+														<div class="w-fit">
+															<div data-tooltip-id="tooltip-browser"
+																class="rounded-xs cursor-pointer p-[2px] hover:bg-gray-500/25">
+																<div class="relative">
+																	<div
+																		class="absolute -bottom-0 -right-0 z-10 origin-center rounded-full bg-gray-500 transition-all duration-200 ease-out scale-0 opacity-0 h-2 w-2">
+																	</div>
+																	<div
+																		class="absolute -bottom-0 -right-0 z-20 origin-center rounded-full transition-all duration-200 ease-out bg-ide-button-background scale-0 opacity-0 h-2 w-2">
+																	</div><svg xmlns="http://www.w3.org/2000/svg"
+																		width="24" height="24" viewBox="0 0 24 24"
+																		fill="none" stroke="currentColor"
+																		stroke-width="1" stroke-linecap="round"
+																		stroke-linejoin="round" aria-hidden="true"
+																		class="lucide lucide-chromium h-4 w-4 stroke-1 opacity-60">
+																		<path d="M10.88 21.94 15.46 14"></path>
+																		<path d="M21.17 8H12"></path>
+																		<path d="M3.95 6.06 8.54 14"></path>
+																		<circle cx="12" cy="12" r="10"></circle>
+																		<circle cx="12" cy="12" r="4"></circle>
+																	</svg>
+																</div>
+															</div>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="flex min-w-0 shrink items-center overflow-hidden">
+										<div class="flex min-w-0 shrink items-center overflow-hidden"></div>
+									</div>
+								</div>
+								<div class="flex flex-none items-center gap-1">
+									<div class="flex items-center">
+										<div
+											class="mx-1 flex cursor-pointer items-center justify-center gap-0.5 rounded-md bg-gray-500/10 px-1 opacity-60 hover:bg-gray-500/25">
+											<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+												viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+												stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+												class="lucide lucide-list-checks h-4 w-4 stroke-1">
+												<path d="M13 5h8"></path>
+												<path d="M13 12h8"></path>
+												<path d="M13 19h8"></path>
+												<path d="m3 17 2 2 4-4"></path>
+												<path d="m3 7 2 2 4-4"></path>
+											</svg><button class="rounded px-1 py-0.5 text-xs font-medium">Review
+												Changes</button></div>
+									</div>
+									<div class="grid transition-[grid-template-columns] duration-150 ease-in-out"
+										style="grid-template-columns: 0fr;">
+										<div class="min-w-0 overflow-hidden">
+											<div class="w-fit">
+												<div class="flex cursor-pointer items-center justify-center opacity-70">
+													<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+														viewBox="0 0 24 24" fill="none" stroke="currentColor"
+														stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+														aria-hidden="true" class="lucide lucide-chevron-up">
+														<path d="m18 15-6-6-6 6"></path>
+													</svg></div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="pointer-events-none absolute bottom-full -left-px w-[calc(100%+2px)]"
+									style="mask-image: linear-gradient(white, white);">
+									<div
+										class="pointer-events-auto w-full overflow-hidden rounded-md bg-ide-editor-background transition-all duration-150 ease-in-out translate-y-full">
+										<div
+											class="max-h-80 overflow-y-auto rounded-md border border border-gray-500/25 bg-gray-500/10">
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="w-full flex flex-col items-stretch gap-2 box-border">
+							<div id="antigravity.agentSidePanelInputBox"
+								class="relative flex flex-col p-px rounded-2xl bg-gray-500/20">
+								<div
+									class="relative flex flex-col gap-0 p-1 rounded-[calc(theme(borderRadius.2xl)-1px)] bg-input">
+									<div class="absolute bottom-full inset-x-0 z-30 flex flex-col gap-1"></div>
+									<div class="relative w-full">
+										<div class="w-full rounded-lg transition-all duration-10">
+											<div class="relative w-full">
+												<div aria-label="Message input" contenteditable="true" role="textbox"
+													autocorrect="off" autocomplete="off"
+													class="max-h-[300px] rounded cursor-text overflow-y-auto text-md p-2 outline-none transition-all duration-100 text-sm"
+													data-lexical-editor="true"
+													style="user-select: text; white-space: pre-wrap; word-break: break-word;">
+												</div>
+												<p
+													class="pointer-events-none absolute left-2 right-2 top-2 z-0 select-none overflow-hidden text-ellipsis whitespace-nowrap text-sm text-ide-input-color opacity-40">
+													Ask anything, @ to mention, / for workflows</p>
+											</div>
+										</div>
+									</div>
+									<div class="flex w-full items-center justify-between gap-1 p-0.5">
+										<div class="flex min-w-0 flex-1 items-center gap-px"><button
+												aria-label="Add context" aria-haspopup="dialog" aria-expanded="false"
+												class="p-1.5 rounded-full hover:bg-gray-500/20 cursor-pointer"><svg
+													xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+													viewBox="0 0 24 24" fill="none" stroke="currentColor"
+													stroke-width="1" stroke-linecap="round" stroke-linejoin="round"
+													aria-hidden="true" class="lucide lucide-plus opacity-70 w-4 h-4">
+													<path d="M5 12h14"></path>
+													<path d="M12 5v14"></path>
+												</svg></button><input type="file"
+												accept=".png,.jpg,.jpeg,.gif,image/png,image/jpeg,image/gif,video/webm,.mp4,video/mp4"
+												multiple="" class="hidden">
+											<div class="flex items-center gap-1">
+												<div class="min-w-0">
+													<div>
+														<div role="button" aria-haspopup="dialog" aria-expanded="false">
+															<button type="button"
+																aria-label="Select model, current: Claude Opus 4.6 (Thinking)"
+																class="flex min-w-0 max-w-full cursor-pointer items-center h-7 gap-1 rounded-lg pr-1 pl-2 text-xs outline-none hover:bg-gray-500/20 focus-visible:ring-1 focus-visible:ring-gray-500/70"><span
+																	class="min-w-0 select-none overflow-hidden text-ellipsis whitespace-nowrap text-xs opacity-70">Claude
+																	Opus 4.6 (Thinking)</span><svg
+																	xmlns="http://www.w3.org/2000/svg" width="24"
+																	height="24" viewBox="0 0 24 24" fill="none"
+																	stroke="currentColor" stroke-width="2"
+																	stroke-linecap="round" stroke-linejoin="round"
+																	aria-hidden="true"
+																	class="lucide lucide-chevron-up size-4 shrink-0 stroke-1 opacity-70">
+																	<path d="m18 15-6-6-6 6"></path>
+																</svg></button></div>
+													</div>
+												</div>
+												<div data-tooltip-id="P0-1"
+													class="flex items-center pr-2 h-7 rounded-lg hover:bg-gray-500/20 text-xs group transition-colors">
+													<button class="px-1 h-6 cursor-pointer"><span
+															class="group-hover:hidden flex items-center opacity-70"><svg
+																xmlns="http://www.w3.org/2000/svg" width="14"
+																height="14" viewBox="0 0 24 24" fill="none"
+																stroke="currentColor" stroke-width="1.5"
+																stroke-linecap="round" stroke-linejoin="round"
+																aria-hidden="true" class="lucide lucide-list-todo">
+																<path d="M13 5h8"></path>
+																<path d="M13 12h8"></path>
+																<path d="M13 19h8"></path>
+																<path d="m3 17 2 2 4-4"></path>
+																<rect x="3" y="4" width="6" height="6" rx="1"></rect>
+															</svg></span><span
+															class="opacity-70 hidden group-hover:flex items-center"><svg
+																xmlns="http://www.w3.org/2000/svg" width="14"
+																height="14" viewBox="0 0 24 24" fill="none"
+																stroke="currentColor" stroke-width="1.5"
+																stroke-linecap="round" stroke-linejoin="round"
+																aria-hidden="true" class="lucide lucide-x">
+																<path d="M18 6 6 18"></path>
+																<path d="m6 6 12 12"></path>
+															</svg></span></button><span
+														class="opacity-70 select-none">Plan</span></div>
+											</div>
+										</div>
+										<div class="shrink-0 flex items-center gap-1"><button type="button"
+												aria-label="Send message" data-testid="send-button"
+												data-tooltip-id="input-send-button-send-tooltip"
+												class="flex items-center p-1.5 rounded-full transition-all duration-150 opacity-30 bg-gray-500/40"
+												disabled=""><span
+													class="text-xs font-medium text-white overflow-hidden transition-all duration-150 max-w-0 max-h-0 whitespace-nowrap opacity-0">Send</span><svg
+													xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+													viewBox="0 0 24 24" fill="none" stroke="currentColor"
+													stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+													aria-hidden="true"
+													class="lucide lucide-arrow-right w-4 h-4 stroke-2 stroke-white">
+													<path d="M5 12h14"></path>
+													<path d="m12 5 7 7-7 7"></path>
+												</svg></button></div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div role="dialog" aria-modal="true"
+		class="border-gray-500/20 bg-ide-chat-background w-max bg-editor-background text-editor-foreground origin-bottom outline-hidden z-50 w-72 rounded-lg border shadow-md transition-[opacity,transform] duration-100 opacity-0 pointer-events-none translate-y-3"
+		style="position: fixed; visibility: hidden;">
+		<div role="menu" class="flex flex-col items-start rounded-bg py-1">
+			<div role="group" class="w-full">
+				<div role="menuitem" tabindex="0"
+					class="flex items-center justify-start gap-2 px-2 py-1 text-xs w-full rounded-sm cursor-pointer hover:bg-gray-500/20">
+					<div class="flex-grow flex items-center justify-start gap-2"><svg xmlns="http://www.w3.org/2000/svg"
+							width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+							stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+							class="lucide lucide-list-todo">
+							<path d="M13 5h8"></path>
+							<path d="M13 12h8"></path>
+							<path d="M13 19h8"></path>
+							<path d="m3 17 2 2 4-4"></path>
+							<rect x="3" y="4" width="6" height="6" rx="1"></rect>
+						</svg>Plan</div>
+				</div>
+			</div>
+			<div role="group" class="w-full">
+				<div class="border-t border-gray-500/20 my-1"></div>
+				<div role="menuitem" tabindex="0"
+					class="flex items-center justify-start gap-2 px-2 py-1 text-xs w-full rounded-sm cursor-pointer hover:bg-gray-500/20">
+					<div class="flex-grow flex items-center justify-start gap-2"><svg xmlns="http://www.w3.org/2000/svg"
+							width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+							stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+							class="lucide lucide-image">
+							<rect width="18" height="18" x="3" y="3" rx="2" ry="2"></rect>
+							<circle cx="9" cy="9" r="2"></circle>
+							<path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"></path>
+						</svg>Media</div>
+				</div>
+				<div role="menuitem" tabindex="0"
+					class="flex items-center justify-start gap-2 px-2 py-1 text-xs w-full rounded-sm cursor-pointer hover:bg-gray-500/20">
+					<div class="flex-grow flex items-center justify-start gap-2"><svg xmlns="http://www.w3.org/2000/svg"
+							width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+							stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+							class="lucide lucide-at-sign">
+							<circle cx="12" cy="12" r="4"></circle>
+							<path d="M16 8v5a3 3 0 0 0 6 0v-1a10 10 0 1 0-4 8"></path>
+						</svg>Mentions</div>
+				</div>
+				<div role="menuitem" tabindex="0"
+					class="flex items-center justify-start gap-2 px-2 py-1 text-xs w-full rounded-sm cursor-pointer hover:bg-gray-500/20">
+					<div class="flex-grow flex items-center justify-start gap-2"><svg xmlns="http://www.w3.org/2000/svg"
+							width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+							stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+							class="lucide lucide-square-slash">
+							<rect width="18" height="18" x="3" y="3" rx="2"></rect>
+							<line x1="9" x2="15" y1="15" y2="9"></line>
+						</svg>Workflows</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div role="dialog" aria-modal="true"
+		class="!border-0 !w-64 !rounded-2xl !overflow-hidden !bg-ide-editor-background bg-editor-background text-editor-foreground origin-bottom outline-hidden z-50 w-72 rounded-lg border shadow-md transition-[opacity,transform] duration-100 opacity-0 pointer-events-none translate-y-3"
+		style="position: fixed; visibility: hidden;">
+		<div
+			class="flex flex-col max-h-80 border border-solid border-gray-500/20 rounded-2xl overflow-hidden outline-none bg-ide-chat-background">
+			<div class="flex flex-col flex-grow min-h-0 pt-1 overflow-y-auto rounded-md pb-1">
+				<div class="text-xs px-2 pb-1 opacity-80">Model</div>
+				<div><button data-autofocus="false"
+						class="px-2 py-1 flex w-full items-center justify-between transition-shadow cursor-pointer hover:bg-gray-500/10">
+						<div class="flex items-center justify-start gap-2"><span
+								class="text-xs font-medium"><span>Gemini 3.1 Pro (High)</span></span>
+							<div class="bg-gray-500/15 rounded-full px-1.5 text-xs">New</div>
+						</div>
+					</button><button data-autofocus="false"
+						class="px-2 py-1 flex w-full items-center justify-between transition-shadow cursor-pointer hover:bg-gray-500/10">
+						<div class="flex items-center justify-start gap-2"><span
+								class="text-xs font-medium"><span>Gemini 3.1 Pro (Low)</span></span>
+							<div class="bg-gray-500/15 rounded-full px-1.5 text-xs">New</div>
+						</div>
+					</button><button data-autofocus="false"
+						class="px-2 py-1 flex w-full items-center justify-between transition-shadow cursor-pointer hover:bg-gray-500/10">
+						<div class="flex items-center justify-start gap-2"><span
+								class="text-xs font-medium"><span>Gemini 3 Flash</span></span></div>
+					</button><button data-autofocus="false"
+						class="px-2 py-1 flex w-full items-center justify-between transition-shadow cursor-pointer hover:bg-gray-500/10">
+						<div class="flex items-center justify-start gap-2"><span
+								class="text-xs font-medium"><span>Claude Sonnet 4.6 (Thinking)</span></span></div>
+					</button><button data-autofocus="true"
+						class="px-2 py-1 flex w-full items-center justify-between transition-shadow cursor-pointer bg-gray-500/20">
+						<div class="flex items-center justify-start gap-2"><span
+								class="text-xs font-medium"><span>Claude Opus 4.6 (Thinking)</span></span></div>
+					</button><button data-autofocus="false"
+						class="px-2 py-1 flex w-full items-center justify-between transition-shadow cursor-pointer hover:bg-gray-500/10">
+						<div class="flex items-center justify-start gap-2"><span
+								class="text-xs font-medium"><span>GPT-OSS 120B (Medium)</span></span></div>
+					</button></div>
+			</div>
+		</div>
+	</div>
+</div>
