@@ -304,8 +304,12 @@ export const EXTRACT_JS = `(function () {
         if (btn) {
           const [v, d] = btnParts(btn);
           if (v === "Explored" || v === "Edited") {
-            const exp = child.querySelector(":scope > div[style*='opacity: 1']");
-            const children = exp ? walk(exp) : [];
+            const children = [];
+            for (const c2 of child.children) {
+              if (c2.tagName !== "BUTTON") {
+                children.push(...walk(c2));
+              }
+            }
             items.push({ role: "explored", label: v, detail: d, html: null, children });
           }
         } else {
@@ -459,14 +463,10 @@ export const EXTRACT_JS = `(function () {
       if (workedBtnContainer) {
         // Expanded tool-use steps live in the div[style*='opacity: 1'] sibling
         let workedChildren = [];
-        const exp = workedBtnContainer.querySelector(":scope > div[style*='opacity: 1']");
-        if (exp) {
-          workedChildren = walk(exp);
-        } else {
-          for (const c2 of workedBtnContainer.children) {
-            if (c2.tagName !== "BUTTON") {
-              workedChildren.push(...walk(c2));
-            }
+        
+        for (const c2 of workedBtnContainer.children) {
+          if (c2.tagName !== "BUTTON") {
+            workedChildren.push(...walk(c2));
           }
         }
 
@@ -474,6 +474,10 @@ export const EXTRACT_JS = `(function () {
         const workedNode = nodes[nodes.length - 1];
         if (workedNode && workedNode.role === "worked") {
           workedNode.children = workedChildren;
+          
+          if (workedChildren.length === 0) {
+             workedNode.children.push({ role: "_no_chat", label: "DEBUG", detail: getCleanHTML(workedBtnContainer), html: null, children: [] });
+          }
         }
 
         // Find the direct child of 'child' that contains the workedBtnContainer
