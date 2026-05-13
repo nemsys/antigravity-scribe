@@ -80,7 +80,7 @@ export async function runSnap(task: string): Promise<SnapResult> {
 
   // ── 3. Render and write note ───────────────────────────────────────────────
   const now = new Date();
-  const { uuid: brainUuid, fullPath: brainFullPath } = getActiveBrainUuid(brainPath);
+  const { uuid: brainUuid, fullPath: brainFullPath } = getActiveBrainUuid(brainPath, target.url);
   
   const note = renderNote(nodes, {
     task: effectiveTask,
@@ -127,7 +127,7 @@ export async function runDiagnose(out: vscode.OutputChannel): Promise<void> {
   }
 
   // Brain
-  const { uuid: brainUuid, fullPath: brainFullPath } = getActiveBrainUuid(brainPath);
+  const { uuid: brainUuid, fullPath: brainFullPath } = getActiveBrainUuid(brainPath, target?.url);
   if (fs.existsSync(brainFullPath)) {
     ok(`Brain path:    ${brainFullPath}`);
     if (brainUuid) {

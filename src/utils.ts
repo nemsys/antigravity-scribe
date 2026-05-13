@@ -25,10 +25,26 @@ export function expandHome(p: string): string {
 }
 
 /**
- * Find the most recently modified brain UUID directory.
+ * Find the active brain UUID directory.
+ * Prioritizes extracting the UUID from the target URL, falling back to the most recently modified directory.
  */
-export function getActiveBrainUuid(brainPath: string): { uuid: string | null; fullPath: string } {
+export function getActiveBrainUuid(brainPath: string, targetUrl?: string): { uuid: string | null; fullPath: string } {
   const fullPath = expandHome(brainPath);
+
+  if (targetUrl) {
+    const match = targetUrl.match(/[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}/i);
+    if (match) {
+      const uuid = match[0].toLowerCase();
+      try {
+        if (fs.existsSync(path.join(fullPath, uuid))) {
+          return { uuid, fullPath };
+        }
+      } catch (err) {
+        // Fall through to mtime fallback
+      }
+    }
+  }
+
   try {
     const entries = fs.readdirSync(fullPath, { withFileTypes: true });
     let latestUuid: string | null = null;
