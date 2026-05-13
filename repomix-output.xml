@@ -11480,23 +11480,7 @@ ANTIGRAVITY_PROFILE_DIR=&quot;/path/to/your/profile/app_config&quot;</file><file
             &lt;/div&gt;
         &lt;/div&gt;
     &lt;/div&gt;
-&lt;/div&gt;</file><file path="src/utils.ts">import { execSync } from &quot;child_process&quot;;
-⋮----
-/**
- * Expand ~ in paths.
- */
-export function expandHome(p: string): string
-⋮----
-// os.homedir() reads the HOME env var which may be overridden
-// (e.g. by Antigravity profile aliases). We try to read the real home
-// from passwd on Linux, but gracefully fall back to os.homedir().
-⋮----
-// Fallback to os.homedir() on error
-⋮----
-/**
- * Find the most recently modified brain UUID directory.
- */
-export function getActiveBrainUuid(brainPath: string):</file><file path="scraper/output/disabling-media-asset-capture.md">---
+&lt;/div&gt;</file><file path="scraper/output/disabling-media-asset-capture.md">---
 title: &quot;Disabling Media Asset Capture&quot;
 model: &quot;Gemini 3 Flash&quot;
 turns: 2
@@ -11620,7 +11604,23 @@ async evalJS(js: string): Promise&lt;string | null&gt;
 ⋮----
 close(): void
 ⋮----
-function httpGetJson&lt;T&gt;(url: string): Promise&lt;T | null&gt;</file><file path="src/vault.ts">import { expandHome } from &quot;./utils&quot;;
+function httpGetJson&lt;T&gt;(url: string): Promise&lt;T | null&gt;</file><file path="src/utils.ts">import { execSync } from &quot;child_process&quot;;
+⋮----
+/**
+ * Expand ~ in paths.
+ */
+export function expandHome(p: string): string
+⋮----
+// os.homedir() reads the HOME env var which may be overridden
+// (e.g. by Antigravity profile aliases). We try to read the real home
+// from passwd on Linux, but gracefully fall back to os.homedir().
+⋮----
+// Fallback to os.homedir() on error
+⋮----
+/**
+ * Find the most recently modified brain UUID directory.
+ */
+export function getActiveBrainUuid(brainPath: string):</file><file path="src/vault.ts">import { expandHome } from &quot;./utils&quot;;
 ⋮----
 export interface VaultPaths {
   sessionDir: string;   // &lt;vault&gt;/&lt;vaultFolder&gt;/

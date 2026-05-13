@@ -54,6 +54,15 @@ export const EXTRACT_TITLE_JS = `(function () {
 
 export const EXTRACT_JS = `(async function () {
 
+  // ── Auto-scroll to top ─────────────────────────────────────────────────────
+  // If the conversation is virtualized or lazy-loaded, we must scroll to the 
+  // top to ensure early messages are mounted in the DOM.
+  const scrollable = document.querySelector("#conversation .overflow-y-auto");
+  if (scrollable) {
+    scrollable.scrollTop = 0;
+    await new Promise(r => setTimeout(r, 500)); // Wait for lazy loading
+  }
+
   // ── Auto-expand logic ──────────────────────────────────────────────────────
   // The UI is a React app. When blocks (Worked for, Explored) are collapsed,
   // their children are unmounted. We must click them to mount the children.
