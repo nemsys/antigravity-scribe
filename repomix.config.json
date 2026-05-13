@@ -42,7 +42,8 @@
       ".vscodeignore",
       ".repomixignore",
       "repomix.config.json",
-      "*.png"
+      "*.png",
+      "scraper/**"
     ]
   },
   "security": {
