@@ -67,21 +67,21 @@ You should see:
 
 When ready, choose one of:
 
-| Method                                                                                                             | When to use                                           |
-| ------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------- |
+| Method                                                                                                             | When to use                                                     |
+| ------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------- |
 | Click **<img src="assets/device-camera.svg" width="16" height="16" align="center" /> AG Scribe** in the status bar | Quick capture, auto-generates task name from conversation title |
-| Command Palette → `Antigravity Scribe: Capture Session (named task)`                                               | When you want to give this session a meaningful label |
+| Command Palette → `Antigravity Scribe: Capture Session (named task)`                                               | When you want to give this session a custom label               |
 
 ---
 
 ## Commands
 
-| Command                                            | Description                                                 |
-| -------------------------------------------------- | ----------------------------------------------------------- |
-| `Antigravity Scribe: Capture Session`              | Capture using conversation title (or last-used task label)  |
-| `Antigravity Scribe: Capture Session (named task)` | Prompt for a label, then capture                            |
-| `Antigravity Scribe: Open Sessions in Vault`       | Reveal the sessions folder in the Explorer sidebar          |
-| `Antigravity Scribe: Diagnose Connection`          | Check CDP, brain path, and vault config                     |
+| Command                                            | Description                                                |
+| -------------------------------------------------- | ---------------------------------------------------------- |
+| `Antigravity Scribe: Capture Session`              | Capture using conversation title (or last-used task label) |
+| `Antigravity Scribe: Capture Session (named task)` | Prompt for a label, then capture                           |
+| `Antigravity Scribe: Open Sessions in Vault`       | Reveal the sessions folder in the Explorer sidebar         |
+| `Antigravity Scribe: Diagnose Connection`          | Check CDP, brain path, and vault config                    |
 
 ---
 
