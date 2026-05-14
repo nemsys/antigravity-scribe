@@ -67,10 +67,10 @@ You should see:
 
 When ready, choose one of:
 
-| Method                                                               | When to use                                           |
-| -------------------------------------------------------------------- | ----------------------------------------------------- |
-| Click **$(device-camera) AG Scribe** in the status bar               | Quick capture, reuses the last task label             |
-| Command Palette → `Antigravity Scribe: Capture Session (named task)` | When you want to give this session a meaningful label |
+| Method                                                                                                             | When to use                                           |
+| ------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------- |
+| Click **<img src="assets/device-camera.svg" width="16" height="16" align="center" /> AG Scribe** in the status bar | Quick capture, reuses the last task label             |
+| Command Palette → `Antigravity Scribe: Capture Session (named task)`                                               | When you want to give this session a meaningful label |
 
 ---
 
@@ -88,9 +88,23 @@ When ready, choose one of:
 ## Output Format
 
 The extension generates a structured Markdown file in your vault with:
-- **YAML Frontmatter:** Date, time, workspace path, and brain UUID.
-- **Artifacts:** Content of `task.md` and `implementation_plan.md` from the brain directory.
-- **Session:** Full conversation history including thinking, tool usage, and agent responses.
+
+- **YAML Frontmatter:**
+    - `date`, `time`: Capture timestamp.
+    - `agent`: The AI model used (e.g., `antigravity`).
+    - `task`: The task label (e.g., `fixing-antigravity-scribe-counter`).
+    - `workspace`: Local path to the project.
+    - `brain_uuid`: Unique ID for the specific session.
+    - `brain_path`: Absolute path to the Antigravity brain data.
+    - `tags`: Standard tags like `agent-session` and `antigravity`.
+
+- **Session Content:**
+    - `## Session` header.
+    - `## 👤 USER` and `## 🤖 AGENT` markers for each turn.
+    - `## ⏱ Worked for [time]` blocks containing:
+        - `### 🔍 Explored — [summary]` tool call descriptions.
+        - `#### 🧠 Thought for [time]` internal reasoning blocks.
+    - High-fidelity Markdown conversion of agent responses (using Turndown).
 
 ---
 
