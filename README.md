@@ -84,13 +84,13 @@ See [Building from Source](#building-from-source) at the end of this document.
 Open Settings (`Ctrl+,`) and search for **Antigravity Scribe**, or add these keys to your `settings.json`:
 
 ```jsonc
-{
-  // Required — path to your Obsidian vault root
-  "agscribe.vaultPath": "/home/yourname/Obsidian/Universum",
-
+{ 
   // Required if you use a custom Antigravity profile (see below)
   // Default works for standard installations
   "agscribe.brainPath": "~/.gemini/antigravity/brain",
+
+   // Required — path to your Obsidian vault root
+  "agscribe.vaultPath": "/home/yourname/Obsidian/Universum",
 
   // Folder inside the vault where session notes are written
   // Will be created automatically if it does not exist
@@ -195,9 +195,9 @@ trigger it, so **capture when the session is done**, not mid-stream.
 
 When ready, choose one of:
 
-| Method | When to use |
-|---|---|
-| Click **$(device-camera) AG Scribe** in the status bar | Quick capture, reuses the last task label |
+| Method                                                               | When to use                                           |
+| -------------------------------------------------------------------- | ----------------------------------------------------- |
+| Click **$(device-camera) AG Scribe** in the status bar               | Quick capture, reuses the last task label             |
 | Command Palette → `Antigravity Scribe: Capture Session (named task)` | When you want to give this session a meaningful label |
 
 The task label becomes part of the filename: `20260501_1430_refactor-auth.md`
@@ -223,12 +223,12 @@ Add to `keybindings.json`:
 
 ## Commands
 
-| Command | Description |
-|---|---|
-| `Antigravity Scribe: Capture Session` | Capture using the last-used task label (default: `session`) |
-| `Antigravity Scribe: Capture Session (named task)` | Prompt for a label, then capture |
-| `Antigravity Scribe: Open Sessions in Vault` | Reveal the sessions folder in the Explorer sidebar |
-| `Antigravity Scribe: Diagnose Connection` | Check CDP, brain path, and vault config |
+| Command                                            | Description                                                 |
+| -------------------------------------------------- | ----------------------------------------------------------- |
+| `Antigravity Scribe: Capture Session`              | Capture using the last-used task label (default: `session`) |
+| `Antigravity Scribe: Capture Session (named task)` | Prompt for a label, then capture                            |
+| `Antigravity Scribe: Open Sessions in Vault`       | Reveal the sessions folder in the Explorer sidebar          |
+| `Antigravity Scribe: Diagnose Connection`          | Check CDP, brain path, and vault config                     |
 
 ---
 
@@ -298,15 +298,15 @@ The current implementation uses `express-session`...
 
 ### Frontmatter fields
 
-| Field | Description |
-|---|---|
-| `date` | Capture date (YYYY-MM-DD) |
-| `time` | Capture time (HH:MM) |
-| `agent` | Always `antigravity` in this version |
-| `task` | The label you provided at capture time |
-| `workspace` | Absolute path to the open workspace folder |
-| `brain_uuid` | UUID of the matched brain artifact directory |
-| `tags` | `agent-session`, `antigravity` — extend in your Obsidian templates |
+| Field        | Description                                                        |
+| ------------ | ------------------------------------------------------------------ |
+| `date`       | Capture date (YYYY-MM-DD)                                          |
+| `time`       | Capture time (HH:MM)                                               |
+| `agent`      | Always `antigravity` in this version                               |
+| `task`       | The label you provided at capture time                             |
+| `workspace`  | Absolute path to the open workspace folder                         |
+| `brain_uuid` | UUID of the matched brain artifact directory                       |
+| `tags`       | `agent-session`, `antigravity` — extend in your Obsidian templates |
 
 ---
 
