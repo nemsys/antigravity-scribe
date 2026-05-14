@@ -5,7 +5,10 @@
    - Current Status: Reverted URL-based lookup (didn't work reliably); falling back to most recently modified folder (mtime).
    - Issue: When a past conversation is loaded in the panel, the URL or React state may not reliably expose the UUID via the current CDP implementation.
    - Goal: Reliable identification of the "Brain" or "Folder" context for historical logs.
-2. [ ]  Capture exact model name
+
+## Features
+1. [ ]  Capture exact model name
+2. [ ]  In capture metadata show artifacts count and add link to the folder with artifacts, instead of brain_uuid and brain_path.
 
 ## AI & Contributor Readiness
 1. [ ] Formalize .agents/ system prompts for external use.
