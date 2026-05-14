@@ -28,6 +28,7 @@ or other automated processes.</purpose><file_format>The content is organized as 
     gemini-1.png
 scripts/
   dump_dom.js
+  find_uuid.js
   reinstall.sh
 src/
   cdp.ts
@@ -40,6 +41,7 @@ src/
 .env.example
 package.json
 README.md
+TODO.md
 tsconfig.json</directory_structure><files>This section contains the contents of the repository&apos;s files.<file path="scripts/dump_dom.js">function httpGetJson(url)
 ⋮----
 async function findTarget(port)
@@ -60,7 +62,47 @@ async evalJS(js)
 close()
 ⋮----
 async function main()</file><file path=".env.example"># Path to your Antigravity profile configuration directory
-ANTIGRAVITY_PROFILE_DIR=&quot;/path/to/your/profile/app_config&quot;</file><file path="src/cdp.ts">export interface CDPTarget {
+ANTIGRAVITY_PROFILE_DIR=&quot;/path/to/your/profile/app_config&quot;</file><file path="TODO.md"># Antigravity Scribe - Task List
+
+## Immediate Technical Blocks
+1. [ ] Extract Brain UUID from past conversations:
+   - Current Status: Works for active/new sessions via URL/CDP.
+   - Issue: When a past conversation is loaded in the panel, the URL or React state may not reliably expose the UUID via the current CDP implementation.
+   - Goal: Reliable identification of the &quot;Brain&quot; or &quot;Folder&quot; context for historical logs.
+
+## Core Extension Features
+1. [ ] Implement robust workspace-level configuration for ANTIGRAVITY_PROFILE_DIR.
+2. [ ] Add &quot;Clear Logs&quot; functionality for the local vault.
+3. [ ] Improve renderer to support nested tool-call blocks.
+
+## AI &amp; Contributor Readiness
+1. [ ] Formalize .agents/ system prompts for external use.
+2. [ ] Set up GitHub Action for llms.txt generation.
+3. [ ] Automate CHANGELOG.md updates via agent script.
+
+## Done
+- [x] Initial extraction logic for DOM trees.
+- [x] Basic VSCode Output Channel for diagnostics.
+- [x] Integration of scraper.py logic into TypeScript src.</file><file path="scripts/find_uuid.js">function httpGetJson(url)
+⋮----
+async function findTarget(port)
+⋮----
+class CDPClient
+⋮----
+async connect(wsUrl)
+⋮----
+} catch { /* ignore */ }
+⋮----
+send(method, params =
+⋮----
+resolve: (v) =&gt;
+reject: (e) =&gt;
+⋮----
+async evalJS(js)
+⋮----
+close()
+⋮----
+async function main()</file><file path="src/cdp.ts">export interface CDPTarget {
   id: string;
   type: string;
   title: string;

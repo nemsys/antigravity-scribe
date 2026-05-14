@@ -2,7 +2,7 @@
 
 ## Immediate Technical Blocks
 1. [ ] Extract Brain UUID from past conversations:
-   - Current Status: Works for active/new sessions via URL/CDP.
+   - Current Status: Reverted URL-based lookup (didn't work reliably); falling back to most recently modified folder (mtime).
    - Issue: When a past conversation is loaded in the panel, the URL or React state may not reliably expose the UUID via the current CDP implementation.
    - Goal: Reliable identification of the "Brain" or "Folder" context for historical logs.
 
