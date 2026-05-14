@@ -37,6 +37,10 @@ or other automated processes.</purpose><file_format>The content is organized as 
     performance.md
   todo/
     instructions.md
+.github/
+  workflows/
+    ci.yml
+  pull_request_template.md
 assets/
   logo/
     chatgpt-1.png
@@ -76,6 +80,7 @@ src/
 .repomixignore
 .vscodeignore
 CHANGELOG.md
+CONTRIBUTING.md
 eslint.config.mjs
 eslint.config.mts
 icon.png
@@ -251,7 +256,32 @@ User is working on **Antigravity Scribe** extension project. To save tokens, **d
 ## Your Task
 
 When user ask for a refactor or debug, reference these files first.
-If you need to see a specific file&apos;s content, ask user or use your tool to read only that specific file.</file><file path="scraper/DOM-exports/fixing-agent-interaction-export-cleaned.html">&lt;div class=&quot;antigravity-agent-side-panel&quot;
+If you need to see a specific file&apos;s content, ask user or use your tool to read only that specific file.</file><file path=".github/workflows/ci.yml">name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: &apos;npm&apos;
+      - run: npm install
+      - run: npm run lint
+      - run: npm run compile</file><file path=".github/pull_request_template.md">## Description
+Explain the changes you&apos;ve made and why.
+
+## Checklist
+- [ ] I have run `npm run lint` and fixed any issues.
+- [ ] I have verified that my changes work in the Extension Development Host.
+- [ ] I have updated the README if necessary.</file><file path="scraper/DOM-exports/fixing-agent-interaction-export-cleaned.html">&lt;div class=&quot;antigravity-agent-side-panel&quot;
 	style=&quot;position: absolute; left: 1130px; top: 42px; width: 712.997px; height: 972.994px; display: block;&quot;&gt;
 	&lt;div role=&quot;dialog&quot; aria-modal=&quot;true&quot;
 		class=&quot;w-max border-gray-500/20 bg-ide-chat-background bg-editor-background text-editor-foreground origin-bottom outline-hidden z-50 w-72 rounded-lg border shadow-md transition-[opacity,transform] duration-100 opacity-0 pointer-events-none -translate-y-3&quot;
@@ -8489,7 +8519,35 @@ ANTIGRAVITY_PROFILE_DIR=&quot;/path/to/your/profile/app_config&quot;</file><file
 }</file><file path=".repomixignore"># Add patterns to ignore here, one per line
 # Example:
 # *.log
-# tmp/</file><file path="eslint.config.mjs"></file><file path="eslint.config.mts">import js from &quot;@eslint/js&quot;;
+# tmp/</file><file path="CONTRIBUTING.md"># Contributing to Antigravity Scribe
+
+## Development Setup
+
+1.  **Clone &amp; Install:**
+    ```bash
+    git clone https://github.com/sciscend/antigravity-scribe.git
+    cd antigravity-scribe
+    npm install
+    ```
+
+2.  **Run in Development Mode:**
+    *   Open the project in VS Code or Antigravity.
+    *   Press `F5` to launch the **Extension Development Host**.
+    *   The extension will reload automatically when you save changes if `npm run watch` is running.
+
+3.  **Code Quality:**
+    We use ESLint and Prettier. Please run the linter before submitting a PR:
+    ```bash
+    npm run lint
+    ```
+
+## Submitting Changes
+
+1.  Fork the repo and create a new branch.
+2.  Make your changes and ensure they are lint-free.
+3.  Submit a Pull Request with a clear description of what you&apos;ve changed.
+
+All contributions are welcome!</file><file path="eslint.config.mjs"></file><file path="eslint.config.mts">import js from &quot;@eslint/js&quot;;
 import globals from &quot;globals&quot;;
 import tseslint from &quot;typescript-eslint&quot;;
 import { defineConfig } from &quot;eslint/config&quot;;</file><file path="LICENSE">MIT License
@@ -12119,7 +12177,116 @@ package-lock.json
 .agscribe.json
 .debug
 .docs
-tmp/**</file><file path="README.md"># Antigravity Scribe
+tmp/**</file><file path="package.json">{
+  &quot;name&quot;: &quot;antigravity-scribe&quot;,
+  &quot;displayName&quot;: &quot;Antigravity Scribe&quot;,
+  &quot;description&quot;: &quot;Capture thinking, tool calls &amp; artifacts to your Obsidian vault&quot;,
+  &quot;version&quot;: &quot;0.1.0&quot;,
+  &quot;publisher&quot;: &quot;sciscend&quot;,
+  &quot;engines&quot;: {
+    &quot;vscode&quot;: &quot;^1.85.0&quot;
+  },
+  &quot;categories&quot;: [
+    &quot;Other&quot;
+  ],
+  &quot;repository&quot;: {
+    &quot;type&quot;: &quot;git&quot;,
+    &quot;url&quot;: &quot;https://github.com/sciscend/antigravity-scribe.git&quot;
+  },
+  &quot;keywords&quot;: [
+    &quot;antigravity&quot;,
+    &quot;obsidian&quot;,
+    &quot;agent&quot;,
+    &quot;capture&quot;,
+    &quot;ai&quot;,
+    &quot;session&quot;
+  ],
+  &quot;activationEvents&quot;: [
+    &quot;onStartupFinished&quot;
+  ],
+  &quot;main&quot;: &quot;./dist/extension.js&quot;,
+  &quot;contributes&quot;: {
+    &quot;commands&quot;: [
+      {
+        &quot;command&quot;: &quot;agscribe.capture&quot;,
+        &quot;title&quot;: &quot;Antigravity Scribe: Capture Session&quot;
+      },
+      {
+        &quot;command&quot;: &quot;agscribe.captureNamed&quot;,
+        &quot;title&quot;: &quot;Antigravity Scribe: Capture Session (named task)&quot;
+      },
+      {
+        &quot;command&quot;: &quot;agscribe.openVault&quot;,
+        &quot;title&quot;: &quot;Antigravity Scribe: Open Sessions in Vault&quot;
+      },
+      {
+        &quot;command&quot;: &quot;agscribe.diagnose&quot;,
+        &quot;title&quot;: &quot;Antigravity Scribe: Diagnose Connection&quot;
+      }
+    ],
+    &quot;configuration&quot;: {
+      &quot;title&quot;: &quot;Antigravity Scribe&quot;,
+      &quot;properties&quot;: {
+        &quot;agscribe.port&quot;: {
+          &quot;type&quot;: &quot;number&quot;,
+          &quot;default&quot;: 9222,
+          &quot;description&quot;: &quot;The Remote Debugging Port Antigravity is listening on. This must match the --remote-debugging-port flag used when starting the application.&quot;
+        },
+        &quot;agscribe.brainPath&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;default&quot;: &quot;~/.gemini/antigravity/brain&quot;,
+          &quot;description&quot;: &quot;Local path to the Antigravity &apos;brain&apos; directory where session artifacts are stored. Supports &apos;~&apos; expansion for the home directory.&quot;
+        },
+        &quot;agscribe.vaultPath&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;default&quot;: &quot;&quot;,
+          &quot;description&quot;: &quot;Absolute path to your Obsidian vault root directory. This is required for the extension to work.&quot;,
+          &quot;editPresentation&quot;: {
+            &quot;view&quot;: &quot;folder&quot;
+          }
+        },
+        &quot;agscribe.vaultFolder&quot;: {
+          &quot;type&quot;: &quot;string&quot;,
+          &quot;default&quot;: &quot;AgentSessions&quot;,
+          &quot;description&quot;: &quot;The name of the folder within your Obsidian vault where captured session notes will be saved. Will be created if it doesn&apos;t exist.&quot;
+        },
+        &quot;agscribe.openAfterCapture&quot;: {
+          &quot;type&quot;: &quot;boolean&quot;,
+          &quot;default&quot;: true,
+          &quot;description&quot;: &quot;Automatically open the generated Markdown note in the editor after a successful capture.&quot;
+        }
+      }
+    }
+  },
+  &quot;scripts&quot;: {
+    &quot;vscode:prepublish&quot;: &quot;npm run bundle&quot;,
+    &quot;compile&quot;: &quot;tsc -p ./&quot;,
+    &quot;bundle&quot;: &quot;esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --minify&quot;,
+    &quot;watch&quot;: &quot;npm run bundle -- --watch&quot;,
+    &quot;package&quot;: &quot;npm run bundle &amp;&amp; vsce package&quot;,
+    &quot;lint&quot;: &quot;eslint src --ext ts&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;@types/node&quot;: &quot;^20.0.0&quot;,
+    &quot;@types/turndown&quot;: &quot;^5.0.5&quot;,
+    &quot;@types/vscode&quot;: &quot;^1.85.0&quot;,
+    &quot;@types/ws&quot;: &quot;^8.5.10&quot;,
+    &quot;@typescript-eslint/eslint-plugin&quot;: &quot;^8.59.3&quot;,
+    &quot;@typescript-eslint/parser&quot;: &quot;^8.59.3&quot;,
+    &quot;@vscode/vsce&quot;: &quot;^2.24.0&quot;,
+    &quot;esbuild&quot;: &quot;^0.28.0&quot;,
+    &quot;eslint&quot;: &quot;^10.3.0&quot;,
+    &quot;eslint-config-prettier&quot;: &quot;^10.1.8&quot;,
+    &quot;eslint-plugin-prettier&quot;: &quot;^5.5.5&quot;,
+    &quot;prettier&quot;: &quot;^3.8.3&quot;,
+    &quot;typescript&quot;: &quot;^5.3.0&quot;,
+    &quot;typescript-eslint&quot;: &quot;^8.59.3&quot;
+  },
+  &quot;dependencies&quot;: {
+    &quot;turndown&quot;: &quot;^7.2.0&quot;,
+    &quot;ws&quot;: &quot;^8.16.0&quot;
+  }
+}</file><file path="README.md"># Antigravity Scribe
 
 Capture thinking, tool calls &amp; artifacts from [Google Antigravity IDE](https://antigravity.google) sessions directly into your Obsidian vault as structured Markdown notes.
 No copy-pasting. No manual logging. No digging through AG&apos;s folders. Run the capture when your session is done and the note appears.
@@ -12255,118 +12422,13 @@ This produces a `.vsix` file in the root directory.
 
 ---
 
+## Contributing
+
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to get started.
+
 ## License
 
-MIT © [Sciscend ЕООД](https://sciscend.com)</file><file path="package.json">{
-  &quot;name&quot;: &quot;antigravity-scribe&quot;,
-  &quot;displayName&quot;: &quot;Antigravity Scribe&quot;,
-  &quot;description&quot;: &quot;Capture thinking, tool calls &amp; artifacts to your Obsidian vault&quot;,
-  &quot;version&quot;: &quot;0.1.0&quot;,
-  &quot;publisher&quot;: &quot;sciscend&quot;,
-  &quot;engines&quot;: {
-    &quot;vscode&quot;: &quot;^1.85.0&quot;
-  },
-  &quot;categories&quot;: [
-    &quot;Other&quot;
-  ],
-  &quot;repository&quot;: {
-    &quot;type&quot;: &quot;git&quot;,
-    &quot;url&quot;: &quot;https://github.com/sciscend/antigravity-scribe.git&quot;
-  },
-  &quot;keywords&quot;: [
-    &quot;antigravity&quot;,
-    &quot;obsidian&quot;,
-    &quot;agent&quot;,
-    &quot;capture&quot;,
-    &quot;ai&quot;,
-    &quot;session&quot;
-  ],
-  &quot;activationEvents&quot;: [
-    &quot;onStartupFinished&quot;
-  ],
-  &quot;main&quot;: &quot;./dist/extension.js&quot;,
-  &quot;contributes&quot;: {
-    &quot;commands&quot;: [
-      {
-        &quot;command&quot;: &quot;agscribe.capture&quot;,
-        &quot;title&quot;: &quot;Antigravity Scribe: Capture Session&quot;
-      },
-      {
-        &quot;command&quot;: &quot;agscribe.captureNamed&quot;,
-        &quot;title&quot;: &quot;Antigravity Scribe: Capture Session (named task)&quot;
-      },
-      {
-        &quot;command&quot;: &quot;agscribe.openVault&quot;,
-        &quot;title&quot;: &quot;Antigravity Scribe: Open Sessions in Vault&quot;
-      },
-      {
-        &quot;command&quot;: &quot;agscribe.diagnose&quot;,
-        &quot;title&quot;: &quot;Antigravity Scribe: Diagnose Connection&quot;
-      }
-    ],
-    &quot;configuration&quot;: {
-      &quot;title&quot;: &quot;Antigravity Scribe&quot;,
-      &quot;properties&quot;: {
-        &quot;agscribe.port&quot;: {
-          &quot;type&quot;: &quot;number&quot;,
-          &quot;default&quot;: 9222,
-          &quot;description&quot;: &quot;The Remote Debugging Port Antigravity is listening on. This must match the --remote-debugging-port flag used when starting the application.&quot;
-        },
-        &quot;agscribe.brainPath&quot;: {
-          &quot;type&quot;: &quot;string&quot;,
-          &quot;default&quot;: &quot;~/.gemini/antigravity/brain&quot;,
-          &quot;description&quot;: &quot;Local path to the Antigravity &apos;brain&apos; directory where session artifacts are stored. Supports &apos;~&apos; expansion for the home directory.&quot;
-        },
-        &quot;agscribe.vaultPath&quot;: {
-          &quot;type&quot;: &quot;string&quot;,
-          &quot;default&quot;: &quot;&quot;,
-          &quot;description&quot;: &quot;Absolute path to your Obsidian vault root directory. This is required for the extension to work.&quot;,
-          &quot;editPresentation&quot;: {
-            &quot;view&quot;: &quot;folder&quot;
-          }
-        },
-        &quot;agscribe.vaultFolder&quot;: {
-          &quot;type&quot;: &quot;string&quot;,
-          &quot;default&quot;: &quot;AgentSessions&quot;,
-          &quot;description&quot;: &quot;The name of the folder within your Obsidian vault where captured session notes will be saved. Will be created if it doesn&apos;t exist.&quot;
-        },
-        &quot;agscribe.openAfterCapture&quot;: {
-          &quot;type&quot;: &quot;boolean&quot;,
-          &quot;default&quot;: true,
-          &quot;description&quot;: &quot;Automatically open the generated Markdown note in the editor after a successful capture.&quot;
-        }
-      }
-    }
-  },
-  &quot;scripts&quot;: {
-    &quot;vscode:prepublish&quot;: &quot;npm run bundle&quot;,
-    &quot;compile&quot;: &quot;tsc -p ./&quot;,
-    &quot;bundle&quot;: &quot;esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --minify&quot;,
-    &quot;watch&quot;: &quot;npm run bundle -- --watch&quot;,
-    &quot;package&quot;: &quot;npm run bundle &amp;&amp; vsce package&quot;,
-    &quot;lint&quot;: &quot;eslint src --ext ts&quot;
-  },
-  &quot;devDependencies&quot;: {
-    &quot;@types/node&quot;: &quot;^20.0.0&quot;,
-    &quot;@types/turndown&quot;: &quot;^5.0.5&quot;,
-    &quot;@types/vscode&quot;: &quot;^1.85.0&quot;,
-    &quot;@types/ws&quot;: &quot;^8.5.10&quot;,
-    &quot;@typescript-eslint/eslint-plugin&quot;: &quot;^8.59.3&quot;,
-    &quot;@typescript-eslint/parser&quot;: &quot;^8.59.3&quot;,
-    &quot;@vscode/vsce&quot;: &quot;^2.24.0&quot;,
-    &quot;esbuild&quot;: &quot;^0.28.0&quot;,
-    &quot;eslint&quot;: &quot;^10.3.0&quot;,
-    &quot;eslint-config-prettier&quot;: &quot;^10.1.8&quot;,
-    &quot;eslint-plugin-prettier&quot;: &quot;^5.5.5&quot;,
-    &quot;prettier&quot;: &quot;^3.8.3&quot;,
-    &quot;typescript&quot;: &quot;^5.3.0&quot;,
-    &quot;typescript-eslint&quot;: &quot;^8.59.3&quot;
-  },
-  &quot;dependencies&quot;: {
-    &quot;turndown&quot;: &quot;^7.2.0&quot;,
-    &quot;ws&quot;: &quot;^8.16.0&quot;
-  }
-}</file><file path="src/snapRunner.ts">import { findTarget, CDPClient } from &quot;./cdp&quot;;
+MIT © [Sciscend ЕООД](https://sciscend.com)</file><file path="src/snapRunner.ts">import { findTarget, CDPClient } from &quot;./cdp&quot;;
 import { EXTRACT_JS, EXTRACT_TITLE_JS, ConvNode } from &quot;./extractor&quot;;
 import { renderNote, sessionFilename } from &quot;./renderer&quot;;
 import { prepareVault, writeNote } from &quot;./vault&quot;;

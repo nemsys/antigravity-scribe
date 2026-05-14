@@ -134,6 +134,10 @@ This produces a `.vsix` file in the root directory.
 
 ---
 
+## Contributing
+
+Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to get started.
+
 ## License
 
 MIT © [Sciscend ЕООД](https://sciscend.com)
