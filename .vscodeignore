@@ -1,9 +1,21 @@
 .vscode/**
 src/**
+scraper/**
+scripts/**
+.agents/**
+.docs/**
+.debug/**
 node_modules/**
 tsconfig.json
 .gitignore
+.repomixignore
+.vscodeignore
+repomix-output.xml
+repomix.config.json
+TODO.md
+GEMINI.md
+CHANGELOG.md
 **/*.map
-.agents/**
 assets/**
+!assets/logo/*.png
 
