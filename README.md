@@ -69,7 +69,7 @@ When ready, choose one of:
 
 | Method                                                                                                             | When to use                                           |
 | ------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------- |
-| Click **<img src="assets/device-camera.svg" width="16" height="16" align="center" /> AG Scribe** in the status bar | Quick capture, reuses the last task label             |
+| Click **<img src="assets/device-camera.svg" width="16" height="16" align="center" /> AG Scribe** in the status bar | Quick capture, auto-generates task name from conversation title |
 | Command Palette → `Antigravity Scribe: Capture Session (named task)`                                               | When you want to give this session a meaningful label |
 
 ---
@@ -78,7 +78,7 @@ When ready, choose one of:
 
 | Command                                            | Description                                                 |
 | -------------------------------------------------- | ----------------------------------------------------------- |
-| `Antigravity Scribe: Capture Session`              | Capture using the last-used task label (default: `session`) |
+| `Antigravity Scribe: Capture Session`              | Capture using conversation title (or last-used task label)  |
 | `Antigravity Scribe: Capture Session (named task)` | Prompt for a label, then capture                            |
 | `Antigravity Scribe: Open Sessions in Vault`       | Reveal the sessions folder in the Explorer sidebar          |
 | `Antigravity Scribe: Diagnose Connection`          | Check CDP, brain path, and vault config                     |
@@ -125,21 +125,10 @@ If you launch Antigravity with `--user-data-dir` pointing to a custom location, 
 
 ---
 
-## Building from Source
-
-```bash
-npm install
-npm run bundle
-npm run package
-```
-This produces a `.vsix` file in the root directory.
-
----
-
 ## Contributing
 
 Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details on how to get started.
 
 ## License
 
-MIT © [Sciscend ЕООД](https://sciscend.com)
+MIT © 2026 [SciScend]

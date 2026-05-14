@@ -9,12 +9,22 @@
     npm install
     ```
 
-2.  **Run in Development Mode:**
+
+2. **Building from Source**
+
+```bash
+npm install
+npm run bundle
+npm run package
+```
+This produces a `.vsix` file in the root directory.
+
+3.  **Run in Development Mode:**
     *   Open the project in VS Code or Antigravity.
     *   Press `F5` to launch the **Extension Development Host**.
     *   The extension will reload automatically when you save changes if `npm run watch` is running.
 
-3.  **Code Quality:**
+4.  **Code Quality:**
     We use ESLint and Prettier. Please run the linter before submitting a PR:
     ```bash
     npm run lint
