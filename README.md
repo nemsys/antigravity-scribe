@@ -1,97 +1,28 @@
 # Antigravity Scribe
 
-> **Capture agents thinking, tool calls & artifacts to your Obsidian vault**
+Capture thinking, tool calls & artifacts from [Google Antigravity IDE](https://antigravity.google) sessions directly into your Obsidian vault as structured Markdown notes.
+No copy-pasting. No manual logging. No digging through AG's folders. Run the capture when your session is done and the note appears.
 
-Antigravity Scribe is a VS Code extension for [Google Antigravity IDE](https://antigravity.google) that captures the full content of an agent session — chat turns, thinking blocks, tool calls, task lists, and implementation plans — and writes a single structured Markdown note directly into your Obsidian vault.
 
-No copy-pasting. No manual logging. Run the capture when your session is done and the note appears.
+## Features
 
----
-
-## Table of Contents
-
-- [How It Works](#how-it-works)
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Configuration](#configuration)
-- [Getting Started](#getting-started)
-- [Commands](#commands)
-- [Output Format](#output-format)
-- [Artifact Matching](#artifact-matching)
-- [Custom Antigravity Profiles](#custom-antigravity-profiles)
-- [Troubleshooting](#troubleshooting)
-- [Building from Source](#building-from-source)
+- **Full Session Capture:** Automatically extracts chat turns, thinking blocks, tool call summaries, and implementation plans.
+- **Obsidian Integration:** Writes notes directly to your vault with proper YAML frontmatter and folder organization.
+- **Auto-Scroll & Expand:** Uses CDP to intelligently scroll the chat panel and expand all collapsed blocks (Worked for, Thought for, Explored) to ensure no content is missed.
+- **Verifiable Artifacts:** Matches the active session with Antigravity's "brain" directory to include `task.md` and `implementation_plan.md`.
+- **Diagnostics:** Built-in connection check to verify your CDP port and brain path configuration.
 
 ---
 
-## How It Works
+## Extension Settings
 
-Antigravity Scribe uses two data sources and combines them into one note:
+This extension contributes the following settings:
 
-**1. Chrome DevTools Protocol (CDP)**
-Connects to Antigravity's built-in Chromium process via a local debug port and extracts the full conversation from the DOM. 
-
-*   **Auto-Scroll & Expand:** The extension automatically scrolls the chat panel to mount lazy-loaded messages and clicks to expand all "Worked for", "Thought for", and "Explored" blocks to ensure no content is missed.
-*   **Rich Conversion:** Extracts user messages, agent responses, thinking blocks (with inner HTML to Markdown conversion), tool call summaries, and command runs.
-
-**2. Brain directory (filesystem)**
-Antigravity writes its verifiable artifacts (`task.md`, `implementation_plan.md`) to a local `brain/` directory. The extension identifies the active session and includes the artifact content in the note.
-
-Both sources are combined into a single Obsidian-native Markdown note with YAML frontmatter and linked artifacts.
-
----
-
-## Requirements
-
-- **Google Antigravity IDE** — [download here](https://antigravity.google)
-- **Antigravity must be launched with the CDP debug port enabled** (see [Getting Started](#getting-started))
-- **An Obsidian vault** — the extension writes notes into it directly
-- **Node.js ≥ 18** — needed only if building from source
-- **VS Code ≥ 1.85** or any Antigravity version (it is a VS Code fork)
-
----
-
-## Installation
-
-### Option A — Install from `.vsix` (recommended)
-
-1. Download `antigravity-scribe-0.1.0.vsix` from the [releases page](https://github.com/nemsys/antigravity-scribe/releases).
-
-2. Open Antigravity (or VS Code).
-
-3. Open the Command Palette (`Ctrl+Shift+P` / `Cmd+Shift+P`) and run:
-   ```
-   Extensions: Install from VSIX...
-   ```
-
-4. Select the downloaded `.vsix` file.
-
-5. Reload the window when prompted.
-
----
-
-## Configuration
-
-Open Settings (`Ctrl+,`) and search for **Antigravity Scribe**, or add these keys to your `settings.json`:
-
-```jsonc
-{ 
-  // Required if you use a custom Antigravity profile (see below)
-  "agscribe.brainPath": "~/.gemini/antigravity/brain",
-
-   // Required — path to your Obsidian vault root
-  "agscribe.vaultPath": "/home/yourname/Obsidian/Vault",
-
-  // Folder inside the vault where session notes are written
-  "agscribe.vaultFolder": "AgentSessions",
-
-  // CDP port Antigravity is listening on (default 9222)
-  "agscribe.port": 9222,
-
-  // Open the captured note in the editor immediately after capture
-  "agscribe.openAfterCapture": true
-}
-```
+* `agscribe.vaultPath`: **(Required)** Absolute path to your Obsidian vault root.
+* `agscribe.vaultFolder`: Folder inside the vault for session notes (default: `AgentSessions`).
+* `agscribe.brainPath`: Path to Antigravity brain directory (default: `~/.gemini/antigravity/brain`).
+* `agscribe.port`: CDP remote debugging port (default: `9222`).
+* `agscribe.openAfterCapture`: Automatically open the captured note in the editor (default: `true`).
 
 ---
 
