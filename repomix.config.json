@@ -32,19 +32,7 @@
     "useGitignore": true,
     "useDotIgnore": true,
     "useDefaultPatterns": true,
-    "customPatterns": [
-      ".agents/**",
-      ".debug/**",
-      "llms-*.txt",
-      "LICENSE",
-      "CHANGELOG.md",
-      ".gitignore",
-      ".vscodeignore",
-      ".repomixignore",
-      "repomix.config.json",
-      "*.png",
-      "scraper/**"
-    ]
+    "customPatterns": []
   },
   "security": {
     "enableSecurityCheck": true
