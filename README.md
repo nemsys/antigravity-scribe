@@ -6,10 +6,9 @@ No copy-pasting. No manual logging. No digging through AG's folders. Run the cap
 
 ## Features
 
-- **Full Session Capture:** Automatically extracts chat turns, thinking blocks, tool call summaries. Artifacts are excluded from the main capture, but can be browsed in `brain/<uuid>/` path.
+- **Full Session Capture:** Automatically extracts chat turns, thinking blocks, tool call summaries. Artifacts are intentionally excluded from the main capture, as they can be easily accessed in brain folder by `brain_path/brain_uuid` given in capture metadata. .
 - **Obsidian Integration:** Writes notes directly to your vault with proper YAML frontmatter and folder organization.
 - **Auto-Scroll & Expand:** Uses CDP to intelligently scroll the chat panel and expand all collapsed blocks (Worked for, Thought for, Explored) to ensure no content is missed.
-- **Verifiable Artifacts:** Matches the active session with Antigravity's "brain" directory to include `task.md` and `implementation_plan.md`.
 - **Diagnostics:** Built-in connection check to verify your CDP port and brain path configuration.
 
 ---
