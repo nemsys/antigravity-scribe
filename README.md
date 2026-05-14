@@ -108,14 +108,6 @@ The extension generates a structured Markdown file in your vault with:
 
 ---
 
-## Artifact Matching
-
-The extension finds the active session by selecting the **most recently modified UUID directory** in your `agscribe.brainPath`. Since Antigravity writes to this directory continuously during a session, the "hottest" directory is reliably the current one.
-
-The `.resolved` versions of artifacts are preferred, as they contain the final, comment-resolved content.
-
----
-
 ## Custom Antigravity Profiles
 
 If you launch Antigravity with `--user-data-dir` pointing to a custom location, you will need to point `agscribe.brainPath` to the `brain` directory within that profile.
@@ -130,9 +122,6 @@ If you launch Antigravity with `--user-data-dir` pointing to a custom location, 
 
 ### `Chat panel not found`
 - Ensure a conversation is active and visible in the Antigravity side panel.
-
-### Artifacts from the wrong session
-- The extension uses the most recently modified folder. If you start a new chat just before capturing, it might pick up the new (empty) session. **Capture before starting a new chat.**
 
 ---
 
