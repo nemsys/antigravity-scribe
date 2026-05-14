@@ -24,7 +24,6 @@ async function findTarget(port) {
         (t) =>
             t.type === "page" &&
             !t.url.includes("webviewkey") &&
-            t.title === "Launchpad" &&
             !!t.webSocketDebuggerUrl
     );
 
