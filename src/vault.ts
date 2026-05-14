@@ -3,7 +3,7 @@ import * as path from "path";
 import { expandHome } from "./utils";
 
 export interface VaultPaths {
-  sessionDir: string;   // <vault>/<vaultFolder>/
+  sessionDir: string; // <vault>/<vaultFolder>/
 }
 
 /**
@@ -13,7 +13,7 @@ export function prepareVault(vaultPath: string, vaultFolder: string): VaultPaths
   if (!vaultPath || !vaultPath.trim()) {
     throw new Error(
       "agscribe.vaultPath is not set.\n" +
-      "Open Settings → search 'Antigravity Scribe' → set your Obsidian vault path."
+        "Open Settings → search 'Antigravity Scribe' → set your Obsidian vault path.",
     );
   }
 
@@ -27,7 +27,6 @@ export function prepareVault(vaultPath: string, vaultFolder: string): VaultPaths
 
   return { sessionDir };
 }
-
 
 /**
  * Write the session note to the vault.

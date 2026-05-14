@@ -21,9 +21,7 @@ export function activate(ctx: vscode.ExtensionContext) {
   // ── Commands ───────────────────────────────────────────────────────────────
 
   ctx.subscriptions.push(
-    vscode.commands.registerCommand("agscribe.capture", () =>
-      captureWithTask(lastTask)
-    )
+    vscode.commands.registerCommand("agscribe.capture", () => captureWithTask(lastTask)),
   );
 
   ctx.subscriptions.push(
@@ -36,7 +34,7 @@ export function activate(ctx: vscode.ExtensionContext) {
       });
       if (task === undefined) return;
       captureWithTask(task.trim());
-    })
+    }),
   );
 
   ctx.subscriptions.push(
@@ -52,13 +50,13 @@ export function activate(ctx: vscode.ExtensionContext) {
 
       const fullPath = path.join(expandHome(vaultPath), vaultFolder);
       await vscode.commands.executeCommand("revealInExplorer", vscode.Uri.file(fullPath));
-    })
+    }),
   );
 
   ctx.subscriptions.push(
     vscode.commands.registerCommand("agscribe.diagnose", async () => {
       await runDiagnose(outputChannel);
-    })
+    }),
   );
 }
 
@@ -80,9 +78,7 @@ async function captureWithTask(task: string) {
     if (result.skipped) return;
     const { outPath, nodeCount } = result;
 
-    const parts = [
-      `${nodeCount} turn(s)`
-    ].filter(Boolean).join(", ");
+    const parts = [`${nodeCount} turn(s)`].filter(Boolean).join(", ");
 
     const msg = `Antigravity Scribe: Captured ${parts} → ${path.basename(outPath)}`;
 

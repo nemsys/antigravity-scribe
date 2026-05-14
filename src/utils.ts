@@ -16,7 +16,7 @@ export function expandHome(p: string): string {
       if (process.platform === "linux") {
         realHome = execSync("getent passwd $(id -un) | cut -d: -f6").toString().trim();
       }
-    } catch (err) {
+    } catch {
       // Fallback to os.homedir() on error
     }
     return path.join(realHome, p.slice(1));
@@ -47,7 +47,7 @@ export function getActiveBrainUuid(brainPath: string): { uuid: string | null; fu
       }
     }
     return { uuid: latestUuid, fullPath };
-  } catch (err) {
+  } catch {
     return { uuid: null, fullPath };
   }
 }

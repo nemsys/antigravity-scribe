@@ -1,5 +1,5 @@
 import * as http from "http";
-import WebSocket = require("ws");
+import WebSocket from "ws";
 
 export interface CDPTarget {
   id: string;
@@ -17,16 +17,11 @@ export async function findTarget(port: number): Promise<CDPTarget | null> {
   if (!targets) return null;
 
   let pages = targets.filter(
-    (t) =>
-      t.type === "page" &&
-      !t.url.includes("webviewkey") &&
-      !!t.webSocketDebuggerUrl
+    (t) => t.type === "page" && !t.url.includes("webviewkey") && !!t.webSocketDebuggerUrl,
   );
 
   if (!pages.length) {
-    pages = targets.filter(
-      (t) => ["page", "other"].includes(t.type) && !!t.webSocketDebuggerUrl
-    );
+    pages = targets.filter((t) => ["page", "other"].includes(t.type) && !!t.webSocketDebuggerUrl);
   }
 
   if (!pages.length) return null;
@@ -79,8 +74,14 @@ export class CDPClient {
       }, 10_000);
 
       this._pending.set(id, {
-        resolve: (v) => { clearTimeout(timer); resolve(v); },
-        reject:  (e) => { clearTimeout(timer); reject(e); },
+        resolve: (v) => {
+          clearTimeout(timer);
+          resolve(v);
+        },
+        reject: (e) => {
+          clearTimeout(timer);
+          reject(e);
+        },
       });
 
       this.ws.send(JSON.stringify({ id, method, params }));
@@ -108,11 +109,17 @@ function httpGetJson<T>(url: string): Promise<T | null> {
       let body = "";
       res.on("data", (chunk) => (body += chunk));
       res.on("end", () => {
-        try { resolve(JSON.parse(body) as T); }
-        catch { resolve(null); }
+        try {
+          resolve(JSON.parse(body) as T);
+        } catch {
+          resolve(null);
+        }
       });
     });
     req.on("error", () => resolve(null));
-    req.on("timeout", () => { req.destroy(); resolve(null); });
+    req.on("timeout", () => {
+      req.destroy();
+      resolve(null);
+    });
   });
 }

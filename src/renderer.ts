@@ -27,9 +27,6 @@ td.addRule("ignoreImages", {
 // Explicitly remove styling and script elements just in case any slip through
 td.remove(["style", "script", "noscript", "svg"]);
 
-const toRow = (cells: any[]) =>
-  "| " + cells.map(c => String(c ?? "").replace(/\|/g, "\\|")).join(" | ") + " |";
-
 function htmlToMarkdown(html: string): string {
   return td.turndown(html).trim();
 }
@@ -49,13 +46,13 @@ function htmlToMarkdown(html: string): string {
 // ---------------------------------------------------------------------------
 
 const EMOJI: Record<string, string> = {
-  user: "\u{1F464}",  // 👤
-  agent: "\u{1F916}",  // 🤖
-  worked: "\u23F1",     // ⏱
+  user: "\u{1F464}", // 👤
+  agent: "\u{1F916}", // 🤖
+  worked: "\u23F1", // ⏱
   explored: "\u{1F50D}", // 🔍
   thought: "\u{1F9E0}", // 🧠
   actions: "\u{1F527}", // 🔧
-  ran: "\u25B6",    // ▶
+  ran: "\u25B6", // ▶
   artifact: "\u{1F4C4}", // 📄
   files_modified: "\u{1F4C1}", // 📁
 };
@@ -70,7 +67,6 @@ function h(depth: number): string {
 
 function renderNode(node: ConvNode, lines: string[], depth = 2): void {
   switch (node.role) {
-
     // ── User message ────────────────────────────────────────────────────────
     case "user":
       lines.push(`${h(depth)} ${EMOJI.user} USER`);
@@ -248,13 +244,13 @@ export function renderNote(nodes: ConvNode[], opts: RenderOptions): string {
 export function sessionFilename(task: string, date: Date = new Date()): string {
   const pad = (n: number) => String(n).padStart(2, "0");
   const d = date;
-  const ymd =
-    `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}`;
+  const ymd = `${d.getFullYear()}${pad(d.getMonth() + 1)}${pad(d.getDate())}`;
   const hm = `${pad(d.getHours())}${pad(d.getMinutes())}`;
-  const slug = task
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-+|-+$/g, "")
-    .slice(0, 40) || "session";
+  const slug =
+    task
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "")
+      .slice(0, 40) || "session";
   return `${ymd}_${hm}_${slug}.md`;
 }

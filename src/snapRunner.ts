@@ -6,7 +6,6 @@ import { renderNote, sessionFilename } from "./renderer";
 import { prepareVault, writeNote } from "./vault";
 import { getActiveBrainUuid } from "./utils";
 
-
 export interface SnapResult {
   outPath: string;
   nodeCount: number;
@@ -14,22 +13,20 @@ export interface SnapResult {
 }
 
 export async function runSnap(task: string): Promise<SnapResult> {
-  const resolvedTask = task || "session";
   const cfg = vscode.workspace.getConfiguration("agscribe");
   const port = cfg.get<number>("port", 9222);
   const vaultPath = cfg.get<string>("vaultPath", "");
   const vaultFolder = cfg.get<string>("vaultFolder", "AgentSessions");
   const brainPath = cfg.get<string>("brainPath", "~/.gemini/antigravity/brain");
 
-  const wsFolder =
-    vscode.workspace.workspaceFolders?.[0]?.uri.fsPath ?? process.cwd();
+  const wsFolder = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath ?? process.cwd();
 
   // ── 1. CDP: extract conversation tree ─────────────────────────────────────
   const target = await findTarget(port);
   if (!target) {
     throw new Error(
       `No Antigravity CDP target on port ${port}.\n` +
-      `Make sure Antigravity is running with --remote-debugging-port=${port}.`
+        `Make sure Antigravity is running with --remote-debugging-port=${port}.`,
     );
   }
 
@@ -53,14 +50,12 @@ export async function runSnap(task: string): Promise<SnapResult> {
   const nodes: ConvNode[] = JSON.parse(raw);
 
   if (nodes.length === 1 && nodes[0].role === "_no_chat") {
-    throw new Error(
-      "Chat panel not found — is a conversation open in Antigravity?"
-    );
+    throw new Error("Chat panel not found — is a conversation open in Antigravity?");
   }
 
   if (nodes.length === 0) {
     vscode.window.showWarningMessage(
-      "Antigravity Scribe: Conversation is empty — start a conversation before capturing."
+      "Antigravity Scribe: Conversation is empty — start a conversation before capturing.",
     );
     return { outPath: "", nodeCount: 0, skipped: true };
   }
@@ -69,10 +64,10 @@ export async function runSnap(task: string): Promise<SnapResult> {
   const effectiveTask =
     task === "session" && conversationTitle
       ? conversationTitle
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/^-|-$/g, "")
-        .slice(0, 50)
+          .toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "")
+          .slice(0, 50)
       : task;
 
   // ── 2. Vault: prepare dirs ─────────────────────────────────────────────────
@@ -81,7 +76,7 @@ export async function runSnap(task: string): Promise<SnapResult> {
   // ── 3. Render and write note ───────────────────────────────────────────────
   const now = new Date();
   const { uuid: brainUuid, fullPath: brainFullPath } = getActiveBrainUuid(brainPath);
-  
+
   const note = renderNote(nodes, {
     task: effectiveTask,
     workspacePath: wsFolder,

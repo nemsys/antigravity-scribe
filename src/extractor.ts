@@ -8,10 +8,10 @@ export type NodeRole =
   | "worked"
   | "explored"
   | "thought"
-  | "actions"    // group container — children are individual 'action' nodes
-  | "action"     // single action row: Analyzed, Created outline, Read page
-  | "ran"        // Ran / Edited / Created command row
-  | "artifact"   // Artifact card (task.md, implementation_plan.md, etc.)
+  | "actions" // group container — children are individual 'action' nodes
+  | "action" // single action row: Analyzed, Created outline, Read page
+  | "ran" // Ran / Edited / Created command row
+  | "artifact" // Artifact card (task.md, implementation_plan.md, etc.)
   | "files_modified" // Files Modified section with child filenames
   | "_no_chat";
 

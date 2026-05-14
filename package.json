@@ -51,27 +51,30 @@
         "agscribe.port": {
           "type": "number",
           "default": 9222,
-          "description": "CDP remote debugging port Antigravity is listening on"
+          "description": "The Remote Debugging Port Antigravity is listening on. This must match the --remote-debugging-port flag used when starting the application."
         },
         "agscribe.brainPath": {
           "type": "string",
           "default": "~/.gemini/antigravity/brain",
-          "description": "Path to Antigravity brain directory. Supports ~ expansion. For custom profiles, set the full path (e.g. ~/Antigravity_Profiles/phoneiep/app_config/.gemini/antigravity/brain)"
+          "description": "Local path to the Antigravity 'brain' directory where session artifacts are stored. Supports '~' expansion for the home directory."
         },
         "agscribe.vaultPath": {
           "type": "string",
           "default": "",
-          "description": "Absolute path to your Obsidian vault root (required)"
+          "description": "Absolute path to your Obsidian vault root directory. This is required for the extension to work.",
+          "editPresentation": {
+            "view": "folder"
+          }
         },
         "agscribe.vaultFolder": {
           "type": "string",
           "default": "AgentSessions",
-          "description": "Folder inside the vault where session notes are written"
+          "description": "The name of the folder within your Obsidian vault where captured session notes will be saved. Will be created if it doesn't exist."
         },
         "agscribe.openAfterCapture": {
           "type": "boolean",
           "default": true,
-          "description": "Open the session note in editor after capture"
+          "description": "Automatically open the generated Markdown note in the editor after a successful capture."
         }
       }
     }
@@ -81,16 +84,24 @@
     "compile": "tsc -p ./",
     "bundle": "esbuild src/extension.ts --bundle --outfile=dist/extension.js --external:vscode --format=cjs --platform=node --minify",
     "watch": "npm run bundle -- --watch",
-    "package": "npm run bundle && vsce package"
+    "package": "npm run bundle && vsce package",
+    "lint": "eslint src --ext ts"
   },
   "devDependencies": {
     "@types/node": "^20.0.0",
     "@types/turndown": "^5.0.5",
     "@types/vscode": "^1.85.0",
     "@types/ws": "^8.5.10",
+    "@typescript-eslint/eslint-plugin": "^8.59.3",
+    "@typescript-eslint/parser": "^8.59.3",
     "@vscode/vsce": "^2.24.0",
     "esbuild": "^0.28.0",
-    "typescript": "^5.3.0"
+    "eslint": "^10.3.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-prettier": "^5.5.5",
+    "prettier": "^3.8.3",
+    "typescript": "^5.3.0",
+    "typescript-eslint": "^8.59.3"
   },
   "dependencies": {
     "turndown": "^7.2.0",
