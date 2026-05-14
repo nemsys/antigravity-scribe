@@ -29,7 +29,7 @@ Thumbs.db
 .env.*.local
 
 # npm package lock
-package-lock.json
+# package-lock.json (commented out to allow staging)
 
 # Misc
 *.log
