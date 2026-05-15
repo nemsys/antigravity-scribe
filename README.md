@@ -69,7 +69,7 @@ When ready, choose one of:
 
 | Method                                                                                                             | When to use                                                     |
 | ------------------------------------------------------------------------------------------------------------------ | --------------------------------------------------------------- |
-| Click **<img src="assets/device-camera.svg" width="16" height="16" align="center" /> AG Scribe** in the status bar | Quick capture, auto-generates task name from conversation title |
+| Click **<img src="assets/device-camera.png" width="16" height="16" align="center" /> AG Scribe** in the status bar | Quick capture, auto-generates task name from conversation title |
 | Command Palette → `Antigravity Scribe: Capture Session (named task)`                                               | When you want to give this session a custom label               |
 
 ---
